@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 </script>
 
-<h1>Welcome, {$page.data.name}!</h1>
+<h1>Welcome, {$page.data?.name?? 'Guest'}!</h1>
 <p>Welcome to the Quiz Game!</p>
 
 <div>
