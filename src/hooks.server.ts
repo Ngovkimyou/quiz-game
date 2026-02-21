@@ -7,12 +7,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// If no cookie AND they aren't already going to /login, send them there
 	if (!name && !event.url.pathname.startsWith('/login')) {
 		throw redirect(303, '/login');
-	}
+	}else if (name && event.url.pathname.startsWith('/login') ) {
+    // this code prevent people from going back to login after they registered
+        throw redirect(303, "/")
+    }
     
     
     if (name) {
     const db = getTursoClient();
-
+    
     const { rows } = await db.execute({
         sql: "SELECT score,registered_date FROM `quiz-ranking`WHERE name = ?",
         args: [name],

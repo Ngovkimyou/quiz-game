@@ -1,8 +1,10 @@
+<!-- This is the Login page -->
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	export let form; // Access validation errors from the action
 </script>
 
+<!-- This is the login form -->
 <form method="POST" use:enhance>
     <p> Hello there </p>
 	<input name="name" type="text" placeholder="Enter your name" />
@@ -14,7 +16,7 @@
 </form>
 
 <style>
-    /* Can you design the input or the form here */
+    /* Can you design the input or the form here Muyheng*/
     input {
         padding: 0.5rem;
         border: 1px solid #ccc;

@@ -2,29 +2,28 @@
 <script>
 import { page } from '$app/stores';
 </script>
-
+<!-- Currently, there's 3 things that you can pull from $page => name, score, registered_time. -->
 <h1>Welcome, {$page.data.name}!</h1>
 <p>Welcome to the Quiz Game!</p>
 
 <div>
-    <div class = 'questions'>
-        <div class = 'question'>
-            <p>Question 1: What is the capital of France?</p>
-            <p>Question 2: Who wrote "To Kill a Mockingbird"?</p>
-            <p>Question 3: What is the largest planet in our solar system?</p>
-        </div>
-    </div>
-    <div class = 'options'>
-        <button>Option 1</button>
-        <button>Option 2</button>
-        <button>Option 3</button>
-        <button>Option 4</button>
-    </div>
+    <a href="/leaderboard">View Leaderboard</a>
+
+    <a href ="/game">Play</a>
 </div>
 
 
 
 <style>
+a {
+    color: red;
+    background-color: blue;
+    margin: 20px;
+    padding: 5px;
+    
+}
 
-
+a:hover {
+    color:aqua
+}
 </style>
