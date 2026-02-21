@@ -11,8 +11,8 @@ export const actions: Actions = {
 		console.log('@login => Received name:', name);
 		if (!name) {
 			return fail(400, { name, missing: true, tooLong: false });
-		}else if ((name.length) > 21) {
-			return fail(400, {name, missing : false, tooLong: true})
+		} else if (name.length > 21) {
+			return fail(400, { name, missing: false, tooLong: true });
 		}
 
 		const db: Client = getTursoClient();

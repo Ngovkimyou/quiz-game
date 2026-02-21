@@ -9,11 +9,11 @@
 	<p>Hello there</p>
 	<input name="name" type="text" placeholder="Enter your name" />
 	{#if form?.missing}
-    <p class="input_note" style = "color: red;">Name is required!</p>
+		<p class="input_note" style="color: red;">Name is required!</p>
 	{:else if form?.tooLong}
-		<p class="input_note" style = "color: red">Name must be lower than 21 characters!</p>
+		<p class="input_note" style="color: red">Name must be lower than 21 characters!</p>
 	{:else}
-		<p class = "input_note" style = "color:blueviolet">Please fill out the form to continue.</p>
+		<p class="input_note" style="color:blueviolet">Please fill out the form to continue.</p>
 	{/if}
 	<button type="submit">Register / Login</button>
 </form>

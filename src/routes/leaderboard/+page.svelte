@@ -19,7 +19,9 @@
 	<p>Here is the leaderboard of the quiz game. The top players are listed below:</p>
 	<ul class="leaderboard_list">
 		{#each data.rows as row (row.id)}
-			<li class = "leaderboard_list li">{row.name}: {row.score} points, time: {row.registered_date}</li>
+			<li class="leaderboard_list li">
+				{row.name}: {row.score} points, time: {row.registered_date}
+			</li>
 		{/each}
 	</ul>
 	<!-- This here is used for testing, it doesn't belong here -->
@@ -37,12 +39,12 @@
 	.leaderboard_list {
 		list-style-type: decimal;
 		padding-left: 1.5rem;
-		max-height:120px;
+		max-height: 120px;
 		overflow: auto;
 	}
 	/* I think you need to design this here 
 	a little bit to make it more beautiful */
 	.leaderboard_list li {
-        background-color: green;
-    }
+		background-color: green;
+	}
 </style>
