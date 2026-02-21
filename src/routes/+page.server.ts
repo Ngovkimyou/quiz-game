@@ -1,8 +1,7 @@
 import type { PageServerLoad } from './$types';
-import { getTursoClient } from '$lib/server/getTursoClient';
-import { Server } from 'socket.io';
+// import { Server } from 'socket.io';
 
-import { json } from '@sveltejs/kit';
+// import { json } from '@sveltejs/kit';
 
 // // In your backend file
 // const io = new Server(3000, {
