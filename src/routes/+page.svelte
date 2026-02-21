@@ -1,2 +1,26 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+	import { page } from '$app/stores';
+	import { resolve } from '$app/paths';
+</script>
+
+<h1>Welcome, {$page.data?.name ?? 'Guest'}!</h1>
+<p>Welcome to the Quiz Game!</p>
+
+<div>
+	<a href={resolve('/leaderboard')}>View Leaderboard</a>
+
+	<a href={resolve('/game')}>Play</a>
+</div>
+
+<style>
+	a {
+		color: red;
+		background-color: blue;
+		margin: 20px;
+		padding: 5px;
+	}
+
+	a:hover {
+		color: aqua;
+	}
+</style>
