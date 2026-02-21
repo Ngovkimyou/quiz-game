@@ -19,10 +19,11 @@
 	<p>Here is the leaderboard of the quiz game. The top players are listed below:</p>
 	<ul class="leaderboard_list">
 		{#each data.rows as row (row.id)}
-			<li>{row.name}: {row.score} points, time: {row.registered_date}</li>
+			<li class = "leaderboard_list li">{row.name}: {row.score} points, time: {row.registered_date}</li>
 		{/each}
 	</ul>
-	<button onclick={() => doUpdate('2', 1000000)}> Update </button>
+	<!-- This here is used for testing, it doesn't belong here -->
+	<button onclick={() => doUpdate('6', 24000)}> Update </button>
 </div>
 
 <style>
@@ -30,14 +31,18 @@
 		border: 1px solid #ccc;
 		padding: 1rem;
 		border-radius: 4px;
-		max-width: 400px;
+		max-width: 500px;
 		margin: 0 auto;
 	}
 	.leaderboard_list {
 		list-style-type: decimal;
 		padding-left: 1.5rem;
+		max-height:120px;
+		overflow: auto;
 	}
-	/* .leaderboard_list li {
-        margin-bottom: 0.5rem;
-    } */
+	/* I think you need to design this here 
+	a little bit to make it more beautiful */
+	.leaderboard_list li {
+        background-color: green;
+    }
 </style>

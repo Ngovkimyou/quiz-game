@@ -8,11 +8,14 @@
 <form method="POST" use:enhance>
 	<p>Hello there</p>
 	<input name="name" type="text" placeholder="Enter your name" />
-	<button type="submit">Register / Login</button>
-
 	{#if form?.missing}
-		<p>Name is required!</p>
+    <p class="input_note" style = "color: red;">Name is required!</p>
+	{:else if form?.tooLong}
+		<p class="input_note" style = "color: red">Name must be lower than 21 characters!</p>
+	{:else}
+		<p class = "input_note" style = "color:blueviolet">Please fill out the form to continue.</p>
 	{/if}
+	<button type="submit">Register / Login</button>
 </form>
 
 <style>
@@ -30,5 +33,10 @@
 		border: none;
 		border-radius: 4px;
 		cursor: pointer;
+	}
+	.input_note {
+		font-size: 10px;
+		opacity: 50%;
+		margin: 2px 0px;
 	}
 </style>
