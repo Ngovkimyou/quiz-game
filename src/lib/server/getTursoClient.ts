@@ -12,8 +12,6 @@ export function getTursoClient() {
 	return createClient({ url: databaseUrl, authToken });
 }
 
-
-
 export async function getUserRanking() {
 	const db = getTursoClient();
 	return await db.execute('SELECT * FROM `quiz-ranking` WHERE score > 0 ORDER BY score DESC');
@@ -22,7 +20,7 @@ export async function getUserRanking() {
 export async function UpdateUser(name: string, score: number) {
 	const db = getTursoClient();
 	if (name || score < 0) {
-		throw new Error("You need to enter a Name or Score > 0");
+		throw new Error('You need to enter a Name or Score > 0');
 	}
 
 	return await db.execute({
