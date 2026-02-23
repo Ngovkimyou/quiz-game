@@ -2,6 +2,4 @@
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
-	"ai-commit.GEMINI_API_KEY": "AIzaSyCEoN0xnPlQptmcBRnHBbXLZKyBjUwOJ04",
-	"ai-commit.OPENAI_API_KEY": "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"
 }
