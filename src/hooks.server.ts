@@ -1,13 +1,17 @@
 import { redirect, type Handle } from '@sveltejs/kit';
 import { getTursoClient } from '$lib/server/getTursoClient';
 
+
+// This file right here will run every time a request is made to the server
+// So you shouldn't put any heavy code here
 export const handle: Handle = async ({ event, resolve }) => {
 	const name = event.cookies.get('name')?.toString();
 
 	// If no cookie AND they aren't already going to /login, send them there
-	if (!name && !event.url.pathname.startsWith('/login')) {
-		throw redirect(303, '/login');
-	} else if (name && event.url.pathname.startsWith('/login')) {
+	// if (!name && !event.url.pathname.startsWith('/login')) {
+	// 	throw redirect(303, '/login');
+    // }
+	if (name && event.url.pathname.startsWith('/login')) {
 		// this code prevent people from going back to login after they registered
 		throw redirect(303, '/');
 	}
@@ -30,6 +34,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	} else {
 		console.error('No name found in cookies');
 	}
-
+	
 	return resolve(event);
 };

@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "prompt": "Are you okay?",
+    "options": {
+      "A": "大丈夫ですか？",
+      "B": "元気でしたか？",
+      "C": "大丈夫でした。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 2,
+    "prompt": "I forgot my phone.",
+    "options": {
+      "A": "携帯を忘れました。",
+      "B": "携帯をなくしました。",
+      "C": "携帯を忘れています。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 3,
+    "prompt": "I have to go now.",
+    "options": {
+      "A": "今、行かなければなりません。",
+      "B": "今、行ってはいけません。",
+      "C": "今、行きません。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 4,
+    "prompt": "Do you understand?",
+    "options": {
+      "A": "分かりますか？",
+      "B": "分かりましたか？",
+      "C": "分かりませんか？"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 5,
+    "prompt": "It looks delicious.",
+    "options": {
+      "A": "おいしそうです。",
+      "B": "おいしいです。",
+      "C": "おいしかったです。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 6,
+    "prompt": "I want to eat sushi.",
+    "options": {
+      "A": "寿司を食べたいです。",
+      "B": "寿司を食べます。",
+      "C": "寿司を食べたがっています。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 7,
+    "prompt": "Please wait a moment.",
+    "options": {
+      "A": "ちょっと待ってください。",
+      "B": "ちょっと待っています。",
+      "C": "ちょっと待ちました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 8,
+    "prompt": "I didn’t go yesterday.",
+    "options": {
+      "A": "昨日、行きませんでした。",
+      "B": "昨日、行きません。",
+      "C": "昨日、行きました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 9,
+    "prompt": "Can you speak Japanese?",
+    "options": {
+      "A": "日本語を話せますか？",
+      "B": "日本語を話しますか？",
+      "C": "日本語が話しましたか？"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 10,
+    "prompt": "Let’s go together.",
+    "options": {
+      "A": "一緒に行きましょう。",
+      "B": "一緒に行きます。",
+      "C": "一緒に行きたいです。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 11,
+    "prompt": "I was made to apologize by my teacher.",
+    "options": {
+      "A": "先生に謝らせました。",
+      "B": "先生に謝られました。",
+      "C": "先生に謝らせられました。"
+    },
+    "answer": "C"
+  },
+  {
+    "id": 12,
+    "prompt": "I’ll let you use my computer.",
+    "options": {
+      "A": "パソコンを使わせます。",
+      "B": "パソコンを使われます。",
+      "C": "パソコンを使わせてあげます。"
+    },
+    "answer": "C"
+  },
+  {
+    "id": 13,
+    "prompt": "I ended up missing the train.",
+    "options": {
+      "A": "電車を逃しました。",
+      "B": "電車に逃げました。",
+      "C": "電車を逃がしました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 14,
+    "prompt": "I should have studied more.",
+    "options": {
+      "A": "もっと勉強するべきです。",
+      "B": "もっと勉強すればよかったです。",
+      "C": "もっと勉強しなければなりませんでした。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 15,
+    "prompt": "He seems to have forgotten.",
+    "options": {
+      "A": "彼は忘れそうです。",
+      "B": "彼は忘れたそうです。",
+      "C": "彼は忘れているそうです。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 16,
+    "prompt": "I can’t help laughing.",
+    "options": {
+      "A": "笑わないでいられません。",
+      "B": "笑ってはいけません。",
+      "C": "笑わなくてもいいです。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 17,
+    "prompt": "I was told to come early.",
+    "options": {
+      "A": "早く来るように言いました。",
+      "B": "早く来るように言われました。",
+      "C": "早く来させました。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 18,
+    "prompt": "Even though it was expensive, I bought it.",
+    "options": {
+      "A": "高かったので、買いました。",
+      "B": "高かったのに、買いました。",
+      "C": "高いから、買いました。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 19,
+    "prompt": "I had my friend fix my computer.",
+    "options": {
+      "A": "友達にパソコンを直させました。",
+      "B": "友達にパソコンを直してもらいました。",
+      "C": "友達がパソコンを直されました。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 20,
+    "prompt": "I got caught cheating.",
+    "options": {
+      "A": "カンニングを見つけました。",
+      "B": "カンニングを見つかりました。",
+      "C": "カンニングを見つけられました。"
+    },
+    "answer": "C"
+  },
+  {
+    "id": 21,
+    "prompt": "If it rains tomorrow, I won’t go.",
+    "options": {
+      "A": "明日雨が降ったら、行きません。",
+      "B": "明日雨が降れば、行きませんでした。",
+      "C": "明日雨なら、行きませんでした。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 22,
+    "prompt": "I ended up buying it.",
+    "options": {
+      "A": "買ってしまいました。",
+      "B": "買っていました。",
+      "C": "買ってみました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 23,
+    "prompt": "He is supposed to come today.",
+    "options": {
+      "A": "彼は今日来るはずです。",
+      "B": "彼は今日来るべきです。",
+      "C": "彼は今日来ることにしました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 24,
+    "prompt": "I decided to study abroad.",
+    "options": {
+      "A": "留学することにしました。",
+      "B": "留学することになります。",
+      "C": "留学するようにしました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 25,
+    "prompt": "Please speak more slowly so I can understand.",
+    "options": {
+      "A": "分かるように、もっとゆっくり話してください。",
+      "B": "分かって、もっとゆっくり話してください。",
+      "C": "分かるために、もっとゆっくり話してください。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 26,
+    "prompt": "It doesn’t mean I dislike it.",
+    "options": {
+      "A": "嫌いなわけではありません。",
+      "B": "嫌いではありませんでした。",
+      "C": "嫌いなはずではありません。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 27,
+    "prompt": "I forgot to lock the door.",
+    "options": {
+      "A": "ドアを閉めるのを忘れました。",
+      "B": "ドアが閉まるのを忘れました。",
+      "C": "ドアを閉めていました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 28,
+    "prompt": "Even if it’s difficult, I’ll try.",
+    "options": {
+      "A": "難しくても、やってみます。",
+      "B": "難しいので、やってみます。",
+      "C": "難しければ、やってみました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 29,
+    "prompt": "I was surprised at how expensive it was.",
+    "options": {
+      "A": "高くて驚きました。",
+      "B": "高いので驚きました。",
+      "C": "高そうで驚きました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 30,
+    "prompt": "I have gotten used to living in Japan.",
+    "options": {
+      "A": "日本に住むことに慣れました。",
+      "B": "日本に住んでいます。",
+      "C": "日本に住むようになりました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 31,
+    "prompt": "If it rains tomorrow, I won’t go.",
+    "options": {
+      "A": "明日雨が降ったら、行きません。",
+      "B": "明日雨が降れば、行きませんでした。",
+      "C": "明日雨なら、行きませんでした。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 32,
+    "prompt": "I ended up buying it.",
+    "options": {
+      "A": "買ってしまいました。",
+      "B": "買っていました。",
+      "C": "買ってみました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 33,
+    "prompt": "He is supposed to come today.",
+    "options": {
+      "A": "彼は今日来るはずです。",
+      "B": "彼は今日来るべきです。",
+      "C": "彼は今日来ることにしました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 34,
+    "prompt": "I decided to study abroad.",
+    "options": {
+      "A": "留学することにしました。",
+      "B": "留学することになります。",
+      "C": "留学するようにしました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 35,
+    "prompt": "Please speak more slowly so I can understand.",
+    "options": {
+      "A": "分かるように、もっとゆっくり話してください。",
+      "B": "分かって、もっとゆっくり話してください。",
+      "C": "分かるために、もっとゆっくり話してください。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 36,
+    "prompt": "It doesn’t mean I dislike it.",
+    "options": {
+      "A": "嫌いなわけではありません。",
+      "B": "嫌いではありませんでした。",
+      "C": "嫌いなはずではありません。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 37,
+    "prompt": "I forgot to lock the door.",
+    "options": {
+      "A": "ドアを閉めるのを忘れました。",
+      "B": "ドアが閉まるのを忘れました。",
+      "C": "ドアを閉めていました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 38,
+    "prompt": "Even if it’s difficult, I’ll try.",
+    "options": {
+      "A": "難しくても、やってみます。",
+      "B": "難しいので、やってみます。",
+      "C": "難しければ、やってみました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 39,
+    "prompt": "I was surprised at how expensive it was.",
+    "options": {
+      "A": "高くて驚きました。",
+      "B": "高いので驚きました。",
+      "C": "高そうで驚きました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 40,
+    "prompt": "I have gotten used to living in Japan.",
+    "options": {
+      "A": "日本に住むことに慣れました。",
+      "B": "日本に住んでいます。",
+      "C": "日本に住むようになりました。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 41,
+    "prompt": "Although it was raining, the event was held.",
+    "options": {
+      "A": "雨が降ったので、イベントが行われました。",
+      "B": "雨が降ったものの、イベントが行われました。",
+      "C": "雨が降ったため、イベントが行われませんでした。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 42,
+    "prompt": "It’s not always true that expensive things are good.",
+    "options": {
+      "A": "高いものはいいに違いない。",
+      "B": "高いものがいいとは限らない。",
+      "C": "高いものはよかったはずだ。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 43,
+    "prompt": "I couldn’t help laughing.",
+    "options": {
+      "A": "笑わずにはいられなかった。",
+      "B": "笑わないわけにはいかなかった。",
+      "C": "笑うことはなかった。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 44,
+    "prompt": "He is likely to be late.",
+    "options": {
+      "A": "彼は遅れるに違いない。",
+      "B": "彼は遅れかねない。",
+      "C": "彼は遅れたはずがない。"
+    },
+    "answer": "B"
+  },
+  {
+    "id": 45,
+    "prompt": "I was about to leave when the phone rang.",
+    "options": {
+      "A": "出かけるところに、電話が鳴った。",
+      "B": "出かけたところに、電話が鳴った。",
+      "C": "出かけるところだったとき、電話が鳴った。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 46,
+    "prompt": "It ended up costing more than I expected.",
+    "options": {
+      "A": "思ったより高かった。",
+      "B": "思ったほど高くなかった。",
+      "C": "思うより高くなった。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 47,
+    "prompt": "He talks as if he knows everything.",
+    "options": {
+      "A": "彼は何でも知っているかのように話す。",
+      "B": "彼は何でも知っているようだ。",
+      "C": "彼は何でも知っているらしい。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 48,
+    "prompt": "I had no choice but to accept it.",
+    "options": {
+      "A": "受け入れるしかなかった。",
+      "B": "受け入れないことはなかった。",
+      "C": "受け入れるべきではなかった。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 49,
+    "prompt": "This rule is supposed to be followed.",
+    "options": {
+      "A": "このルールは守ることになっている。",
+      "B": "このルールは守ることにした。",
+      "C": "このルールは守らせられた。"
+    },
+    "answer": "A"
+  },
+  {
+    "id": 50,
+    "prompt": "It’s impossible that she doesn’t know.",
+    "options": {
+      "A": "彼女が知らないはずがない。",
+      "B": "彼女が知らないに違いない。",
+      "C": "彼女が知らないわけではない。"
+    },
+    "answer": "A"
+  }
+]

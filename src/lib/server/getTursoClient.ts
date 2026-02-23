@@ -12,20 +12,21 @@ export function getTursoClient() {
 	return createClient({ url: databaseUrl, authToken });
 }
 
-const db = getTursoClient();
+
 
 export async function getUserRanking() {
+	const db = getTursoClient();
 	return await db.execute('SELECT * FROM `quiz-ranking` WHERE score > 0 ORDER BY score DESC');
 }
 
-export async function UpdateUser(id: string, score: number) {
-	if (Number(id) < 0 || score < 0) {
-		throw new Error("you can't enter id or score < 0");
+export async function UpdateUser(name: string, score: number) {
+	const db = getTursoClient();
+	if (name || score < 0) {
+		throw new Error("You need to enter a Name or Score > 0");
 	}
-	// const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-	// console.log("@TursoClient => CurrentTime: ", now)
+
 	return await db.execute({
-		sql: 'UPDATE `quiz-ranking` SET score = ? WHERE id = ?',
-		args: [score, id]
+		sql: 'UPDATE `quiz-ranking` SET score = ? WHERE name = ?',
+		args: [score, name]
 	});
 }
