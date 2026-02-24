@@ -1,0 +1,252 @@
+[
+  {
+    "question": "Are you okay?",
+    "choices": ["大丈夫ですか？", "元気でしたか？", "大丈夫でした。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I forgot my phone.",
+    "choices": ["携帯を忘れました。", "携帯をなくしました。", "携帯を忘れています。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I have to go now.",
+    "choices": ["今、行かなければなりません。", "今、行ってはいけません。", "今、行きません。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Do you understand?",
+    "choices": ["分かりますか？", "分かりましたか？", "分かりませんか？"],
+    "answerIndex": 0
+  },
+  {
+    "question": "It looks delicious.",
+    "choices": ["おいしそうです。", "おいしいです。", "おいしかったです。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I want to eat sushi.",
+    "choices": ["寿司を食べたいです。", "寿司を食べます。", "寿司を食べたがっています。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Please wait a moment.",
+    "choices": ["ちょっと待ってください。", "ちょっと待っています。", "ちょっと待ちました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I didn’t go yesterday.",
+    "choices": ["昨日、行きませんでした。", "昨日、行きません。", "昨日、行きました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Can you speak Japanese?",
+    "choices": ["日本語を話せますか？", "日本語を話しますか？", "日本語が話しましたか？"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Let’s go together.",
+    "choices": ["一緒に行きましょう。", "一緒に行きます。", "一緒に行きたいです。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I was made to apologize by my teacher.",
+    "choices": ["先生に謝らせました。", "先生に謝られました。", "先生に謝らせられました。"],
+    "answerIndex": 2
+  },
+  {
+    "question": "I’ll let you use my computer.",
+    "choices": ["パソコンを使わせます。", "パソコンを使われます。", "パソコンを使わせてあげます。"],
+    "answerIndex": 2
+  },
+  {
+    "question": "I ended up missing the train.",
+    "choices": ["電車を逃しました。", "電車に逃げました。", "電車を逃がしました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I should have studied more.",
+    "choices": ["もっと勉強するべきです。", "もっと勉強すればよかったです。", "もっと勉強しなければなりませんでした。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "He seems to have forgotten.",
+    "choices": ["彼は忘れそうです。", "彼は忘れたそうです。", "彼は忘れているそうです。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "I can’t help laughing.",
+    "choices": ["笑わないでいられません。", "笑ってはいけません。", "笑わなくてもいいです。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I was told to come early.",
+    "choices": ["早く来るように言いました。", "早く来るように言われました。", "早く来させました。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "Even though it was expensive, I bought it.",
+    "choices": ["高かったので、買いました。", "高かったのに、買いました。", "高いから、買いました。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "I had my friend fix my computer.",
+    "choices": ["友達にパソコンを直させました。", "友達にパソコンを直してもらいました。", "友達がパソコンを直されました。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "I got caught cheating.",
+    "choices": ["カンニングを見つけました。", "カンニングを見つかりました。", "カンニングを見つけられました。"],
+    "answerIndex": 2
+  },
+  {
+    "question": "If it rains tomorrow, I won’t go.",
+    "choices": ["明日雨が降ったら、行きません。", "明日雨が降れば、行きませんでした。", "明日雨なら、行きませんでした。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I ended up buying it.",
+    "choices": ["買ってしまいました。", "買っていました。", "買ってみました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "He is supposed to come today.",
+    "choices": ["彼は今日来るはずです。", "彼は今日来るべきです。", "彼は今日来ることにしました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I decided to study abroad.",
+    "choices": ["留学することにしました。", "留学することになります。", "留学するようにしました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Please speak more slowly so I can understand.",
+    "choices": ["分かるように、もっとゆっくり話してください。", "分かって、もっとゆっくり話してください。", "分かるために、もっとゆっくり話してください。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "It doesn’t mean I dislike it.",
+    "choices": ["嫌いなわけではありません。", "嫌いではありませんでした。", "嫌いなはずではありません。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I forgot to lock the door.",
+    "choices": ["ドアを閉めるのを忘れました。", "ドアが閉まるのを忘れました。", "ドアを閉めていました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Even if it’s difficult, I’ll try.",
+    "choices": ["難しくても、やってみます。", "難しいので、やってみます。", "難しければ、やってみました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I was surprised at how expensive it was.",
+    "choices": ["高くて驚きました。", "高いので驚きました。", "高そうで驚きました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I have gotten used to living in Japan.",
+    "choices": ["日本に住むことに慣れました。", "日本に住んでいます。", "日本に住むようになりました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "If it rains tomorrow, I won’t go.",
+    "choices": ["明日雨が降ったら、行きません。", "明日雨が降れば、行きませんでした。", "明日雨なら、行きませんでした。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I ended up buying it.",
+    "choices": ["買ってしまいました。", "買っていました。", "買ってみました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "He is supposed to come today.",
+    "choices": ["彼は今日来るはずです。", "彼は今日来るべきです。", "彼は今日来ることにしました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I decided to study abroad.",
+    "choices": ["留学することにしました。", "留学することになります。", "留学するようにしました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Please speak more slowly so I can understand.",
+    "choices": ["分かるように、もっとゆっくり話してください。", "分かって、もっとゆっくり話してください。", "分かるために、もっとゆっくり話してください。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "It doesn’t mean I dislike it.",
+    "choices": ["嫌いなわけではありません。", "嫌いではありませんでした。", "嫌いなはずではありません。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I forgot to lock the door.",
+    "choices": ["ドアを閉めるのを忘れました。", "ドアが閉まるのを忘れました。", "ドアを閉めていました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Even if it’s difficult, I’ll try.",
+    "choices": ["難しくても、やってみます。", "難しいので、やってみます。", "難しければ、やってみました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I was surprised at how expensive it was.",
+    "choices": ["高くて驚きました。", "高いので驚きました。", "高そうで驚きました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I have gotten used to living in Japan.",
+    "choices": ["日本に住むことに慣れました。", "日本に住んでいます。", "日本に住むようになりました。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "Although it was raining, the event was held.",
+    "choices": ["雨が降ったので、イベントが行われました。", "雨が降ったものの、イベントが行われました。", "雨が降ったため、イベントが行われませんでした。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "It’s not always true that expensive things are good.",
+    "choices": ["高いものはいいに違いない。", "高いものがいいとは限らない。", "高いものはよかったはずだ。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "I couldn’t help laughing.",
+    "choices": ["笑わずにはいられなかった。", "笑わないわけにはいかなかった。", "笑うことはなかった。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "He is likely to be late.",
+    "choices": ["彼は遅れるに違いない。", "彼は遅れかねない。", "彼は遅れたはずがない。"],
+    "answerIndex": 1
+  },
+  {
+    "question": "I was about to leave when the phone rang.",
+    "choices": ["出かけるところに、電話が鳴った。", "出かけたところに、電話が鳴った。", "出かけるところだったとき、電話が鳴った。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "It ended up costing more than I expected.",
+    "choices": ["思ったより高かった。", "思ったほど高くなかった。", "思うより高くなった。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "He talks as if he knows everything.",
+    "choices": ["彼は何でも知っているかのように話す。", "彼は何でも知っているようだ。", "彼は何でも知っているらしい。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "I had no choice but to accept it.",
+    "choices": ["受け入れるしかなかった。", "受け入れないことはなかった。", "受け入れるべきではなかった。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "This rule is supposed to be followed.",
+    "choices": ["このルールは守ることになっている。", "このルールは守ることにした。", "このルールは守らせられた。"],
+    "answerIndex": 0
+  },
+  {
+    "question": "It’s impossible that she doesn’t know.",
+    "choices": ["彼女が知らないはずがない。", "彼女が知らないに違いない。", "彼女が知らないわけではない。"],
+    "answerIndex": 0
+  }
+]
