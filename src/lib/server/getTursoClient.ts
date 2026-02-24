@@ -1,30 +1,22 @@
 import { createClient } from '@libsql/client';
 import { env } from '$env/dynamic/private';
 
+// All functions that is defined in the lib/server folder only run on the server.
+
+// This function is used for connecting to TURSO database
 export function getTursoClient() {
 	const databaseUrl = env.TURSO_DATABASE_URL;
 	const authToken = env.TURSO_AUTH_TOKEN;
-	// console.log("Database URL:", databaseUrl);
-	// console.log("Auth Token:", authToken);
+	// Check if there's if the database exist or reached
 	if (!databaseUrl || !authToken) {
 		throw new Error('Missing TURSO_DATABASE_URL or TURSO_AUTH_TOKEN environment variable');
 	}
 	return createClient({ url: databaseUrl, authToken });
 }
-
+// This function is used in the leaderboard page
 export async function getUserRanking() {
 	const db = getTursoClient();
 	return await db.execute('SELECT * FROM `quiz-ranking` WHERE score > 0 ORDER BY score DESC');
 }
 
-export async function UpdateUser(name: string, score: number) {
-	const db = getTursoClient();
-	if (name || score < 0) {
-		throw new Error('You need to enter a Name or Score > 0');
-	}
 
-	return await db.execute({
-		sql: 'UPDATE `quiz-ranking` SET score = ? WHERE name = ?',
-		args: [score, name]
-	});
-}

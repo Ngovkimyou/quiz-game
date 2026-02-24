@@ -41,4 +41,8 @@ async function UpdateUser(name: string, score: number) {
 		sql: 'UPDATE `quiz-ranking` SET score = ? WHERE name = ?',
 		args: [score, name]
 	});
+
+	console.log(`[@update-score(api)] User named: ${name} secussfully update their score to ${score}`)
 }
+
+
