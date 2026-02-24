@@ -18,5 +18,3 @@ export async function getUserRanking() {
 	const db = getTursoClient();
 	return await db.execute('SELECT * FROM `quiz-ranking` WHERE score > 0 ORDER BY score DESC');
 }
-
-

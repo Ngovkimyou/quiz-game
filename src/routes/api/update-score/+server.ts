@@ -42,7 +42,7 @@ async function UpdateUser(name: string, score: number) {
 		args: [score, name]
 	});
 
-	console.log(`[@update-score(api)] User named: ${name} secussfully update their score to ${score}`)
+	console.log(
+		`[@update-score(api)] User named: ${name} secussfully update their score to ${score}`
+	);
 }
-
-

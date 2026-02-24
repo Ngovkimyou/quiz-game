@@ -5,8 +5,7 @@ export const load = async () => {
 	console.log('@leaderboard => Retrieved users:', columns, rows);
 	return {
 		columns,
-		rows 
+		rows
 		// These datas are passed to the +page.svelte file in the same folder
 	};
 };
-
