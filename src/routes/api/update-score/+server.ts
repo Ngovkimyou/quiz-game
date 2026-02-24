@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 };
 
 async function UpdateUser(name: string, score: number) {
-	if (name || score < 0) {
+	if (!name || score <= 0) {
 		throw new Error('You need to enter a Name or Score > 0');
 	}
 
