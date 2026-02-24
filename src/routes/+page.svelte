@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	let audio: HTMLAudioElement;
 	let isPlaying = false;
@@ -19,11 +20,11 @@
 	});
 
 	function startGame() {
-		goto('/game');
+		goto(resolve('/game'));
 	}
 
 	function goLeaderboard() {
-		goto('/leaderboard');
+		goto(resolve('/leaderboard'));
 	}
 
 	function toggleMusic() {

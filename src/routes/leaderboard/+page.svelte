@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
+	import { resolve } from '$app/paths';
 	const { data } = $props();
 </script>
 
@@ -19,7 +19,7 @@
 		>
 			<div class="flex items-center justify-between px-12 py-6">
 				<button
-					onclick={() => goto('/')}
+					onclick={() => goto(resolve('/'))}
 					class="cursor-pointer text-lg text-white transition hover:text-indigo-400"
 				>
 					← Back
