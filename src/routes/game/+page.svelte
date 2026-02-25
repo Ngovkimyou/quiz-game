@@ -297,7 +297,7 @@
 
 			<!-- CHOICES -->
 			<div class="space-y-6">
-				{#each questions[currentIndex].choices as choice, index}
+				{#each questions[currentIndex].choices as choice, index (index)}
 					<button
 						on:click={() => selectAnswer(index)}
 						class="group relative w-[75%] cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
