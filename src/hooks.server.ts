@@ -5,7 +5,7 @@ import { getTursoClient } from '$lib/server/getTursoClient';
 // So you shouldn't put any heavy code here
 export const handle: Handle = async ({ event, resolve }) => {
 	const name = event.cookies.get('name')?.toString();
-	const id = event.cookies.get('id')
+	const id = event.cookies.get('id');
 
 	if (name && id) {
 		const db = getTursoClient();
@@ -20,10 +20,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.registered_date = rows[0]?.registered_date;
 		event.locals.name = name;
 		event.locals.id = id;
-		console.log('@handle => User\'s name found in cookies:', name);
-		console.log('@handle => User\'s id found in cookies:', id);
-		console.log('@handle => User\'s score:', event.locals.score);
-		console.log('@handle => User\'s registered date:', event.locals.registered_date);
+		console.log("@handle => User's name found in cookies:", name);
+		console.log("@handle => User's id found in cookies:", id);
+		console.log("@handle => User's score:", event.locals.score);
+		console.log("@handle => User's registered date:", event.locals.registered_date);
 	} else {
 		console.error('No name found in cookies');
 	}
