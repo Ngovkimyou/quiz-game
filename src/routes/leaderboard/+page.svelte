@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
+	import { resolve } from '$app/paths';
 	const { data } = $props();
 
 	let showCreditsModal = $state(false);
@@ -54,7 +55,7 @@
 			<div class="flex items-center justify-between px-12 py-6">
 				<button
 					onclick={() => {
-						goto('/');
+						goto(resolve('/'));
 						playBack();
 					}}
 					class="cursor-pointer text-lg text-white transition hover:text-indigo-400"

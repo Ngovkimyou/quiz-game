@@ -88,6 +88,7 @@
 		});
 	});
 
+	import { resolve } from '$app/paths';
 	type Question = {
 		question: string;
 		choices: string[];
@@ -206,11 +207,11 @@
 
 		showSaveModal = false;
 		playerName = '';
-		goto('/leaderboard');
+		goto(resolve('/leaderboard'));
 	}
 
 	function goHome() {
-		goto('/');
+		goto(resolve('/'));
 	}
 
 	$: timerPercent = (timeLeft / 60) * 100;

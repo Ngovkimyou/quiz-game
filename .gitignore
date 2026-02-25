@@ -21,3 +21,7 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+#Things I use but doesn't need to send to github
+scripts
+tatoeba.json
