@@ -113,11 +113,11 @@
 		const shuffledChoices = shuffleQuestions(choicesWithIndex);
 
 		return {
-		...question,
-		choices: shuffledChoices.map(({ choice }) => choice),
-		answerIndex: shuffledChoices.findIndex(({ index }) => index === question.answerIndex)
+			...question,
+			choices: shuffledChoices.map(({ choice }) => choice),
+			answerIndex: shuffledChoices.findIndex(({ index }) => index === question.answerIndex)
 		};
-  	}
+	}
 
 	onMount(async () => {
 		try {
