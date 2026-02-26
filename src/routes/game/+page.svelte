@@ -108,11 +108,22 @@
 		return result;
 	}
 
+	function shuffleChoices(question: Question): Question {
+		const choicesWithIndex = question.choices.map((choice, index) => ({ choice, index }));
+		const shuffledChoices = shuffleQuestions(choicesWithIndex);
+
+		return {
+		...question,
+		choices: shuffledChoices.map(({ choice }) => choice),
+		answerIndex: shuffledChoices.findIndex(({ index }) => index === question.answerIndex)
+		};
+  	}
+
 	onMount(async () => {
 		try {
 			const res = await fetch('/questions.json');
 			const data: Question[] = await res.json();
-			questions = shuffleQuestions(data);
+			questions = shuffleQuestions(data.map(shuffleChoices));
 		} catch (err) {
 			console.error('Failed to load questions', err);
 		} finally {
