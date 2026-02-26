@@ -122,6 +122,7 @@
 	});
 
 	let showSaveModal = false;
+	let isSaving = false;
 	let playerName = '';
 
 	let currentIndex = 0;
