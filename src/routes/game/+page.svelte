@@ -119,11 +119,23 @@
 		};
 	}
 
+	function dedupeQuestionsByPrompt(items: Question[]): Question[] {
+		const seen = new Set<string>();
+
+		return items.filter((item) => {
+			const key = item.question.trim().toLowerCase();
+			if (seen.has(key)) return false;
+			seen.add(key);
+			return true;
+		});
+	}
+
 	onMount(async () => {
 		try {
 			const res = await fetch('/questions.json');
 			const data: Question[] = await res.json();
-			questions = shuffleQuestions(data.map(shuffleChoices));
+			const uniqueQuestions = dedupeQuestionsByPrompt(data);
+			questions = shuffleQuestions(uniqueQuestions.map(shuffleChoices));
 		} catch (err) {
 			console.error('Failed to load questions', err);
 		} finally {
