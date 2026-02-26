@@ -201,17 +201,20 @@
 	}
 
 	async function saveScore() {
-		if (!playerName.trim()) return;
+		if (!playerName.trim() || isSaving) return;
 
-		await UpdateScore(playerName.trim(), score);
+		isSaving = true;
 
-		showSaveModal = false;
-		playerName = '';
-		goto(resolve('/leaderboard'));
-	}
-
-	function goHome() {
-		goto(resolve('/'));
+		try {
+			await UpdateScore(playerName.trim(), score);
+			showSaveModal = false;
+			playerName = '';
+			goto(resolve('/leaderboard'));
+		} catch (err) {
+			console.error('Failed to save score', err);
+		} finally {
+			isSaving = false;
+		}
 	}
 
 	$: timerPercent = (timeLeft / 60) * 100;
@@ -224,6 +227,10 @@
 				: score >= 1000
 					? 'チャレンジャー'
 					: '初心者';
+
+	function goHome() {
+		goto(resolve('/'));
+	}
 </script>
 
 <div
@@ -409,7 +416,8 @@
 
 		<!-- POP UP -->
 		<div
-			class="fixed inset-0 z-50 flex animate-[pop_0.25s_ease-out] items-center justify-center px-4"
+			class="fixed inset-0 z-50 flex animate-[pop_0.25s_ease-out] items-center justify-center px-4
+				{isSaving ? 'pointer-events-none opacity-80' : ''}"
 		>
 			<div class="w-full max-w-md rounded-3xl border border-slate-700 bg-slate-900 p-8 shadow-2xl">
 				<h2 class="mb-6 text-center text-2xl font-bold">🏆 Save Your Score</h2>
@@ -429,27 +437,18 @@
 				/>
 
 				<div class="mt-6 flex justify-center gap-4">
-					<!-- <button
-						on:click={saveScore}
-						class="flex-1 cursor-pointer border-2 border-green-500 bg-green-500/10 py-3 font-mono font-bold text-green-500 transition-all hover:bg-green-500 hover:text-black"
-					>
-						[ COMMIT_RECORD ]
-					</button>
-
-					<button
-						on:click={() => (showSaveModal = false)}
-						class="flex-1 cursor-pointer border-2 border-red-500 bg-red-500/10 py-3 font-mono font-bold text-red-500 transition-all hover:bg-red-500 hover:text-black"
-					>
-						[ ABORT_TASK ]
-					</button> -->
 					<button
 						on:click={() => {
 							playPopUp();
 							saveScore();
 						}}
-						class="flex-1 cursor-pointer rounded-xl bg-indigo-600 py-3 font-bold tracking-widest text-white transition-all hover:bg-indigo-500 hover:shadow-[0_0_15px_rgba(99,102,241,0.5)] active:scale-95"
+						disabled={isSaving}
+						class="flex-1 cursor-pointer rounded-xl bg-indigo-600 py-3 font-bold tracking-widest text-white transition-all
+	hover:bg-indigo-500 hover:shadow-[0_0_15px_rgba(99,102,241,0.5)]
+	active:scale-95
+	disabled:cursor-not-allowed disabled:opacity-50"
 					>
-						CONFIRM
+						{isSaving ? 'SAVING...' : 'CONFIRM'}
 					</button>
 
 					<button
