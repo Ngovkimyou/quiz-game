@@ -1,13 +1,13 @@
-import adapter from '@sveltejs/adapter-static';
+// svelte.config.js
+import adapter from '@sveltejs/adapter-netlify';
 import preprocess from 'svelte-preprocess';
 
 export default {
 	preprocess: preprocess(),
 	kit: {
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: null
+			// Netlify adapter default options are usually fine
+			// See adapter-netlify docs for advanced config
 		})
 	}
 };
