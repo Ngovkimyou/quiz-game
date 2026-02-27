@@ -1,8 +1,8 @@
 import { getUserRanking } from '$lib/server/getTursoClient';
 
-export const load = async () => {
+export const load = async ({ platform }) => {
 	try {
-		const { columns, rows } = await getUserRanking();
+		const { columns, rows } = await getUserRanking(platform?.env);
 		console.log('@leaderboard => Retrieved users:', columns, rows);
 		return {
 			columns,

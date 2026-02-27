@@ -9,7 +9,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (name && id) {
 		try {
-			const db = getTursoClient();
+			const db = getTursoClient(event.platform?.env);
 
 			const { rows } = await db.execute({
 				sql: 'SELECT name,score,registered_date FROM `quiz-ranking` WHERE id = ?',

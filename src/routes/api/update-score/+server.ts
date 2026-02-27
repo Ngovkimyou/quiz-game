@@ -1,11 +1,11 @@
 import { getTursoClient } from '$lib/server/getTursoClient';
 // This import will take care of all the types problem
 import type { RequestHandler } from './$types';
-export const POST: RequestHandler = async ({ request, cookies, locals }) => {
+export const POST: RequestHandler = async ({ request, cookies, locals, platform }) => {
 	let db: ReturnType<typeof getTursoClient>;
 	try {
 		// Create the DB client lazily so missing env vars don't crash module initialization.
-		db = getTursoClient();
+		db = getTursoClient(platform?.env);
 	} catch (error) {
 		console.error('@update-score => Database client initialization failed:', error);
 		return new Response(JSON.stringify({ error: 'Server database is not configured' }), {
