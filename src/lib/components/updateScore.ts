@@ -17,7 +17,23 @@ export async function UpdateScore(name: string, score: number | null = null) {
 			body: JSON.stringify({ name, score })
 		});
 
-		console.log('Data Recieved @updateScore: ', result);
-		return result;
+		let payload: unknown = null;
+		try {
+			payload = await result.json();
+		} catch {
+			payload = null;
+		}
+
+		console.log('Data Received @updateScore:', { status: result.status, payload });
+
+		if (!result.ok) {
+			const message =
+				typeof payload === 'object' && payload !== null && 'error' in payload
+					? String((payload as { error: unknown }).error)
+					: 'Failed to save score';
+			throw new Error(message);
+		}
+
+		return payload;
 	}
 }
