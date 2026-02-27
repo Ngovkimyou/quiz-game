@@ -13,18 +13,16 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 	if (!name || typeof score !== 'number') {
 		console.error('@update-score => Invalid data:', { name, score });
 		return new Response(JSON.stringify({ error: 'Invalid data' }), { status: 400 });
-	} else if ((id_cookies && typeof score == 'number') && name_cookies) {
-
-		UpdateUser(id_cookies, name_cookies, score)
+	} else if (id_cookies && typeof score == 'number' && name_cookies) {
+		UpdateUser(id_cookies, name_cookies, score);
 		return new Response(JSON.stringify({ success: true }), { status: 200 });
-
-	}else {
+	} else {
 		const result = await db.execute({
 			sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING *',
 			args: [name, score]
 		});
-		
-		const id = result.rows[0].id?.toString()
+
+		const id = result.rows[0].id?.toString();
 		// Set the cookie so the Hook lets them through next time
 		cookies.set('name', name, {
 			path: '/',
@@ -32,8 +30,8 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 			sameSite: 'strict',
 			maxAge: 60 * 60 * 24 * 7 // 1 week
 		});
-		
-		if(typeof id == 'string') {
+
+		if (typeof id == 'string') {
 			cookies.set('id', id, {
 				path: '/',
 				httpOnly: true,
@@ -47,7 +45,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 	}
 };
 
-async function UpdateUser(id: string, name:string, score: number) {
+async function UpdateUser(id: string, name: string, score: number) {
 	if (!id || score <= 0) {
 		throw new Error('You need to enter a Score > 0');
 	}
