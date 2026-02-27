@@ -1,7 +1,42 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+
 	import { resolve } from '$app/paths';
 	const { data } = $props();
+
+	let showCreditsModal = $state(false);
+
+	let backSound: HTMLAudioElement | null = null;
+	let popUpSound: HTMLAudioElement | null = null;
+
+	if (browser) {
+		backSound = new Audio('/audio/go-back-sound.ogg');
+		popUpSound = new Audio('/audio/confirm-cancel-button.wav');
+	}
+
+	function playBack() {
+		if (backSound) {
+			backSound.currentTime = 0;
+			backSound.play();
+		}
+	}
+
+	function playPopUp() {
+		if (popUpSound) {
+			popUpSound.currentTime = 0;
+			popUpSound.play();
+		}
+	}
+
+	onMount(() => {
+		const sounds = [backSound, popUpSound];
+
+		sounds.forEach((sound) => {
+			if (sound) sound.volume = 0.5;
+		});
+	});
 </script>
 
 <div
@@ -19,7 +54,10 @@
 		>
 			<div class="flex items-center justify-between px-12 py-6">
 				<button
-					onclick={() => goto(resolve('/'))}
+					onclick={() => {
+						goto(resolve('/'));
+						playBack();
+					}}
 					class="cursor-pointer text-lg text-white transition hover:text-indigo-400"
 				>
 					← Back
@@ -28,7 +66,15 @@
 				<h1 class="text-center text-2xl font-bold md:text-3xl">🏆 Leaderboard</h1>
 
 				<!-- PUSH THE TITLE TO MID -->
-				<div class="w-16"></div>
+				<button
+					onclick={() => {
+						showCreditsModal = true;
+						playPopUp();
+					}}
+					class="w-16 cursor-pointer text-lg text-gray-400 italic transition hover:text-indigo-400"
+				>
+					credits
+				</button>
 			</div>
 		</div>
 
@@ -96,4 +142,45 @@
 			</div>
 		{/if}
 	</div>
+
+	{#if showCreditsModal}
+		<!-- OVERLAY + CLICK AREA -->
+		<div
+			class="fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+			onclick={() => (showCreditsModal = false)}
+		>
+			<!-- MODAL -->
+			<div
+				class="z-50 w-full max-w-md animate-[pop_0.25s_ease-out] rounded-3xl border border-slate-700 bg-slate-900 p-8 shadow-2xl"
+				role="dialog"
+				aria-modal="true"
+				onclick={(e) => e.stopPropagation()}
+			>
+				<h2 class="mb-6 text-center text-2xl font-bold">Credits</h2>
+
+				<div class="space-y-2 text-slate-300">
+					<p><span class="font-semibold text-white">Elsewin</span>: Back-end Developer</p>
+					<p>
+						<span class="font-semibold text-white">Mouyheang</span>: Front-end Developer |
+						Illustrator
+					</p>
+					<p><span class="font-semibold text-white">Kimyoo</span>: Team Manager | Code Reviewer</p>
+					<p>
+						<span class="font-semibold text-white">Phearith</span>: Data Collector | Leader
+						Assistant
+					</p>
+				</div>
+
+				<button
+					class="mt-6 w-full rounded-xl bg-indigo-600 py-2 font-semibold transition hover:bg-indigo-500"
+					onclick={() => {
+						showCreditsModal = false;
+						playPopUp();
+					}}
+				>
+					Close
+				</button>
+			</div>
+		</div>
+	{/if}
 </div>

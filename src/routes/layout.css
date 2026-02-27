@@ -98,12 +98,13 @@ body {
 	animation: fadeIn 0.6s ease-out forwards;
 }
 
-.glow-blue {
-	box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
-}
-.glow-purple {
-	box-shadow: 0 0 15px rgba(170, 90, 255, 0.6);
-}
-.glow-orange {
-	box-shadow: 0 0 15px rgba(255, 160, 0, 0.6);
+@keyframes pop {
+	0% {
+		transform: scale(0.8);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
 }

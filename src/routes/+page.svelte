@@ -1,15 +1,45 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
 
 	let audio: HTMLAudioElement;
 	let isPlaying = false;
+	let hoverSound: HTMLAudioElement | null = null;
+
+	let popUpSound: HTMLAudioElement | null = null;
+	let clickSound: HTMLAudioElement | null = null;
+
+	if (browser) {
+		hoverSound = new Audio('/audio/shimmer.mp3');
+		clickSound = new Audio('/audio/button-click.wav');
+	}
+
+	function playHover() {
+		if (hoverSound) {
+			hoverSound.currentTime = 0;
+			hoverSound.play();
+		}
+	}
+
+	function playClick() {
+		if (clickSound) {
+			clickSound.currentTime = 0;
+			clickSound.play();
+		}
+	}
 
 	onMount(() => {
-		audio = new Audio('/AFTERGLOW.mp3');
+		audio = new Audio('audio/AFTERGLOW.mp3');
 		audio.loop = true;
 		audio.volume = 0.2;
+
+		const sounds = [popUpSound, clickSound];
+
+		sounds.forEach((sound) => {
+			if (sound) sound.volume = 0.5;
+		});
 	});
 
 	onDestroy(() => {
@@ -63,7 +93,11 @@
 
 		<div class="mt-20 flex flex-col gap-6 md:flex-col">
 			<button
-				on:click={startGame}
+				on:mouseenter={playHover}
+				on:click={() => {
+					playClick();
+					startGame();
+				}}
 				class="group relative cursor-pointer overflow-hidden rounded-md border border-slate-700 bg-slate-900/80 px-12 py-4 font-medium text-white transition-all duration-300 hover:border-indigo-500 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]"
 			>
 				<div
@@ -79,7 +113,11 @@
 			</button>
 
 			<button
-				on:click={goLeaderboard}
+				on:mouseenter={playHover}
+				on:click={() => {
+					goLeaderboard();
+					playClick();
+				}}
 				class="group relative cursor-pointer overflow-hidden rounded-md border border-slate-700 bg-slate-900/80 px-12 py-4 font-medium text-white transition-all duration-300 hover:border-indigo-500 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]"
 			>
 				<div
@@ -96,7 +134,10 @@
 		</div>
 
 		<button
-			on:click={toggleMusic}
+			on:click={() => {
+				toggleMusic();
+				playClick();
+			}}
 			class="mt-8 cursor-pointer text-sm text-slate-400 transition hover:text-indigo-400"
 		>
 			{isPlaying ? '🔊 Music On' : '🔇 Music Off'}

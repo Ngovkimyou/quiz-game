@@ -2,6 +2,92 @@
 	import { goto } from '$app/navigation';
 	import { onMount, onDestroy } from 'svelte';
 	import { UpdateScore } from '$lib/components/updateScore';
+	import { browser } from '$app/environment';
+
+	// 🎵 SOUND EFFECTS
+	let hoverSound: HTMLAudioElement | null = null;
+	let correctSound: HTMLAudioElement | null = null;
+	let wrongSound: HTMLAudioElement | null = null;
+	let backSound: HTMLAudioElement | null = null;
+	let popUpSound: HTMLAudioElement | null = null;
+	let clickSound: HTMLAudioElement | null = null;
+	let timesUpSound: HTMLAudioElement | null = null;
+
+	if (browser) {
+		hoverSound = new Audio('/audio/shimmer.mp3');
+		correctSound = new Audio('/audio/correct-answer.wav');
+		wrongSound = new Audio('/audio/wrong-answer.mp3');
+		backSound = new Audio('/audio/go-back-sound.ogg');
+		popUpSound = new Audio('/audio/confirm-cancel-button.wav');
+		clickSound = new Audio('/audio/button-click.wav');
+		timesUpSound = new Audio('/audio/time-is-up.mp3');
+	}
+
+	function playHover() {
+		if (hoverSound) {
+			hoverSound.currentTime = 0;
+			hoverSound.play();
+		}
+	}
+
+	function playCorrect() {
+		if (correctSound) {
+			correctSound.currentTime = 0;
+			correctSound.play();
+		}
+	}
+
+	function playWrong() {
+		if (wrongSound) {
+			wrongSound.currentTime = 0;
+			wrongSound.play();
+		}
+	}
+
+	function playBack() {
+		if (backSound) {
+			backSound.currentTime = 0;
+			backSound.play();
+		}
+	}
+
+	function playPopUp() {
+		if (popUpSound) {
+			popUpSound.currentTime = 0;
+			popUpSound.play();
+		}
+	}
+
+	function playClick() {
+		if (clickSound) {
+			clickSound.currentTime = 0;
+			clickSound.play();
+		}
+	}
+
+	function playAlarm() {
+		if (timesUpSound) {
+			timesUpSound.currentTime = 0;
+			timesUpSound.play();
+		}
+	}
+
+	onMount(() => {
+		const sounds = [
+			hoverSound,
+			correctSound,
+			wrongSound,
+			backSound,
+			popUpSound,
+			clickSound,
+			timesUpSound
+		];
+
+		sounds.forEach((sound) => {
+			if (sound) sound.volume = 0.5;
+		});
+	});
+
 	import { resolve } from '$app/paths';
 	type Question = {
 		question: string;
@@ -53,6 +139,7 @@
 			if (timeLeft > 0) {
 				timeLeft--;
 			} else {
+				playAlarm();
 				gameOver = true;
 				clearInterval(timer);
 			}
@@ -71,11 +158,14 @@
 
 		if (index === questions[currentIndex].answerIndex) {
 			score += 100;
+			playCorrect();
+		} else {
+			playWrong();
 		}
 
 		setTimeout(() => {
 			nextQuestion();
-		}, 1200);
+		}, 800);
 	}
 
 	function nextQuestion() {
@@ -84,6 +174,7 @@
 			selectedIndex = null;
 			showResult = false;
 		} else {
+			playAlarm();
 			gameOver = true;
 			clearInterval(timer);
 		}
@@ -102,6 +193,7 @@
 			if (timeLeft > 0) {
 				timeLeft--;
 			} else {
+				playAlarm();
 				gameOver = true;
 				clearInterval(timer);
 			}
@@ -145,7 +237,10 @@
 	<!-- Top Bar -->
 	<div class="relative z-10 flex items-center px-12 py-10 text-sm">
 		<button
-			on:click={goHome}
+			on:click={() => {
+				playBack();
+				goHome();
+			}}
 			class="cursor-pointer text-lg text-white transition hover:text-indigo-400"
 		>
 			← Back
@@ -202,7 +297,7 @@
 
 			<!-- CHOICES -->
 			<div class="space-y-6">
-				{#each questions[currentIndex].choices as choice, index}
+				{#each questions[currentIndex].choices as choice, index (index)}
 					<button
 						on:click={() => selectAnswer(index)}
 						class="group relative w-[75%] cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
@@ -260,7 +355,10 @@
 
 				<div class="mt-10 flex gap-6">
 					<button
+						on:mouseenter={playHover}
 						on:click={() => {
+							
+							playClick();
 								if (playerName == null || playerName == '') {
 									showSaveModal = true
 								}
@@ -283,7 +381,10 @@
 					</button>
 
 					<button
-						on:click={restartGame}
+						on:click={() => {
+							playClick();
+							restartGame();
+						}}
 						class="group relative cursor-pointer overflow-hidden rounded-full border border-slate-500 bg-slate-950/40 px-10 py-4 text-lg font-medium tracking-widest text-slate-400 transition-all duration-500 hover:scale-105 hover:border-white hover:text-white hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] active:scale-95"
 					>
 						<div
@@ -298,7 +399,10 @@
 				</div>
 
 				<button
-					on:click={goHome}
+					on:click={() => {
+						playBack();
+						goHome();
+					}}
 					class="mt-6 cursor-pointer text-slate-400 transition hover:text-indigo-400"
 				>
 					Back to Home
@@ -312,7 +416,9 @@
 		<div class="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"></div>
 
 		<!-- POP UP -->
-		<div class="fixed inset-0 z-50 flex items-center justify-center px-4">
+		<div
+			class="fixed inset-0 z-50 flex animate-[pop_0.25s_ease-out] items-center justify-center px-4"
+		>
 			<div class="w-full max-w-md rounded-3xl border border-slate-700 bg-slate-900 p-8 shadow-2xl">
 				<h2 class="mb-6 text-center text-2xl font-bold">🏆 Save Your Score</h2>
 
@@ -345,14 +451,20 @@
 						[ ABORT_TASK ]
 					</button> -->
 					<button
-						on:click={saveScore}
+						on:click={() => {
+							playPopUp();
+							saveScore();
+						}}
 						class="flex-1 cursor-pointer rounded-xl bg-indigo-600 py-3 font-bold tracking-widest text-white transition-all hover:bg-indigo-500 hover:shadow-[0_0_15px_rgba(99,102,241,0.5)] active:scale-95"
 					>
 						CONFIRM
 					</button>
 
 					<button
-						on:click={() => (showSaveModal = false)}
+						on:click={() => {
+							playPopUp();
+							showSaveModal = false;
+						}}
 						class="flex-1 cursor-pointer rounded-xl border border-slate-700 bg-slate-800/50 py-3 font-medium tracking-widest text-slate-400 transition-all hover:bg-slate-800 hover:text-slate-200"
 					>
 						CANCEL
