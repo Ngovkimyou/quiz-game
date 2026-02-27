@@ -1,6 +1,13 @@
-import adapter from '@sveltejs/adapter-cloudflare';
+// svelte.config.js
+import adapter from '@sveltejs/adapter-netlify';
+import preprocess from 'svelte-preprocess';
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = { kit: { adapter: adapter() } };
-
-export default config;
+export default {
+	preprocess: preprocess(),
+	kit: {
+		adapter: adapter({
+			// Netlify adapter default options are usually fine
+			// See adapter-netlify docs for advanced config
+		})
+	}
+};
