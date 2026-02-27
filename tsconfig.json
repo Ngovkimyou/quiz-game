@@ -12,6 +12,6 @@
 		"sourceMap": true,
 		"strict": true,
 		"module": "esnext",
-		"moduleResolution": "bundler",
+		"moduleResolution": "bundler"
 	}
 }
