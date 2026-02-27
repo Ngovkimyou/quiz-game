@@ -13,6 +13,5 @@
 		"strict": true,
 		"module": "esnext",
 		"moduleResolution": "bundler",
-		"types": ["./worker-configuration.d.ts"]
 	}
 }
