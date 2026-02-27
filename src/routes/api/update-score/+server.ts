@@ -13,55 +13,61 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 		});
 	}
 
-	const id_cookies = locals.id?.toString();
-	const name_cookies = locals.name;
-	const { name, score } = await request.json();
-	console.log('@update-score => Received data:', { name, score });
-	//Trigger if there's no value in name or score type is different from number
+	try {
+		const id_cookies = locals.id?.toString();
+		const name_cookies = locals.name;
+		const { name, score } = await request.json();
+		console.log('@update-score => Received data:', { name, score });
 
-	if (!name || typeof score !== 'number') {
-		console.error('@update-score => Invalid data:', { name, score });
-		return new Response(JSON.stringify({ error: 'Invalid data' }), { status: 400 });
-	} else if (id_cookies && typeof score == 'number' && name_cookies) {
-		await UpdateUser(db, id_cookies, name_cookies, score);
-		return new Response(JSON.stringify({ success: true }), { status: 200 });
-	} else {
+		if (!name || typeof score !== 'number' || !Number.isFinite(score) || score < 0) {
+			console.error('@update-score => Invalid data:', { name, score });
+			return new Response(JSON.stringify({ error: 'Invalid data' }), { status: 400 });
+		}
+
+		if (id_cookies && name_cookies) {
+			await updateUser(db, id_cookies, name_cookies, score);
+			return new Response(JSON.stringify({ success: true, mode: 'update' }), { status: 200 });
+		}
+
 		const result = await db.execute({
-			sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING *',
+			sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING id',
 			args: [name, score]
 		});
 
-		const id = result.rows[0].id?.toString();
-		// Set the cookie so the Hook lets them through next time
+		const id = result.rows[0]?.id?.toString();
 		cookies.set('name', name, {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'strict',
-			maxAge: 60 * 60 * 24 * 7 // 1 week
+			maxAge: 60 * 60 * 24 * 7
 		});
 
-		if (typeof id == 'string') {
+		if (id) {
 			cookies.set('id', id, {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'strict',
-				maxAge: 60 * 60 * 24 * 7 // 1 week
+				maxAge: 60 * 60 * 24 * 7
 			});
 		}
 
-		console.log('@update-score => INSERT SUCESSFULLY INTO DATABASE: ', result);
-		return new Response(JSON.stringify({ success: true }), { status: 200 });
+		console.log('@update-score => INSERT SUCCESSFULLY INTO DATABASE');
+		return new Response(JSON.stringify({ success: true, mode: 'insert', id }), { status: 200 });
+	} catch (error) {
+		console.error('@update-score => Unexpected server error:', error);
+		const message = error instanceof Error ? error.message : 'Unknown server error';
+		return new Response(JSON.stringify({ error: message }), { status: 500 });
 	}
 };
 
-async function UpdateUser(
+async function updateUser(
 	db: ReturnType<typeof getTursoClient>,
 	id: string,
 	name: string,
 	score: number
 ) {
-	if (!id || score <= 0) {
-		throw new Error('You need to enter a Score > 0');
+	if (!id || score < 0) {
+		throw new Error('You need to enter a score >= 0');
 	}
 
 	await db.execute({
