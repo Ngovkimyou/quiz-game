@@ -1,4 +1,4 @@
-import { createClient } from '@libsql/client';
+import { createClient } from '@libsql/client/web';
 import { env } from '$env/dynamic/private';
 
 // All functions that is defined in the lib/server folder only run on the server.
