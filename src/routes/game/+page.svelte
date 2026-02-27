@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount, onDestroy } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { UpdateScore } from '$lib/components/updateScore';
 	import { browser } from '$app/environment';
 
@@ -120,7 +121,7 @@
 	}
 
 	function dedupeQuestionsByPrompt(items: Question[]): Question[] {
-		const seen = new Set<string>();
+		const seen = new SvelteSet<string>();
 
 		return items.filter((item) => {
 			const key = item.question.trim().toLowerCase();
