@@ -2,9 +2,10 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import type { PageData } from './$types';
 
 	import { resolve } from '$app/paths';
-	const { data } = $props();
+	const { data } = $props<{ data: PageData }>();
 
 	let showCreditsModal = $state(false);
 

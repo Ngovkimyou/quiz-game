@@ -8,22 +8,26 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const id = event.cookies.get('id');
 
 	if (name && id) {
-		const db = getTursoClient();
+		try {
+			const db = getTursoClient();
 
-		const { rows } = await db.execute({
-			sql: 'SELECT name,score,registered_date FROM `quiz-ranking`WHERE id = ?',
-			args: [id]
-		});
-		console.log('@handle => Database query result for user:', rows);
+			const { rows } = await db.execute({
+				sql: 'SELECT name,score,registered_date FROM `quiz-ranking` WHERE id = ?',
+				args: [id]
+			});
+			console.log('@handle => Database query result for user:', rows);
 
-		event.locals.score = rows[0]?.score;
-		event.locals.registered_date = rows[0]?.registered_date;
-		event.locals.name = name;
-		event.locals.id = id;
-		console.log("@handle => User's name found in cookies:", name);
-		console.log("@handle => User's id found in cookies:", id);
-		console.log("@handle => User's score:", event.locals.score);
-		console.log("@handle => User's registered date:", event.locals.registered_date);
+			event.locals.score = rows[0]?.score;
+			event.locals.registered_date = rows[0]?.registered_date;
+			event.locals.name = name;
+			event.locals.id = id;
+			console.log("@handle => User's name found in cookies:", name);
+			console.log("@handle => User's id found in cookies:", id);
+			console.log("@handle => User's score:", event.locals.score);
+			console.log("@handle => User's registered date:", event.locals.registered_date);
+		} catch (error) {
+			console.error('@handle => Failed to read user from database:', error);
+		}
 	} else {
 		console.error('No name found in cookies');
 	}
