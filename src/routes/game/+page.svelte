@@ -34,10 +34,10 @@
 			startTimer();
 		}
 	});
-
+	export let data;
 	let showSaveModal = false;
-	let playerName = '';
-
+	let playerName = data.name ?? '';
+	console.log("@game/+page.svelte (playerName) => ", playerName)
 	let currentIndex = 0;
 	let score = 0;
 	let selectedIndex: number | null = null;
@@ -260,7 +260,16 @@
 
 				<div class="mt-10 flex gap-6">
 					<button
-						on:click={() => (showSaveModal = true)}
+						on:click={() => {
+								if (playerName == null || playerName == '') {
+									showSaveModal = true
+								}
+								else {
+									showSaveModal = false;
+									saveScore()
+								}
+							}
+						}
 						class="group relative cursor-pointer overflow-hidden rounded-full border border-indigo-400/50 bg-indigo-500/10 px-10 py-4 text-lg font-bold tracking-[0.2em] text-indigo-100 transition-all duration-300 hover:scale-105 hover:border-indigo-400 hover:bg-indigo-500/20 hover:shadow-[0_0_30px_rgba(129,140,248,0.4)]"
 					>
 						<div
