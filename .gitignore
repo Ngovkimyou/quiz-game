@@ -25,3 +25,8 @@ vite.config.ts.timestamp-*
 #Things I use but doesn't need to send to github
 scripts
 tatoeba.json
+# Cloudflare Types
+/worker-configuration.d.ts
+
+.dev.vars*
+!.dev.vars.example
