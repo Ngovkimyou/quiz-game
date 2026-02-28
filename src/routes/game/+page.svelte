@@ -233,6 +233,7 @@
 	<div class="stars-small"></div>
 	<div class="stars-medium"></div>
 	<div class="stars-large"></div>
+	
 
 	<!-- Top Bar -->
 	<div class="relative z-10 flex items-center px-12 py-10 text-sm">

@@ -92,6 +92,7 @@
 		</h1>
 
 		<div class="mt-20 flex flex-col gap-6 md:flex-col">
+			<!-- Start game button -->
 			<button
 				on:mouseenter={playHover}
 				on:click={() => {
@@ -111,7 +112,7 @@
 					START GAME
 				</span>
 			</button>
-
+			<!-- Leaderboard button -->
 			<button
 				on:mouseenter={playHover}
 				on:click={() => {
@@ -132,7 +133,7 @@
 				</span>
 			</button>
 		</div>
-
+		<!-- Music on or off button -->
 		<button
 			on:click={() => {
 				toggleMusic();

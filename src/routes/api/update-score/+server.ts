@@ -8,14 +8,20 @@ export const POST: RequestHandler = async ({ request, cookies, locals }) => {
 	const name_cookies = locals.name;
 	const { name, score } = await request.json();
 	console.log('@update-score => Received data:', { name, score });
+	
+	//It's impossible to have score higher than 40000
+	if(score > 40000) {
+		return new Response(JSON.stringify({error: 'sending impossible score'}), {status: 200})
+	}
 	//Trigger if there's no value in name or score type is different from number
-
 	if (!name || typeof score !== 'number') {
 		console.error('@update-score => Invalid data:', { name, score });
 		return new Response(JSON.stringify({ error: 'Invalid data' }), { status: 400 });
+
 	} else if (id_cookies && typeof score == 'number' && name_cookies) {
 		UpdateUser(id_cookies, name_cookies, score);
 		return new Response(JSON.stringify({ success: true }), { status: 200 });
+
 	} else {
 		const result = await db.execute({
 			sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING *',
