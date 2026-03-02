@@ -4,6 +4,7 @@
 	import { SvelteSet } from 'svelte/reactivity';
 	import { UpdateScore } from '$lib/components/updateScore';
 	import { browser } from '$app/environment';
+	import { resolve } from '$app/paths';
 
 	// 🎵 SOUND EFFECTS
 	let hoverSound: HTMLAudioElement | null = null;
@@ -15,13 +16,33 @@
 	let timesUpSound: HTMLAudioElement | null = null;
 
 	if (browser) {
-		hoverSound = new Audio('/audio/shimmer.mp3');
-		correctSound = new Audio('/audio/correct-answer.wav');
-		wrongSound = new Audio('/audio/wrong-answer.mp3');
+		hoverSound = new Audio('/audio/shimmer.ogg');
+		hoverSound.preload = 'auto';
+		hoverSound.load();
+
+		correctSound = new Audio('/audio/correct-answer.ogg');
+		correctSound.preload = 'auto';
+		correctSound.load();
+
+		wrongSound = new Audio('/audio/wrong-answer.ogg');
+		wrongSound.preload = 'auto';
+		wrongSound.load();
+
 		backSound = new Audio('/audio/go-back-sound.ogg');
-		popUpSound = new Audio('/audio/confirm-cancel-button.wav');
-		clickSound = new Audio('/audio/button-click.wav');
-		timesUpSound = new Audio('/audio/time-is-up.mp3');
+		backSound.preload = 'auto';
+		backSound.load();
+
+		popUpSound = new Audio('/audio/confirm-cancel-button.ogg');
+		popUpSound.preload = 'auto';
+		popUpSound.load();
+
+		clickSound = new Audio('/audio/button-click.ogg');
+		clickSound.preload = 'auto';
+		clickSound.load();
+
+		timesUpSound = new Audio('/audio/time-is-up.ogg');
+		timesUpSound.preload = 'auto';
+		timesUpSound.load();
 	}
 
 	function playHover() {
@@ -89,7 +110,6 @@
 		});
 	});
 
-	import { resolve } from '$app/paths';
 	type Question = {
 		question: string;
 		choices: string[];
@@ -98,6 +118,7 @@
 
 	let questions: Question[] = [];
 	let loading = true;
+	let questionLocked = false;
 
 	// SHUFFLE QUESTIONS
 	function shuffleQuestions<T>(array: T[]): T[] {
@@ -178,8 +199,9 @@
 	});
 
 	function selectAnswer(index: number) {
-		if (showResult || gameOver) return;
+		if (showResult || gameOver || questionLocked) return;
 
+		questionLocked = true;
 		selectedIndex = index;
 		showResult = true;
 
@@ -192,19 +214,27 @@
 
 		setTimeout(() => {
 			nextQuestion();
-		}, 800);
+		}, 1000);
 	}
 
 	function nextQuestion() {
 		if (currentIndex < questions.length - 1) {
 			currentIndex++;
-			selectedIndex = null;
-			showResult = false;
 		} else {
-			playAlarm();
-			gameOver = true;
-			clearInterval(timer);
+			const lastQuestion = questions[currentIndex].question;
+
+			let reshuffled;
+			do {
+				reshuffled = shuffleQuestions(questions.map(shuffleChoices));
+			} while (reshuffled[0].question === lastQuestion);
+
+			questions = reshuffled;
+			currentIndex = 0;
 		}
+
+		selectedIndex = null;
+		showResult = false;
+		questionLocked = false;
 	}
 
 	function restartGame() {

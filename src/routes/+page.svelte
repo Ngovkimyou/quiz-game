@@ -12,8 +12,13 @@
 	let clickSound: HTMLAudioElement | null = null;
 
 	if (browser) {
-		hoverSound = new Audio('/audio/shimmer.mp3');
-		clickSound = new Audio('/audio/button-click.wav');
+		hoverSound = new Audio('/audio/shimmer.ogg');
+		hoverSound.preload = 'auto';
+		hoverSound.load();
+
+		clickSound = new Audio('/audio/button-click.ogg');
+		clickSound.preload = 'auto';
+		clickSound.load();
 	}
 
 	function playHover() {
@@ -31,7 +36,7 @@
 	}
 
 	onMount(() => {
-		audio = new Audio('audio/AFTERGLOW.mp3');
+		audio = new Audio('audio/AFTERGLOW.ogg');
 		audio.loop = true;
 		audio.volume = 0.2;
 
@@ -78,7 +83,7 @@
 
 	<!-- Cat Image at the bottom of the screen -->
 	<div class="pointer-events-none absolute right-0 bottom-0 left-0 z-20 flex justify-center">
-		<img src="../img/home-footer.png" alt="Bottom decoration" class="max-w-full" />
+		<img src="../img/home-footer.avif" alt="Bottom decoration" class="max-w-full" />
 	</div>
 
 	<!-- Content -->
