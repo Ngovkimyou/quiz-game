@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
+	import { startGameBgm, stopGameBgm } from '$lib/components/gameBgm';
 
 	let audio: HTMLAudioElement;
 	let isPlaying = false;
@@ -36,6 +37,8 @@
 	}
 
 	onMount(() => {
+		stopGameBgm();
+
 		audio = new Audio('audio/AFTERGLOW.ogg');
 		audio.loop = true;
 		audio.volume = 0.2;
@@ -55,6 +58,7 @@
 	});
 
 	function startGame() {
+		void startGameBgm();
 		goto(resolve('/game'));
 	}
 

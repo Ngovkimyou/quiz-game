@@ -3,6 +3,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { UpdateScore } from '$lib/components/updateScore';
+	import { restartGameBgm, startGameBgm } from '$lib/components/gameBgm';
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
 
@@ -183,6 +184,8 @@
 	let timer: ReturnType<typeof setInterval>;
 
 	function startTimer() {
+		void startGameBgm();
+
 		timer = setInterval(() => {
 			if (timeLeft > 0) {
 				timeLeft--;
@@ -238,6 +241,8 @@
 	}
 
 	function restartGame() {
+		void restartGameBgm();
+
 		currentIndex = 0;
 		score = 0;
 		selectedIndex = null;
