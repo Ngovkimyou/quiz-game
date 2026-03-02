@@ -6,6 +6,9 @@
 
 	import { resolve } from '$app/paths';
 	const { data } = $props<{ data: PageData }>();
+	const isCurrentUser = (row: { id?: string | number; name?: string | null }) =>
+		(data.currentUserId && String(row.id) === String(data.currentUserId)) ||
+		(data.currentUserName && row.name === data.currentUserName);
 
 	let showCreditsModal = $state(false);
 
@@ -108,7 +111,8 @@ hover:scale-105 hover:shadow-2xl
 							? 'flex flex-col items-center justify-center border border-yellow-400 bg-yellow-500/20 hover:shadow-yellow-400/40 md:scale-100'
 							: row.rank === 2
 								? 'mt-20 border border-gray-400 bg-gray-300/10 hover:shadow-gray-400/40'
-								: 'mt-20 border border-orange-500 bg-orange-600/20 hover:shadow-orange-500/40'}"
+								: 'mt-20 border border-orange-500 bg-orange-600/20 hover:shadow-orange-500/40'}
+{isCurrentUser(row) ? 'border-cyan-100 bg-cyan-400/35 ring-2 ring-cyan-200 shadow-[0_0_25px_rgba(34,211,238,0.45)]' : ''}"
 					>
 						<div
 							class="absolute inset-0 rounded-3xl opacity-0 blur-xl transition duration-500 group-hover:opacity-100
@@ -130,7 +134,8 @@ hover:scale-105 hover:shadow-2xl
 			<div class="mx-auto max-w-4xl space-y-4">
 				{#each data.rows.slice(3) as row, index (row.id)}
 					<div
-						class="flex items-center justify-between rounded-2xl border border-slate-700 bg-slate-900/60 p-5 backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500"
+						class="flex items-center justify-between rounded-2xl border border-slate-700 bg-slate-900/60 p-5 backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500
+{isCurrentUser(row) ? 'border-cyan-100 bg-cyan-500/30 ring-1 ring-cyan-200' : ''}"
 					>
 						<div class="flex items-center gap-6">
 							<div class="text-lg font-bold text-indigo-400">#{index + 4}</div>

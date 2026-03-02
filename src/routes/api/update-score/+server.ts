@@ -1,6 +1,10 @@
 import { getTursoClient } from '$lib/server/getTursoClient';
 // This import will take care of all the types problem
 import type { RequestHandler } from './$types';
+
+const MIN_SCORE = 0;
+const MAX_SCORE = 40000;
+
 export const POST: RequestHandler = async ({ request, cookies, locals, platform }) => {
 	let db: ReturnType<typeof getTursoClient>;
 	try {
@@ -19,9 +23,18 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 		const { name, score } = await request.json();
 		console.log('@update-score => Received data:', { name, score });
 
-		if (!name || typeof score !== 'number' || !Number.isFinite(score) || score < 0) {
+		if (
+			!name ||
+			typeof score !== 'number' ||
+			!Number.isFinite(score) ||
+			score < MIN_SCORE ||
+			score > MAX_SCORE
+		) {
 			console.error('@update-score => Invalid data:', { name, score });
-			return new Response(JSON.stringify({ error: 'Invalid data' }), { status: 400 });
+			return new Response(
+				JSON.stringify({ error: `Score must be between ${MIN_SCORE} and ${MAX_SCORE}` }),
+				{ status: 400 }
+			);
 		}
 
 		if (id_cookies && name_cookies) {
@@ -66,8 +79,8 @@ async function updateUser(
 	name: string,
 	score: number
 ) {
-	if (!id || score < 0) {
-		throw new Error('You need to enter a score >= 0');
+	if (!id || score < MIN_SCORE || score > MAX_SCORE) {
+		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE}`);
 	}
 
 	await db.execute({
