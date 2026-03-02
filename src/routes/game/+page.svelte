@@ -60,6 +60,13 @@
 		}
 	}
 
+	function playCountdownTick() {
+		if (correctSound) {
+			correctSound.currentTime = 0;
+			correctSound.play();
+		}
+	}
+
 	function playWrong() {
 		if (wrongSound) {
 			wrongSound.currentTime = 0;
@@ -119,6 +126,9 @@
 
 	let questions: Question[] = [];
 	let loading = true;
+	let showPreGameCountdown = false;
+	let preGameCountdownLabel = '3';
+	let preGameCountdownTimeout: ReturnType<typeof setTimeout> | null = null;
 	let questionLocked = false;
 
 	// SHUFFLE QUESTIONS
@@ -163,7 +173,7 @@
 			console.error('Failed to load questions', err);
 		} finally {
 			loading = false;
-			startTimer();
+			startPreGameCountdown();
 		}
 	});
 	export let data;
@@ -197,8 +207,35 @@
 		}, 1000);
 	}
 
+	function startPreGameCountdown() {
+		const steps = ['3', '2', '1', 'GO!'];
+		let stepIndex = 0;
+
+		showPreGameCountdown = true;
+		preGameCountdownLabel = steps[stepIndex];
+		playCountdownTick();
+
+		const advance = () => {
+			stepIndex += 1;
+
+			if (stepIndex < steps.length) {
+				preGameCountdownLabel = steps[stepIndex];
+				if (preGameCountdownLabel !== 'GO!') playCountdownTick();
+				preGameCountdownTimeout = setTimeout(advance, 900);
+				return;
+			}
+
+			showPreGameCountdown = false;
+			preGameCountdownTimeout = null;
+			startTimer();
+		};
+
+		preGameCountdownTimeout = setTimeout(advance, 900);
+	}
+
 	onDestroy(() => {
 		clearInterval(timer);
+		if (preGameCountdownTimeout) clearTimeout(preGameCountdownTimeout);
 	});
 
 	function selectAnswer(index: number) {
@@ -357,6 +394,15 @@
 				<p class="text-2xl font-semibold tracking-widest text-indigo-300">Loading Questions…</p>
 
 				<p class="text-sm text-slate-400">Preparing your challenge</p>
+			</div>
+		{:else if showPreGameCountdown}
+			<div class="loading-fade flex min-h-[60vh] flex-col items-center justify-center">
+				<p class="mb-6 text-sm tracking-[0.4em] text-indigo-300">GET READY</p>
+				<div
+					class="bg-linear-to-r from-indigo-300 via-fuchsia-300 to-cyan-300 bg-clip-text text-7xl font-extrabold text-transparent md:text-8xl"
+				>
+					{preGameCountdownLabel}
+				</div>
 			</div>
 		{:else if !gameOver}
 			<!-- QUESTIONS -->

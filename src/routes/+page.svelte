@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
-	import { startGameBgm, stopGameBgm } from '$lib/components/gameBgm';
+	import { stopGameBgm } from '$lib/components/gameBgm';
 
 	let audio: HTMLAudioElement;
 	let isPlaying = false;
@@ -58,7 +58,6 @@
 	});
 
 	function startGame() {
-		void startGameBgm();
 		goto(resolve('/game'));
 	}
 
