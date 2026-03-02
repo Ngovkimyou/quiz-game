@@ -4,7 +4,7 @@ const MAX_SCORE = 40000;
 const SCORE_STEP = 100;
 const NAME_MIN_LENGTH = 2;
 const NAME_MAX_LENGTH = 24;
-const NAME_PATTERN = /^[a-zA-Z0-9 _.-]+$/;
+const NAME_PATTERN = /^[\p{L}\p{N}\p{M} _.-]+$/u;
 
 export async function UpdateScore(name: string, score: number | null = null) {
 	// This function can't run if you don't give it an id and a score

@@ -12,6 +12,7 @@ const MAX_SCORE = 40000;
 const SCORE_STEP = 100;
 const NAME_MIN_LENGTH = 2;
 const NAME_MAX_LENGTH = 24;
+const NAME_PATTERN = /^[\p{L}\p{N}\p{M} _.-]+$/u;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 15;
 
@@ -51,7 +52,7 @@ function normalizeName(name: unknown) {
 	if (typeof name !== 'string') return null;
 	const trimmed = name.trim();
 	if (trimmed.length < NAME_MIN_LENGTH || trimmed.length > NAME_MAX_LENGTH) return null;
-	if (!/^[a-zA-Z0-9 _.-]+$/.test(trimmed)) return null;
+	if (!NAME_PATTERN.test(trimmed)) return null;
 	return trimmed;
 }
 
