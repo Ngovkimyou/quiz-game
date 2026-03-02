@@ -16,13 +16,33 @@
 	let timesUpSound: HTMLAudioElement | null = null;
 
 	if (browser) {
-		hoverSound = new Audio('/audio/shimmer.mp3');
-		correctSound = new Audio('/audio/correct-answer.wav');
-		wrongSound = new Audio('/audio/wrong-answer.mp3');
+		hoverSound = new Audio('/audio/shimmer.ogg');
+		hoverSound.preload = 'auto';
+		hoverSound.load();
+
+		correctSound = new Audio('/audio/correct-answer.ogg');
+		correctSound.preload = 'auto';
+		correctSound.load();
+
+		wrongSound = new Audio('/audio/wrong-answer.ogg');
+		wrongSound.preload = 'auto';
+		wrongSound.load();
+
 		backSound = new Audio('/audio/go-back-sound.ogg');
-		popUpSound = new Audio('/audio/confirm-cancel-button.wav');
-		clickSound = new Audio('/audio/button-click.wav');
-		timesUpSound = new Audio('/audio/time-is-up.mp3');
+		backSound.preload = 'auto';
+		backSound.load();
+
+		popUpSound = new Audio('/audio/confirm-cancel-button.ogg');
+		popUpSound.preload = 'auto';
+		popUpSound.load();
+
+		clickSound = new Audio('/audio/button-click.ogg');
+		clickSound.preload = 'auto';
+		clickSound.load();
+
+		timesUpSound = new Audio('/audio/time-is-up.ogg');
+		timesUpSound.preload = 'auto';
+		timesUpSound.load();
 	}
 
 	function playHover() {

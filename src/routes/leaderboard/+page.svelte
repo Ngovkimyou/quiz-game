@@ -12,8 +12,13 @@
 	let popUpSound: HTMLAudioElement | null = null;
 
 	if (browser) {
-		backSound = new Audio('/audio/go-back-sound.ogg');
-		popUpSound = new Audio('/audio/confirm-cancel-button.wav');
+		backSound = new Audio('/audio/shimmer.ogg');
+		backSound.preload = 'auto';
+		backSound.load();
+
+		popUpSound = new Audio('/audio/confirm-cancel-button.ogg');
+		popUpSound.preload = 'auto';
+		popUpSound.load();
 	}
 
 	function playBack() {
