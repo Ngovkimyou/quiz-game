@@ -5,7 +5,6 @@
 	import { UpdateScore } from '$lib/components/updateScore';
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
-	import { SvelteSet } from 'svelte/reactivity';
 
 	// 🎵 SOUND EFFECTS
 	let hoverSound: HTMLAudioElement | null = null;

@@ -166,14 +166,24 @@ hover:scale-105 hover:shadow-2xl
 		<!-- OVERLAY + CLICK AREA -->
 		<div
 			class="fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-			onclick={() => (showCreditsModal = false)}
+			role="button"
+			tabindex="0"
+			aria-label="Close credits modal"
+			onclick={(e) => {
+				if (e.target === e.currentTarget) showCreditsModal = false;
+			}}
+			onkeydown={(e) => {
+				if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+					showCreditsModal = false;
+				}
+			}}
 		>
 			<!-- MODAL -->
 			<div
 				class="z-50 w-full max-w-md animate-[pop_0.25s_ease-out] rounded-3xl border border-slate-700 bg-slate-900 p-8 shadow-2xl"
 				role="dialog"
 				aria-modal="true"
-				onclick={(e) => e.stopPropagation()}
+				tabindex="-1"
 			>
 				<h2 class="mb-6 text-center text-2xl font-bold">Credits</h2>
 
