@@ -9,9 +9,16 @@ declare global {
 			score: Value;
 			registered_date: Value;
 		}
+
+		interface Platform {
+			env: Env;
+			ctx: ExecutionContext;
+			caches: CacheStorage;
+			cf?: IncomingRequestCfProperties;
+		}
+
 		// interface PageData {}
 		// interface PageState {}
-		// interface Platform {}
 	}
 }
 

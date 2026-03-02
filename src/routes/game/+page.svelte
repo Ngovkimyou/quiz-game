@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount, onDestroy } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { UpdateScore } from '$lib/components/updateScore';
 	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
@@ -165,10 +166,12 @@
 			startTimer();
 		}
 	});
+	export let data;
 
 	let showSaveModal = false;
 	let isSaving = false;
-	let playerName = '';
+	let playerName = data.name ?? '';
+	console.log('@game/+page.svelte (playerName) => ', playerName);
 
 	let currentIndex = 0;
 	let score = 0;
@@ -358,11 +361,11 @@
 			</h2>
 
 			<!-- CHOICES -->
-			<div class="space-y-6">
+			<div class="w-full max-w-3xl space-y-6">
 				{#each questions[currentIndex].choices as choice, index (index)}
 					<button
 						on:click={() => selectAnswer(index)}
-						class="group relative w-[75%] cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
+						class="group relative w-full cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
 			 hover:scale-[1.02]
 			{selectedIndex === null
 							? 'border-slate-700 hover:border-indigo-500'
@@ -401,7 +404,7 @@
 		{:else}
 			<!-- GAME OVER SCREEN -->
 			<div class=" flex flex-col items-center justify-center space-y-8 text-center">
-				<h2 class="text-4xl font-bold tracking-wide text-indigo-400">⏰ TIME’S UP</h2>
+				<h2 class="text-4xl font-bold tracking-wide text-indigo-400">⏰ TIME'S UP</h2>
 
 				<div
 					class="bg-linear-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-7xl font-extrabold text-transparent"
@@ -420,7 +423,12 @@
 						on:mouseenter={playHover}
 						on:click={() => {
 							playClick();
-							showSaveModal = true;
+							if (playerName == null || playerName == '') {
+								showSaveModal = true;
+							} else {
+								showSaveModal = false;
+								saveScore();
+							}
 						}}
 						class="group relative cursor-pointer overflow-hidden rounded-full border border-indigo-400/50 bg-indigo-500/10 px-10 py-4 text-lg font-bold tracking-[0.2em] text-indigo-100 transition-all duration-300 hover:scale-105 hover:border-indigo-400 hover:bg-indigo-500/20 hover:shadow-[0_0_30px_rgba(129,140,248,0.4)]"
 					>
