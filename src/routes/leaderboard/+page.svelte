@@ -135,7 +135,7 @@ hover:scale-105 hover:shadow-2xl
 				{#each data.rows.slice(3) as row, index (row.id)}
 					<div
 						class="flex items-center justify-between rounded-2xl border border-slate-700 bg-slate-900/60 p-5 backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500
-{isCurrentUser(row) ? 'border-cyan-100 bg-cyan-500/30 ring-1 ring-cyan-200' : ''}"
+{isCurrentUser(row) ? 'border-amber-200 !bg-amber-400/35 ring-2 ring-amber-200 shadow-[0_0_20px_rgba(251,191,36,0.35)]' : ''}"
 					>
 						<div class="flex items-center gap-6">
 							<div class="text-lg font-bold text-indigo-400">#{index + 4}</div>
