@@ -112,7 +112,9 @@ hover:scale-105 hover:shadow-2xl
 							: row.rank === 2
 								? 'mt-20 border border-gray-400 bg-gray-300/10 hover:shadow-gray-400/40'
 								: 'mt-20 border border-orange-500 bg-orange-600/20 hover:shadow-orange-500/40'}
-{isCurrentUser(row) ? 'border-cyan-100 bg-cyan-400/35 ring-2 ring-cyan-200 shadow-[0_0_25px_rgba(34,211,238,0.45)]' : ''}"
+{isCurrentUser(row)
+							? 'border-cyan-100 bg-cyan-400/35 shadow-[0_0_25px_rgba(34,211,238,0.45)] ring-2 ring-cyan-200'
+							: ''}"
 					>
 						<div
 							class="absolute inset-0 rounded-3xl opacity-0 blur-xl transition duration-500 group-hover:opacity-100
@@ -135,7 +137,9 @@ hover:scale-105 hover:shadow-2xl
 				{#each data.rows.slice(3) as row, index (row.id)}
 					<div
 						class="flex items-center justify-between rounded-2xl border border-slate-700 bg-slate-900/60 p-5 backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500
-{isCurrentUser(row) ? 'border-amber-200 !bg-amber-400/35 ring-2 ring-amber-200 shadow-[0_0_20px_rgba(251,191,36,0.35)]' : ''}"
+{isCurrentUser(row)
+							? 'border-amber-200 !bg-amber-400/35 shadow-[0_0_20px_rgba(251,191,36,0.35)] ring-2 ring-amber-200'
+							: ''}"
 					>
 						<div class="flex items-center gap-6">
 							<div class="text-lg font-bold text-indigo-400">#{index + 4}</div>

@@ -144,7 +144,9 @@ async function updateUser(
 	score: number
 ) {
 	if (!id || !isValidScore(score)) {
-		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`);
+		throw new Error(
+			`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`
+		);
 	}
 
 	const current = await db.execute({
