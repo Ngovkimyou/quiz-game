@@ -480,7 +480,9 @@
 					🏆 Rank: {rank}
 				</div>
 
-				<div class="w-full max-w-3xl rounded-2xl border border-slate-700 bg-slate-900/70 p-5 text-left">
+				<div
+					class="w-full max-w-3xl rounded-2xl border border-slate-700 bg-slate-900/70 p-5 text-left"
+				>
 					<div class="mb-4 flex items-center justify-between">
 						<h3 class="text-lg font-bold text-indigo-300">Wrong Answers Review</h3>
 						<span class="rounded-full bg-red-500/20 px-3 py-1 text-sm font-semibold text-red-300">
