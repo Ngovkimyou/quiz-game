@@ -3,6 +3,8 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { UpdateScore } from '$lib/components/updateScore';
 	import { browser } from '$app/environment';
+	import { resolve } from '$app/paths';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	// 🎵 SOUND EFFECTS
 	let hoverSound: HTMLAudioElement | null = null;
@@ -88,7 +90,6 @@
 		});
 	});
 
-	import { resolve } from '$app/paths';
 	type Question = {
 		question: string;
 		choices: string[];
@@ -97,6 +98,7 @@
 
 	let questions: Question[] = [];
 	let loading = true;
+	let questionLocked = false;
 
 	// SHUFFLE QUESTIONS
 	function shuffleQuestions<T>(array: T[]): T[] {
@@ -108,11 +110,34 @@
 		return result;
 	}
 
+	function shuffleChoices(question: Question): Question {
+		const choicesWithIndex = question.choices.map((choice, index) => ({ choice, index }));
+		const shuffledChoices = shuffleQuestions(choicesWithIndex);
+
+		return {
+			...question,
+			choices: shuffledChoices.map(({ choice }) => choice),
+			answerIndex: shuffledChoices.findIndex(({ index }) => index === question.answerIndex)
+		};
+	}
+
+	function dedupeQuestionsByPrompt(items: Question[]): Question[] {
+		const seen = new SvelteSet<string>();
+
+		return items.filter((item) => {
+			const key = item.question.trim().toLowerCase();
+			if (seen.has(key)) return false;
+			seen.add(key);
+			return true;
+		});
+	}
+
 	onMount(async () => {
 		try {
 			const res = await fetch('/questions.json');
 			const data: Question[] = await res.json();
-			questions = shuffleQuestions(data);
+			const uniqueQuestions = dedupeQuestionsByPrompt(data);
+			questions = shuffleQuestions(uniqueQuestions.map(shuffleChoices));
 		} catch (err) {
 			console.error('Failed to load questions', err);
 		} finally {
@@ -152,8 +177,9 @@
 	});
 
 	function selectAnswer(index: number) {
-		if (showResult || gameOver) return;
+		if (showResult || gameOver || questionLocked) return;
 
+		questionLocked = true;
 		selectedIndex = index;
 		showResult = true;
 
@@ -166,19 +192,27 @@
 
 		setTimeout(() => {
 			nextQuestion();
-		}, 800);
+		}, 1000);
 	}
 
 	function nextQuestion() {
 		if (currentIndex < questions.length - 1) {
 			currentIndex++;
-			selectedIndex = null;
-			showResult = false;
 		} else {
-			playAlarm();
-			gameOver = true;
-			clearInterval(timer);
+			const lastQuestion = questions[currentIndex].question;
+
+			let reshuffled;
+			do {
+				reshuffled = shuffleQuestions(questions.map(shuffleChoices));
+			} while (reshuffled[0].question === lastQuestion);
+
+			questions = reshuffled;
+			currentIndex = 0;
 		}
+
+		selectedIndex = null;
+		showResult = false;
+		questionLocked = false;
 	}
 
 	function restartGame() {
