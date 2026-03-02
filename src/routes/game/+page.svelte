@@ -330,11 +330,11 @@
 			</h2>
 
 			<!-- CHOICES -->
-			<div class="space-y-6">
+			<div class="w-full max-w-3xl space-y-6">
 				{#each questions[currentIndex].choices as choice, index (index)}
 					<button
 						on:click={() => selectAnswer(index)}
-						class="group relative w-[75%] cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
+						class="group relative w-full cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
 			 hover:scale-[1.02]
 			{selectedIndex === null
 							? 'border-slate-700 hover:border-indigo-500'
