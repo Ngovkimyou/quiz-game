@@ -124,6 +124,12 @@
 		answerIndex: number;
 	};
 
+	type WrongAnswer = {
+		question: string;
+		selectedChoice: string;
+		correctChoice: string;
+	};
+
 	let questions: Question[] = [];
 	let loading = true;
 	let showPreGameCountdown = false;
@@ -185,6 +191,7 @@
 
 	let currentIndex = 0;
 	let score = 0;
+	let wrongAnswers: WrongAnswer[] = [];
 	let selectedIndex: number | null = null;
 	let showResult = false;
 	let gameOver = false;
@@ -240,15 +247,27 @@
 
 	function selectAnswer(index: number) {
 		if (showResult || gameOver || questionLocked) return;
+		const currentQuestion = questions[currentIndex];
+		if (!currentQuestion) return;
 
 		questionLocked = true;
 		selectedIndex = index;
 		showResult = true;
 
-		if (index === questions[currentIndex].answerIndex) {
+		if (index === currentQuestion.answerIndex) {
 			score += 100;
 			playCorrect();
 		} else {
+			const selectedChoice = currentQuestion.choices[index] ?? '(No answer)';
+			const correctChoice = currentQuestion.choices[currentQuestion.answerIndex] ?? '(Unknown)';
+			wrongAnswers = [
+				...wrongAnswers,
+				{
+					question: currentQuestion.question,
+					selectedChoice,
+					correctChoice
+				}
+			];
 			playWrong();
 		}
 
@@ -282,6 +301,7 @@
 
 		currentIndex = 0;
 		score = 0;
+		wrongAnswers = [];
 		selectedIndex = null;
 		showResult = false;
 		gameOver = false;
@@ -466,6 +486,31 @@
 
 				<div class="mt-4 text-xl font-semibold text-white">
 					🏆 Rank: {rank}
+				</div>
+
+				<div class="w-full max-w-3xl rounded-2xl border border-slate-700 bg-slate-900/70 p-5 text-left">
+					<div class="mb-4 flex items-center justify-between">
+						<h3 class="text-lg font-bold text-indigo-300">Wrong Answers Review</h3>
+						<span class="rounded-full bg-red-500/20 px-3 py-1 text-sm font-semibold text-red-300">
+							{wrongAnswers.length}
+						</span>
+					</div>
+
+					{#if wrongAnswers.length === 0}
+						<p class="text-sm text-slate-300">No wrong answers this run.</p>
+					{:else}
+						<div class="max-h-72 space-y-4 overflow-y-auto pr-1">
+							{#each wrongAnswers as item, index (index)}
+								<div class="rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+									<p class="mb-2 text-sm font-semibold text-white">
+										{index + 1}. {item.question}
+									</p>
+									<p class="text-sm text-red-300">Your answer: {item.selectedChoice}</p>
+									<p class="text-sm text-green-300">Correct answer: {item.correctChoice}</p>
+								</div>
+							{/each}
+						</div>
+					{/if}
 				</div>
 
 				<div class="mt-10 flex gap-6">
