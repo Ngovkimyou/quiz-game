@@ -13,6 +13,9 @@ function getGameBgm() {
 		gameBgm.loop = false;
 		gameBgm.volume = GAME_BGM_VOLUME;
 		gameBgm.load();
+		gameBgm.addEventListener('error', () => {
+			console.warn('Failed to load game BGM:', GAME_BGM_SRC);
+		});
 	}
 	return gameBgm;
 }

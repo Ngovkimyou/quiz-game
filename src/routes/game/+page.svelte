@@ -308,15 +308,7 @@
 		timeLeft = 60;
 
 		clearInterval(timer);
-		timer = setInterval(() => {
-			if (timeLeft > 0) {
-				timeLeft--;
-			} else {
-				playAlarm();
-				gameOver = true;
-				clearInterval(timer);
-			}
-		}, 1000);
+		startPreGameCountdown();
 	}
 
 	async function saveScore() {
