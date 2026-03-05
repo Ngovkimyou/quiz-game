@@ -1,77 +1,77 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { browser } from '$app/environment';
-	import { resolve } from '$app/paths';
-	import { stopGameBgm } from '$lib/components/gameBgm';
+	import { onMount, onDestroy } from 'svelte'
+	import { goto } from '$app/navigation'
+	import { browser } from '$app/environment'
+	import { resolve } from '$app/paths'
+	import { stopGameBgm } from '$lib/components/gameBgm'
 
-	let audio: HTMLAudioElement;
-	let isPlaying = false;
-	let hoverSound: HTMLAudioElement | null = null;
+	let audio: HTMLAudioElement
+	let isPlaying = false
+	let hoverSound: HTMLAudioElement | null = null
 
-	let popUpSound: HTMLAudioElement | null = null;
-	let clickSound: HTMLAudioElement | null = null;
+	let popUpSound: HTMLAudioElement | null = null
+	let clickSound: HTMLAudioElement | null = null
 
 	if (browser) {
-		hoverSound = new Audio('/audio/shimmer.ogg');
-		hoverSound.preload = 'auto';
-		hoverSound.load();
+		hoverSound = new Audio('/audio/shimmer.ogg')
+		hoverSound.preload = 'auto'
+		hoverSound.load()
 
-		clickSound = new Audio('/audio/button-click.ogg');
-		clickSound.preload = 'auto';
-		clickSound.load();
+		clickSound = new Audio('/audio/button-click.ogg')
+		clickSound.preload = 'auto'
+		clickSound.load()
 	}
 
 	function playHover() {
 		if (hoverSound) {
-			hoverSound.currentTime = 0;
-			hoverSound.play();
+			hoverSound.currentTime = 0
+			hoverSound.play()
 		}
 	}
 
 	function playClick() {
 		if (clickSound) {
-			clickSound.currentTime = 0;
-			clickSound.play();
+			clickSound.currentTime = 0
+			clickSound.play()
 		}
 	}
 
 	onMount(() => {
-		stopGameBgm();
+		stopGameBgm()
 
-		audio = new Audio('audio/AFTERGLOW.ogg');
-		audio.loop = true;
-		audio.volume = 0.2;
+		audio = new Audio('audio/AFTERGLOW.ogg')
+		audio.loop = true
+		audio.volume = 0.2
 
-		const sounds = [popUpSound, clickSound];
+		const sounds = [popUpSound, clickSound]
 
 		sounds.forEach((sound) => {
-			if (sound) sound.volume = 0.5;
-		});
-	});
+			if (sound) sound.volume = 0.5
+		})
+	})
 
 	onDestroy(() => {
 		if (audio) {
-			audio.pause();
-			audio.currentTime = 0;
+			audio.pause()
+			audio.currentTime = 0
 		}
-	});
+	})
 
 	function startGame() {
-		goto(resolve('/game'));
+		goto(resolve('/game'))
 	}
 
 	function goLeaderboard() {
-		goto(resolve('/leaderboard'));
+		goto(resolve('/leaderboard'))
 	}
 
 	function toggleMusic() {
 		if (!isPlaying) {
-			audio.play();
-			isPlaying = true;
+			audio.play()
+			isPlaying = true
 		} else {
-			audio.pause();
-			isPlaying = false;
+			audio.pause()
+			isPlaying = false
 		}
 	}
 </script>
@@ -103,8 +103,8 @@
 			<button
 				on:mouseenter={playHover}
 				on:click={() => {
-					playClick();
-					startGame();
+					playClick()
+					startGame()
 				}}
 				class="group relative cursor-pointer overflow-hidden rounded-md border border-slate-700 bg-slate-900/80 px-12 py-4 font-medium text-white transition-all duration-300 hover:border-indigo-500 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]"
 			>
@@ -123,8 +123,8 @@
 			<button
 				on:mouseenter={playHover}
 				on:click={() => {
-					goLeaderboard();
-					playClick();
+					goLeaderboard()
+					playClick()
 				}}
 				class="group relative cursor-pointer overflow-hidden rounded-md border border-slate-700 bg-slate-900/80 px-12 py-4 font-medium text-white transition-all duration-300 hover:border-indigo-500 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]"
 			>
@@ -143,8 +143,8 @@
 
 		<button
 			on:click={() => {
-				toggleMusic();
-				playClick();
+				toggleMusic()
+				playClick()
 			}}
 			class="mt-8 cursor-pointer text-sm text-slate-400 transition hover:text-indigo-400"
 		>

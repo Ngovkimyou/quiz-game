@@ -1,52 +1,52 @@
-import { env } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private'
 
-const SESSION_COOKIE_NAME = 'quiz_session';
-const SESSION_TTL_SECONDS = 60 * 60 * 24; // 1 day
+const SESSION_COOKIE_NAME = 'quiz_session'
+const SESSION_TTL_SECONDS = 60 * 60 * 24 // 1 day
 
 type SessionPayload = {
-	id: string;
-	exp: number;
-};
+	id: string
+	exp: number
+}
 
 function getSessionSecret(platformEnv?: App.Platform['env']) {
-	const fromPlatform = (platformEnv as Record<string, unknown> | undefined)?.QUIZ_SESSION_SECRET;
-	const fromPlatformTurso = (platformEnv as Record<string, unknown> | undefined)?.TURSO_AUTH_TOKEN;
-	const fromNodeEnv = env.QUIZ_SESSION_SECRET;
-	const fromNodeTurso = env.TURSO_AUTH_TOKEN;
+	const fromPlatform = (platformEnv as Record<string, unknown> | undefined)?.QUIZ_SESSION_SECRET
+	const fromPlatformTurso = (platformEnv as Record<string, unknown> | undefined)?.TURSO_AUTH_TOKEN
+	const fromNodeEnv = env.QUIZ_SESSION_SECRET
+	const fromNodeTurso = env.TURSO_AUTH_TOKEN
 	const secret = (
 		(typeof fromPlatform === 'string' && fromPlatform) ||
 		(typeof fromPlatformTurso === 'string' && fromPlatformTurso) ||
 		fromNodeEnv ||
 		fromNodeTurso
-	)?.trim();
+	)?.trim()
 
 	if (!secret) {
-		throw new Error('Missing QUIZ_SESSION_SECRET or TURSO_AUTH_TOKEN environment variable');
+		throw new Error('Missing QUIZ_SESSION_SECRET or TURSO_AUTH_TOKEN environment variable')
 	}
 
-	return secret;
+	return secret
 }
 
 function toBase64Url(bytes: Uint8Array) {
-	let base64 = '';
+	let base64 = ''
 	for (let i = 0; i < bytes.length; i++) {
-		base64 += String.fromCharCode(bytes[i]);
+		base64 += String.fromCharCode(bytes[i])
 	}
 
-	return btoa(base64).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+	return btoa(base64).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
 }
 
 function fromBase64Url(input: string) {
-	const normalized = input.replace(/-/g, '+').replace(/_/g, '/');
-	const padded = normalized + '='.repeat((4 - (normalized.length % 4)) % 4);
-	const binary = atob(padded);
-	const bytes = new Uint8Array(binary.length);
+	const normalized = input.replace(/-/g, '+').replace(/_/g, '/')
+	const padded = normalized + '='.repeat((4 - (normalized.length % 4)) % 4)
+	const binary = atob(padded)
+	const bytes = new Uint8Array(binary.length)
 
 	for (let i = 0; i < binary.length; i++) {
-		bytes[i] = binary.charCodeAt(i);
+		bytes[i] = binary.charCodeAt(i)
 	}
 
-	return bytes;
+	return bytes
 }
 
 async function signText(secret: string, value: string) {
@@ -56,19 +56,19 @@ async function signText(secret: string, value: string) {
 		{ name: 'HMAC', hash: 'SHA-256' },
 		false,
 		['sign'],
-	);
-	const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(value));
-	return toBase64Url(new Uint8Array(signature));
+	)
+	const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(value))
+	return toBase64Url(new Uint8Array(signature))
 }
 
 function constantTimeEqual(a: string, b: string) {
-	if (a.length !== b.length) return false;
+	if (a.length !== b.length) return false
 
-	let mismatch = 0;
+	let mismatch = 0
 	for (let i = 0; i < a.length; i++) {
-		mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
+		mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i)
 	}
-	return mismatch === 0;
+	return mismatch === 0
 }
 
 // This function is used for creating a signed session value that will be stored in the cookie.
@@ -80,10 +80,10 @@ export async function createSignedSessionValue(
 	const payload: SessionPayload = {
 		id: id.toString(),
 		exp: Math.floor(Date.now() / 1000) + ttlSeconds,
-	};
-	const payloadPart = toBase64Url(new TextEncoder().encode(JSON.stringify(payload)));
-	const signaturePart = await signText(getSessionSecret(platformEnv), payloadPart);
-	return `${payloadPart}.${signaturePart}`;
+	}
+	const payloadPart = toBase64Url(new TextEncoder().encode(JSON.stringify(payload)))
+	const signaturePart = await signText(getSessionSecret(platformEnv), payloadPart)
+	return `${payloadPart}.${signaturePart}`
 }
 
 // This function is used for parsing and verifying the session value from the cookie. It returns the session payload if the value is valid, otherwise it returns null.
@@ -91,30 +91,30 @@ export async function parseAndVerifySessionValue(
 	token: string | undefined,
 	platformEnv?: App.Platform['env'],
 ) {
-	if (!token) return null;
+	if (!token) return null
 
-	const [payloadPart, signaturePart] = token.split('.');
-	if (!payloadPart || !signaturePart) return null;
+	const [payloadPart, signaturePart] = token.split('.')
+	if (!payloadPart || !signaturePart) return null
 
-	const expectedSignature = await signText(getSessionSecret(platformEnv), payloadPart);
-	if (!constantTimeEqual(signaturePart, expectedSignature)) return null;
+	const expectedSignature = await signText(getSessionSecret(platformEnv), payloadPart)
+	if (!constantTimeEqual(signaturePart, expectedSignature)) return null
 
 	try {
-		const payloadJson = new TextDecoder().decode(fromBase64Url(payloadPart));
-		const parsed = JSON.parse(payloadJson) as SessionPayload;
-		if (!parsed?.id || typeof parsed.id !== 'string') return null;
-		if (!parsed?.exp || typeof parsed.exp !== 'number') return null;
-		if (parsed.exp < Math.floor(Date.now() / 1000)) return null;
-		return parsed;
+		const payloadJson = new TextDecoder().decode(fromBase64Url(payloadPart))
+		const parsed = JSON.parse(payloadJson) as SessionPayload
+		if (!parsed?.id || typeof parsed.id !== 'string') return null
+		if (!parsed?.exp || typeof parsed.exp !== 'number') return null
+		if (parsed.exp < Math.floor(Date.now() / 1000)) return null
+		return parsed
 	} catch {
-		return null;
+		return null
 	}
 }
 
 export function getSessionCookieName() {
-	return SESSION_COOKIE_NAME;
+	return SESSION_COOKIE_NAME
 }
 
 export function getSessionTtlSeconds() {
-	return SESSION_TTL_SECONDS;
+	return SESSION_TTL_SECONDS
 }
