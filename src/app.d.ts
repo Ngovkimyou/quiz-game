@@ -2,7 +2,6 @@
 // for information about these interfaces
 declare global {
 	namespace App {
-		// interface Error {}
 		interface Locals {
 			id: number | string | undefined;
 			name: string | undefined;
@@ -16,9 +15,6 @@ declare global {
 			caches: CacheStorage;
 			cf?: IncomingRequestCfProperties;
 		}
-
-		// interface PageData {}
-		// interface PageState {}
 	}
 }
 

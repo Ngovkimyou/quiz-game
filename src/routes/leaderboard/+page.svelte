@@ -97,12 +97,12 @@
 					? [
 							{ ...top3[1], rank: 2 }, // left
 							{ ...top3[0], rank: 1 }, // middle
-							{ ...top3[2], rank: 3 } // right
+							{ ...top3[2], rank: 3 }, // right
 						]
 					: top3.length === 2
 						? [
 								{ ...top3[1], rank: 2 }, // left
-								{ ...top3[0], rank: 1 } // middle
+								{ ...top3[0], rank: 1 }, // middle
 							]
 						: [{ ...top3[0], rank: 1 }]}
 

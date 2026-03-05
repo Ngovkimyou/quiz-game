@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/private';
 
 const SESSION_COOKIE_NAME = 'quiz_session';
-const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
+const SESSION_TTL_SECONDS = 60 * 60 * 24; // 1 day
 
 type SessionPayload = {
 	id: string;
@@ -55,7 +55,7 @@ async function signText(secret: string, value: string) {
 		new TextEncoder().encode(secret),
 		{ name: 'HMAC', hash: 'SHA-256' },
 		false,
-		['sign']
+		['sign'],
 	);
 	const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(value));
 	return toBase64Url(new Uint8Array(signature));
@@ -71,23 +71,25 @@ function constantTimeEqual(a: string, b: string) {
 	return mismatch === 0;
 }
 
+// This function is used for creating a signed session value that will be stored in the cookie.
 export async function createSignedSessionValue(
 	id: string,
 	platformEnv?: App.Platform['env'],
-	ttlSeconds = SESSION_TTL_SECONDS
+	ttlSeconds = SESSION_TTL_SECONDS,
 ) {
 	const payload: SessionPayload = {
 		id: id.toString(),
-		exp: Math.floor(Date.now() / 1000) + ttlSeconds
+		exp: Math.floor(Date.now() / 1000) + ttlSeconds,
 	};
 	const payloadPart = toBase64Url(new TextEncoder().encode(JSON.stringify(payload)));
 	const signaturePart = await signText(getSessionSecret(platformEnv), payloadPart);
 	return `${payloadPart}.${signaturePart}`;
 }
 
+// This function is used for parsing and verifying the session value from the cookie. It returns the session payload if the value is valid, otherwise it returns null.
 export async function parseAndVerifySessionValue(
 	token: string | undefined,
-	platformEnv?: App.Platform['env']
+	platformEnv?: App.Platform['env'],
 ) {
 	if (!token) return null;
 
