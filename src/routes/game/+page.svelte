@@ -1,104 +1,104 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { onMount, onDestroy } from 'svelte';
-	import { SvelteSet } from 'svelte/reactivity';
-	import { UpdateScore } from '$lib/components/updateScore';
-	import { restartGameBgm, startGameBgm } from '$lib/components/gameBgm';
-	import { browser } from '$app/environment';
-	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation'
+	import { onMount, onDestroy } from 'svelte'
+	import { SvelteSet } from 'svelte/reactivity'
+	import { UpdateScore } from '$lib/components/updateScore'
+	import { restartGameBgm, startGameBgm } from '$lib/components/gameBgm'
+	import { browser } from '$app/environment'
+	import { resolve } from '$app/paths'
 
 	// 🎵 SOUND EFFECTS
-	let hoverSound: HTMLAudioElement | null = null;
-	let correctSound: HTMLAudioElement | null = null;
-	let wrongSound: HTMLAudioElement | null = null;
-	let backSound: HTMLAudioElement | null = null;
-	let popUpSound: HTMLAudioElement | null = null;
-	let clickSound: HTMLAudioElement | null = null;
-	let timesUpSound: HTMLAudioElement | null = null;
+	let hoverSound: HTMLAudioElement | null = null
+	let correctSound: HTMLAudioElement | null = null
+	let wrongSound: HTMLAudioElement | null = null
+	let backSound: HTMLAudioElement | null = null
+	let popUpSound: HTMLAudioElement | null = null
+	let clickSound: HTMLAudioElement | null = null
+	let timesUpSound: HTMLAudioElement | null = null
 
 	if (browser) {
-		hoverSound = new Audio('/audio/shimmer.ogg');
-		hoverSound.preload = 'auto';
-		hoverSound.load();
+		hoverSound = new Audio('/audio/shimmer.ogg')
+		hoverSound.preload = 'auto'
+		hoverSound.load()
 
-		correctSound = new Audio('/audio/correct-answer.ogg');
-		correctSound.preload = 'auto';
-		correctSound.load();
+		correctSound = new Audio('/audio/correct-answer.ogg')
+		correctSound.preload = 'auto'
+		correctSound.load()
 
-		wrongSound = new Audio('/audio/wrong-answer.ogg');
-		wrongSound.preload = 'auto';
-		wrongSound.load();
+		wrongSound = new Audio('/audio/wrong-answer.ogg')
+		wrongSound.preload = 'auto'
+		wrongSound.load()
 
-		backSound = new Audio('/audio/go-back-sound.ogg');
-		backSound.preload = 'auto';
-		backSound.load();
+		backSound = new Audio('/audio/go-back-sound.ogg')
+		backSound.preload = 'auto'
+		backSound.load()
 
-		popUpSound = new Audio('/audio/confirm-cancel-button.ogg');
-		popUpSound.preload = 'auto';
-		popUpSound.load();
+		popUpSound = new Audio('/audio/confirm-cancel-button.ogg')
+		popUpSound.preload = 'auto'
+		popUpSound.load()
 
-		clickSound = new Audio('/audio/button-click.ogg');
-		clickSound.preload = 'auto';
-		clickSound.load();
+		clickSound = new Audio('/audio/button-click.ogg')
+		clickSound.preload = 'auto'
+		clickSound.load()
 
-		timesUpSound = new Audio('/audio/time-is-up.ogg');
-		timesUpSound.preload = 'auto';
-		timesUpSound.load();
+		timesUpSound = new Audio('/audio/time-is-up.ogg')
+		timesUpSound.preload = 'auto'
+		timesUpSound.load()
 	}
 
 	function playHover() {
 		if (hoverSound) {
-			hoverSound.currentTime = 0;
-			hoverSound.play();
+			hoverSound.currentTime = 0
+			hoverSound.play()
 		}
 	}
 
 	function playCorrect() {
 		if (correctSound) {
-			correctSound.currentTime = 0;
-			correctSound.play();
+			correctSound.currentTime = 0
+			correctSound.play()
 		}
 	}
 
 	function playCountdownTick() {
 		if (correctSound) {
-			correctSound.currentTime = 0;
-			correctSound.play();
+			correctSound.currentTime = 0
+			correctSound.play()
 		}
 	}
 
 	function playWrong() {
 		if (wrongSound) {
-			wrongSound.currentTime = 0;
-			wrongSound.play();
+			wrongSound.currentTime = 0
+			wrongSound.play()
 		}
 	}
 
 	function playBack() {
 		if (backSound) {
-			backSound.currentTime = 0;
-			backSound.play();
+			backSound.currentTime = 0
+			backSound.play()
 		}
 	}
 
 	function playPopUp() {
 		if (popUpSound) {
-			popUpSound.currentTime = 0;
-			popUpSound.play();
+			popUpSound.currentTime = 0
+			popUpSound.play()
 		}
 	}
 
 	function playClick() {
 		if (clickSound) {
-			clickSound.currentTime = 0;
-			clickSound.play();
+			clickSound.currentTime = 0
+			clickSound.play()
 		}
 	}
 
 	function playAlarm() {
 		if (timesUpSound) {
-			timesUpSound.currentTime = 0;
-			timesUpSound.play();
+			timesUpSound.currentTime = 0
+			timesUpSound.play()
 		}
 	}
 
@@ -111,155 +111,155 @@
 			popUpSound,
 			clickSound,
 			timesUpSound,
-		];
+		]
 
 		sounds.forEach((sound) => {
-			if (sound) sound.volume = 0.5;
-		});
-	});
+			if (sound) sound.volume = 0.5
+		})
+	})
 
 	type Question = {
-		question: string;
-		choices: string[];
-		answerIndex: number;
-	};
+		question: string
+		choices: string[]
+		answerIndex: number
+	}
 
 	type WrongAnswer = {
-		question: string;
-		selectedChoice: string;
-		correctChoice: string;
-	};
+		question: string
+		selectedChoice: string
+		correctChoice: string
+	}
 
-	let questions: Question[] = [];
-	let loading = true;
-	let showPreGameCountdown = false;
-	let preGameCountdownLabel = '3';
-	let preGameCountdownTimeout: ReturnType<typeof setTimeout> | null = null;
-	let questionLocked = false;
+	let questions: Question[] = []
+	let loading = true
+	let showPreGameCountdown = false
+	let preGameCountdownLabel = '3'
+	let preGameCountdownTimeout: ReturnType<typeof setTimeout> | null = null
+	let questionLocked = false
 
 	// SHUFFLE QUESTIONS
 	function shuffleQuestions<T>(array: T[]): T[] {
-		const result = [...array]; // copy
+		const result = [...array] // copy
 		for (let i = result.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[result[i], result[j]] = [result[j], result[i]];
+			const j = Math.floor(Math.random() * (i + 1))
+			;[result[i], result[j]] = [result[j], result[i]]
 		}
-		return result;
+		return result
 	}
 
 	function shuffleChoices(question: Question): Question {
-		const choicesWithIndex = question.choices.map((choice, index) => ({ choice, index }));
-		const shuffledChoices = shuffleQuestions(choicesWithIndex);
+		const choicesWithIndex = question.choices.map((choice, index) => ({ choice, index }))
+		const shuffledChoices = shuffleQuestions(choicesWithIndex)
 
 		return {
 			...question,
 			choices: shuffledChoices.map(({ choice }) => choice),
 			answerIndex: shuffledChoices.findIndex(({ index }) => index === question.answerIndex),
-		};
+		}
 	}
 
 	function dedupeQuestionsByPrompt(items: Question[]): Question[] {
-		const seen = new SvelteSet<string>();
+		const seen = new SvelteSet<string>()
 
 		return items.filter((item) => {
-			const key = item.question.trim().toLowerCase();
-			if (seen.has(key)) return false;
-			seen.add(key);
-			return true;
-		});
+			const key = item.question.trim().toLowerCase()
+			if (seen.has(key)) return false
+			seen.add(key)
+			return true
+		})
 	}
 
 	onMount(async () => {
 		try {
-			const res = await fetch('/questions.json');
-			const data: Question[] = await res.json();
-			const uniqueQuestions = dedupeQuestionsByPrompt(data);
-			questions = shuffleQuestions(uniqueQuestions.map(shuffleChoices));
+			const res = await fetch('/questions.json')
+			const data: Question[] = await res.json()
+			const uniqueQuestions = dedupeQuestionsByPrompt(data)
+			questions = shuffleQuestions(uniqueQuestions.map(shuffleChoices))
 		} catch (err) {
-			console.error('Failed to load questions', err);
+			console.error('Failed to load questions', err)
 		} finally {
-			loading = false;
-			startPreGameCountdown();
+			loading = false
+			startPreGameCountdown()
 		}
-	});
-	export let data;
+	})
+	export let data
 
-	let showSaveModal = false;
-	let isSaving = false;
-	let playerName = data.name ?? '';
-	console.log('@game/+page.svelte (playerName) => ', playerName);
+	let showSaveModal = false
+	let isSaving = false
+	let playerName = data.name ?? ''
+	console.log('@game/+page.svelte (playerName) => ', playerName)
 
-	let currentIndex = 0;
-	let score = 0;
-	let wrongAnswers: WrongAnswer[] = [];
-	let selectedIndex: number | null = null;
-	let showResult = false;
-	let gameOver = false;
+	let currentIndex = 0
+	let score = 0
+	let wrongAnswers: WrongAnswer[] = []
+	let selectedIndex: number | null = null
+	let showResult = false
+	let gameOver = false
 
 	// ⏳ TIMER
-	let timeLeft = 60;
-	let timer: ReturnType<typeof setInterval>;
+	let timeLeft = 60
+	let timer: ReturnType<typeof setInterval>
 
 	function startTimer() {
-		void startGameBgm();
+		void startGameBgm()
 
 		timer = setInterval(() => {
 			if (timeLeft > 0) {
-				timeLeft--;
+				timeLeft--
 			} else {
-				playAlarm();
-				gameOver = true;
-				clearInterval(timer);
+				playAlarm()
+				gameOver = true
+				clearInterval(timer)
 			}
-		}, 1000);
+		}, 1000)
 	}
 
 	function startPreGameCountdown() {
-		const steps = ['3', '2', '1', 'GO!'];
-		let stepIndex = 0;
+		const steps = ['3', '2', '1', 'GO!']
+		let stepIndex = 0
 
-		showPreGameCountdown = true;
-		preGameCountdownLabel = steps[stepIndex];
-		playCountdownTick();
+		showPreGameCountdown = true
+		preGameCountdownLabel = steps[stepIndex]
+		playCountdownTick()
 
 		const advance = () => {
-			stepIndex += 1;
+			stepIndex += 1
 
 			if (stepIndex < steps.length) {
-				preGameCountdownLabel = steps[stepIndex];
-				if (preGameCountdownLabel !== 'GO!') playCountdownTick();
-				preGameCountdownTimeout = setTimeout(advance, 900);
-				return;
+				preGameCountdownLabel = steps[stepIndex]
+				if (preGameCountdownLabel !== 'GO!') playCountdownTick()
+				preGameCountdownTimeout = setTimeout(advance, 900)
+				return
 			}
 
-			showPreGameCountdown = false;
-			preGameCountdownTimeout = null;
-			startTimer();
-		};
+			showPreGameCountdown = false
+			preGameCountdownTimeout = null
+			startTimer()
+		}
 
-		preGameCountdownTimeout = setTimeout(advance, 900);
+		preGameCountdownTimeout = setTimeout(advance, 900)
 	}
 
 	onDestroy(() => {
-		clearInterval(timer);
-		if (preGameCountdownTimeout) clearTimeout(preGameCountdownTimeout);
-	});
+		clearInterval(timer)
+		if (preGameCountdownTimeout) clearTimeout(preGameCountdownTimeout)
+	})
 
 	function selectAnswer(index: number) {
-		if (showResult || gameOver || questionLocked) return;
-		const currentQuestion = questions[currentIndex];
-		if (!currentQuestion) return;
+		if (showResult || gameOver || questionLocked) return
+		const currentQuestion = questions[currentIndex]
+		if (!currentQuestion) return
 
-		questionLocked = true;
-		selectedIndex = index;
-		showResult = true;
+		questionLocked = true
+		selectedIndex = index
+		showResult = true
 
 		if (index === currentQuestion.answerIndex) {
-			score += 100;
-			playCorrect();
+			score += 100
+			playCorrect()
 		} else {
-			const selectedChoice = currentQuestion.choices[index] ?? '(No answer)';
-			const correctChoice = currentQuestion.choices[currentQuestion.answerIndex] ?? '(Unknown)';
+			const selectedChoice = currentQuestion.choices[index] ?? '(No answer)'
+			const correctChoice = currentQuestion.choices[currentQuestion.answerIndex] ?? '(Unknown)'
 			wrongAnswers = [
 				...wrongAnswers,
 				{
@@ -267,68 +267,68 @@
 					selectedChoice,
 					correctChoice,
 				},
-			];
-			playWrong();
+			]
+			playWrong()
 		}
 
 		setTimeout(() => {
-			nextQuestion();
-		}, 1000);
+			nextQuestion()
+		}, 1000)
 	}
 
 	function nextQuestion() {
 		if (currentIndex < questions.length - 1) {
-			currentIndex++;
+			currentIndex++
 		} else {
-			const lastQuestion = questions[currentIndex].question;
+			const lastQuestion = questions[currentIndex].question
 
-			let reshuffled;
+			let reshuffled
 			do {
-				reshuffled = shuffleQuestions(questions.map(shuffleChoices));
-			} while (reshuffled[0].question === lastQuestion);
+				reshuffled = shuffleQuestions(questions.map(shuffleChoices))
+			} while (reshuffled[0].question === lastQuestion)
 
-			questions = reshuffled;
-			currentIndex = 0;
+			questions = reshuffled
+			currentIndex = 0
 		}
 
-		selectedIndex = null;
-		showResult = false;
-		questionLocked = false;
+		selectedIndex = null
+		showResult = false
+		questionLocked = false
 	}
 
 	function restartGame() {
-		void restartGameBgm();
+		void restartGameBgm()
 
-		currentIndex = 0;
-		score = 0;
-		wrongAnswers = [];
-		selectedIndex = null;
-		showResult = false;
-		gameOver = false;
-		timeLeft = 60;
+		currentIndex = 0
+		score = 0
+		wrongAnswers = []
+		selectedIndex = null
+		showResult = false
+		gameOver = false
+		timeLeft = 60
 
-		clearInterval(timer);
-		startPreGameCountdown();
+		clearInterval(timer)
+		startPreGameCountdown()
 	}
 
 	async function saveScore() {
-		if (!playerName.trim() || isSaving) return;
+		if (!playerName.trim() || isSaving) return
 
-		isSaving = true;
+		isSaving = true
 
 		try {
-			await UpdateScore(playerName.trim(), score);
-			showSaveModal = false;
-			playerName = '';
-			goto(resolve('/leaderboard'));
+			await UpdateScore(playerName.trim(), score)
+			showSaveModal = false
+			playerName = ''
+			goto(resolve('/leaderboard'))
 		} catch (err) {
-			console.error('Failed to save score', err);
+			console.error('Failed to save score', err)
 		} finally {
-			isSaving = false;
+			isSaving = false
 		}
 	}
 
-	$: timerPercent = (timeLeft / 60) * 100;
+	$: timerPercent = (timeLeft / 60) * 100
 
 	$: rank =
 		score >= 3000
@@ -337,10 +337,10 @@
 				? '迅速マスター'
 				: score >= 1000
 					? 'チャレンジャー'
-					: '初心者';
+					: '初心者'
 
 	function goHome() {
-		goto(resolve('/'));
+		goto(resolve('/'))
 	}
 </script>
 
@@ -356,8 +356,8 @@
 	<div class="relative z-10 flex items-center px-12 py-10 text-sm">
 		<button
 			on:click={() => {
-				playBack();
-				goHome();
+				playBack()
+				goHome()
 			}}
 			class="cursor-pointer text-lg text-white transition hover:text-indigo-400"
 		>
@@ -511,12 +511,12 @@
 					<button
 						on:mouseenter={playHover}
 						on:click={() => {
-							playClick();
+							playClick()
 							if (playerName == null || playerName == '') {
-								showSaveModal = true;
+								showSaveModal = true
 							} else {
-								showSaveModal = false;
-								saveScore();
+								showSaveModal = false
+								saveScore()
 							}
 						}}
 						class="group relative cursor-pointer overflow-hidden rounded-full border border-indigo-400/50 bg-indigo-500/10 px-10 py-4 text-lg font-bold tracking-[0.2em] text-indigo-100 transition-all duration-300 hover:scale-105 hover:border-indigo-400 hover:bg-indigo-500/20 hover:shadow-[0_0_30px_rgba(129,140,248,0.4)]"
@@ -533,8 +533,8 @@
 
 					<button
 						on:click={() => {
-							playClick();
-							restartGame();
+							playClick()
+							restartGame()
 						}}
 						class="group relative cursor-pointer overflow-hidden rounded-full border border-slate-500 bg-slate-950/40 px-10 py-4 text-lg font-medium tracking-widest text-slate-400 transition-all duration-500 hover:scale-105 hover:border-white hover:text-white hover:shadow-[0_0_25px_rgba(255,255,255,0.2)] active:scale-95"
 					>
@@ -551,8 +551,8 @@
 
 				<button
 					on:click={() => {
-						playBack();
-						goHome();
+						playBack()
+						goHome()
 					}}
 					class="mt-6 cursor-pointer text-slate-400 transition hover:text-indigo-400"
 				>
@@ -591,8 +591,8 @@
 				<div class="mt-6 flex justify-center gap-4">
 					<button
 						on:click={() => {
-							playPopUp();
-							saveScore();
+							playPopUp()
+							saveScore()
 						}}
 						disabled={isSaving}
 						class="flex-1 cursor-pointer rounded-xl bg-indigo-600 py-3 font-bold tracking-widest text-white transition-all
@@ -605,8 +605,8 @@
 
 					<button
 						on:click={() => {
-							playPopUp();
-							showSaveModal = false;
+							playPopUp()
+							showSaveModal = false
 						}}
 						class="flex-1 cursor-pointer rounded-xl border border-slate-700 bg-slate-800/50 py-3 font-medium tracking-widest text-slate-400 transition-all hover:bg-slate-800 hover:text-slate-200"
 					>

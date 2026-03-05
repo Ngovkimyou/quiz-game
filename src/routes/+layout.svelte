@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import { onMount } from 'svelte'
+	import './layout.css'
+	import favicon from '$lib/assets/favicon.svg'
 
-	let { children } = $props();
-	onMount(() => {});
+	let { children } = $props()
+	onMount(() => {})
 </script>
 
 <svelte:head>

@@ -1,51 +1,51 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
-	import type { PageData } from './$types';
+	import { goto } from '$app/navigation'
+	import { onMount } from 'svelte'
+	import { browser } from '$app/environment'
+	import type { PageData } from './$types'
 
-	import { resolve } from '$app/paths';
-	const { data } = $props<{ data: PageData }>();
+	import { resolve } from '$app/paths'
+	const { data } = $props<{ data: PageData }>()
 	const isCurrentUser = (row: { id?: string | number; name?: string | null }) =>
 		(data.currentUserId && String(row.id) === String(data.currentUserId)) ||
-		(data.currentUserName && row.name === data.currentUserName);
+		(data.currentUserName && row.name === data.currentUserName)
 
-	let showCreditsModal = $state(false);
+	let showCreditsModal = $state(false)
 
-	let backSound: HTMLAudioElement | null = null;
-	let popUpSound: HTMLAudioElement | null = null;
+	let backSound: HTMLAudioElement | null = null
+	let popUpSound: HTMLAudioElement | null = null
 
 	if (browser) {
-		backSound = new Audio('/audio/shimmer.ogg');
-		backSound.preload = 'auto';
-		backSound.load();
+		backSound = new Audio('/audio/shimmer.ogg')
+		backSound.preload = 'auto'
+		backSound.load()
 
-		popUpSound = new Audio('/audio/confirm-cancel-button.ogg');
-		popUpSound.preload = 'auto';
-		popUpSound.load();
+		popUpSound = new Audio('/audio/confirm-cancel-button.ogg')
+		popUpSound.preload = 'auto'
+		popUpSound.load()
 	}
 
 	function playBack() {
 		if (backSound) {
-			backSound.currentTime = 0;
-			backSound.play();
+			backSound.currentTime = 0
+			backSound.play()
 		}
 	}
 
 	function playPopUp() {
 		if (popUpSound) {
-			popUpSound.currentTime = 0;
-			popUpSound.play();
+			popUpSound.currentTime = 0
+			popUpSound.play()
 		}
 	}
 
 	onMount(() => {
-		const sounds = [backSound, popUpSound];
+		const sounds = [backSound, popUpSound]
 
 		sounds.forEach((sound) => {
-			if (sound) sound.volume = 0.5;
-		});
-	});
+			if (sound) sound.volume = 0.5
+		})
+	})
 </script>
 
 <div
@@ -64,8 +64,8 @@
 			<div class="flex items-center justify-between px-12 py-6">
 				<button
 					onclick={() => {
-						goto(resolve('/'));
-						playBack();
+						goto(resolve('/'))
+						playBack()
 					}}
 					class="cursor-pointer text-lg text-white transition hover:text-indigo-400"
 				>
@@ -77,8 +77,8 @@
 				<!-- PUSH THE TITLE TO MID -->
 				<button
 					onclick={() => {
-						showCreditsModal = true;
-						playPopUp();
+						showCreditsModal = true
+						playPopUp()
 					}}
 					class="w-16 cursor-pointer text-lg text-gray-400 italic transition hover:text-indigo-400"
 				>
@@ -170,11 +170,11 @@ hover:scale-105 hover:shadow-2xl
 			tabindex="0"
 			aria-label="Close credits modal"
 			onclick={(e) => {
-				if (e.target === e.currentTarget) showCreditsModal = false;
+				if (e.target === e.currentTarget) showCreditsModal = false
 			}}
 			onkeydown={(e) => {
 				if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
-					showCreditsModal = false;
+					showCreditsModal = false
 				}
 			}}
 		>
@@ -203,8 +203,8 @@ hover:scale-105 hover:shadow-2xl
 				<button
 					class="mt-6 w-full rounded-xl bg-indigo-600 py-2 font-semibold transition hover:bg-indigo-500"
 					onclick={() => {
-						showCreditsModal = false;
-						playPopUp();
+						showCreditsModal = false
+						playPopUp()
 					}}
 				>
 					Close

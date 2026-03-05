@@ -3,19 +3,19 @@
 declare global {
 	namespace App {
 		interface Locals {
-			id: number | string | undefined;
-			name: string | undefined;
-			score: Value;
-			registered_date: Value;
+			id: number | string | undefined
+			name: string | undefined
+			score: Value
+			registered_date: Value
 		}
 
 		interface Platform {
-			env: Env;
-			ctx: ExecutionContext;
-			caches: CacheStorage;
-			cf?: IncomingRequestCfProperties;
+			env: Env
+			ctx: ExecutionContext
+			caches: CacheStorage
+			cf?: IncomingRequestCfProperties
 		}
 	}
 }
 
-export {};
+export {}
