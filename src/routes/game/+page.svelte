@@ -110,7 +110,7 @@
 			backSound,
 			popUpSound,
 			clickSound,
-			timesUpSound
+			timesUpSound,
 		];
 
 		sounds.forEach((sound) => {
@@ -154,7 +154,7 @@
 		return {
 			...question,
 			choices: shuffledChoices.map(({ choice }) => choice),
-			answerIndex: shuffledChoices.findIndex(({ index }) => index === question.answerIndex)
+			answerIndex: shuffledChoices.findIndex(({ index }) => index === question.answerIndex),
 		};
 	}
 
@@ -265,8 +265,8 @@
 				{
 					question: currentQuestion.question,
 					selectedChoice,
-					correctChoice
-				}
+					correctChoice,
+				},
 			];
 			playWrong();
 		}

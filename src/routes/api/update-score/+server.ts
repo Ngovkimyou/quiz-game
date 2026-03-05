@@ -2,7 +2,7 @@ import { getTursoClient } from '$lib/server/getTursoClient';
 import {
 	createSignedSessionValue,
 	getSessionCookieName,
-	getSessionTtlSeconds
+	getSessionTtlSeconds,
 } from '$lib/server/session';
 // This import will take care of all the types problem
 import type { RequestHandler } from './$types';
@@ -26,6 +26,7 @@ function getClientKey(request: Request, userId?: string) {
 	return `${userId ?? 'anonymous'}:${ip}`;
 }
 
+// Simple in-memory rate limiter based on user ID and IP address.
 function isRateLimited(key: string) {
 	const now = Date.now();
 
@@ -47,7 +48,7 @@ function isRateLimited(key: string) {
 
 	return existing.count > RATE_LIMIT_MAX_REQUESTS;
 }
-
+// 	Normalize the name and check if it's valid, if not it will return null
 function normalizeName(name: unknown) {
 	if (typeof name !== 'string') return null;
 	const trimmed = name.trim();
@@ -66,6 +67,7 @@ function isValidScore(score: unknown) {
 	);
 }
 
+// This endpoint will receive the name and score from src/lib/components/updateScore and save it to the database
 export const POST: RequestHandler = async ({ request, cookies, locals, platform }) => {
 	let db: ReturnType<typeof getTursoClient>;
 	try {
@@ -74,7 +76,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 	} catch (error) {
 		console.error('@update-score => Database client initialization failed:', error);
 		return new Response(JSON.stringify({ error: 'Server database is not configured' }), {
-			status: 500
+			status: 500,
 		});
 	}
 
@@ -87,7 +89,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 		const limiterKey = getClientKey(request, id_cookies);
 		if (isRateLimited(limiterKey)) {
 			return new Response(JSON.stringify({ error: 'Too many requests, please try again later' }), {
-				status: 429
+				status: 429,
 			});
 		}
 
@@ -97,9 +99,9 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 			console.error('@update-score => Invalid data:', { name, score });
 			return new Response(
 				JSON.stringify({
-					error: `Name must be ${NAME_MIN_LENGTH}-${NAME_MAX_LENGTH} valid characters and score must be ${MIN_SCORE}-${MAX_SCORE} in steps of ${SCORE_STEP}`
+					error: `Name must be ${NAME_MIN_LENGTH}-${NAME_MAX_LENGTH} valid characters and score must be ${MIN_SCORE}-${MAX_SCORE} in steps of ${SCORE_STEP}`,
 				}),
-				{ status: 400 }
+				{ status: 400 },
 			);
 		}
 
@@ -110,7 +112,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 
 		const result = await db.execute({
 			sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING id',
-			args: [safeName, score]
+			args: [safeName, score],
 		});
 
 		const id = result.rows[0]?.id?.toString();
@@ -122,7 +124,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 				httpOnly: true,
 				sameSite: 'strict',
 				secure: isHttps,
-				maxAge: getSessionTtlSeconds()
+				maxAge: getSessionTtlSeconds(),
 			});
 		}
 		// Remove legacy cookies from older versions.
@@ -142,17 +144,17 @@ async function updateUser(
 	db: ReturnType<typeof getTursoClient>,
 	id: string,
 	name: string,
-	score: number
+	score: number,
 ) {
 	if (!id || !isValidScore(score)) {
 		throw new Error(
-			`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`
+			`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`,
 		);
 	}
 
 	const current = await db.execute({
 		sql: 'SELECT score FROM `quiz-ranking` WHERE id = ?',
-		args: [id]
+		args: [id],
 	});
 	const currentScore = Number(current.rows[0]?.score ?? 0);
 	// Never allow lowering a user's best score.
@@ -160,10 +162,10 @@ async function updateUser(
 
 	await db.execute({
 		sql: 'UPDATE `quiz-ranking` SET score = ? WHERE id = ?',
-		args: [nextScore, id]
+		args: [nextScore, id],
 	});
 
 	console.log(
-		`[@update-score(api)] User named: ${name} secussfully update their score to ${nextScore}`
+		`[@update-score(api)] User named: ${name} secussfully update their score to ${nextScore}`,
 	);
 }
