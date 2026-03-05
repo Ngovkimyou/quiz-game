@@ -22,7 +22,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 			const { rows } = await db.execute({
 				sql: 'SELECT name,score,registered_date FROM `quiz-ranking` WHERE id = ?',
-				args: [id]
+				args: [id],
 			});
 			const user = rows[0];
 

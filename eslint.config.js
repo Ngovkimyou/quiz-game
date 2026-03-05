@@ -7,6 +7,7 @@ import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import ts from 'typescript-eslint';
 import svelteConfig from './svelte.config.js';
+import noCommentedCode from 'eslint-plugin-no-commented-code';
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 
@@ -19,11 +20,15 @@ export default defineConfig(
 	...svelte.configs.prettier,
 	{
 		languageOptions: { globals: { ...globals.browser, ...globals.node } },
+		plugins: {
+			'no-commented-code': noCommentedCode,
+		},
 		rules: {
 			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
 			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-			'no-undef': 'off'
-		}
+			'no-undef': 'off',
+			'no-commented-code/no-commented-code': 'warn', // or 'error'
+		},
 	},
 	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
@@ -32,8 +37,8 @@ export default defineConfig(
 				projectService: true,
 				extraFileExtensions: ['.svelte'],
 				parser: ts.parser,
-				svelteConfig
-			}
-		}
-	}
+				svelteConfig,
+			},
+		},
+	},
 );

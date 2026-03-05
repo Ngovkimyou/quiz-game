@@ -8,6 +8,6 @@ export default {
 		adapter: adapter({
 			// Netlify adapter default options are usually fine
 			// See adapter-netlify docs for advanced config
-		})
-	}
+		}),
+	},
 };
