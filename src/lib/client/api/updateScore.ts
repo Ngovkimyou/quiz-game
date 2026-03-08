@@ -26,7 +26,7 @@ export async function updateScore(
 		}
 		// Convert score to number just to be safe
 		score = Number(score)
-		// Check if score is finite or lower than min or bigger than max 
+		// Check if score is finite or lower than min or bigger than max
 		// or score is decimal
 		if (
 			!Number.isFinite(score) ||
