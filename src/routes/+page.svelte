@@ -1,54 +1,19 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte'
 	import { goto } from '$app/navigation'
-	import { browser } from '$app/environment'
 	import { resolve } from '$app/paths'
 	import { stopGameBgm } from '$lib/components/gameBgm'
+	import { playHover, playClick, getHomePageBgm } from '$lib/client/audio/audioManager'
 
-	let audio: HTMLAudioElement
-	let isPlaying = false
-	let hoverSound: HTMLAudioElement | null = null
-
-	let popUpSound: HTMLAudioElement | null = null
-	let clickSound: HTMLAudioElement | null = null
-
-	if (browser) {
-		hoverSound = new Audio('/audio/shimmer.ogg')
-		hoverSound.preload = 'auto'
-		hoverSound.load()
-
-		clickSound = new Audio('/audio/button-click.ogg')
-		clickSound.preload = 'auto'
-		clickSound.load()
-	}
-
-	function playHover() {
-		if (hoverSound) {
-			hoverSound.currentTime = 0
-			hoverSound.play()
-		}
-	}
-
-	function playClick() {
-		if (clickSound) {
-			clickSound.currentTime = 0
-			clickSound.play()
-		}
-	}
+	let audio: HTMLAudioElement | null
 
 	onMount(() => {
 		stopGameBgm()
 
-		audio = new Audio('audio/AFTERGLOW.ogg')
-		audio.loop = true
-		audio.volume = 0.2
-
-		const sounds = [popUpSound, clickSound]
-
-		sounds.forEach((sound) => {
-			if (sound) sound.volume = 0.5
-		})
+		audio = getHomePageBgm()
 	})
+
+	let isPlaying = false
 
 	onDestroy(() => {
 		if (audio) {
@@ -67,10 +32,10 @@
 
 	function toggleMusic() {
 		if (!isPlaying) {
-			audio.play()
+			audio?.play()
 			isPlaying = true
 		} else {
-			audio.pause()
+			audio?.pause()
 			isPlaying = false
 		}
 	}

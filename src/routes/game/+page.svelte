@@ -4,119 +4,18 @@
 	import { SvelteSet } from 'svelte/reactivity'
 	import { UpdateScore } from '$lib/components/updateScore'
 	import { restartGameBgm, startGameBgm } from '$lib/components/gameBgm'
-	import { browser } from '$app/environment'
 	import { resolve } from '$app/paths'
-
-	// 🎵 SOUND EFFECTS
-	let hoverSound: HTMLAudioElement | null = null
-	let correctSound: HTMLAudioElement | null = null
-	let wrongSound: HTMLAudioElement | null = null
-	let backSound: HTMLAudioElement | null = null
-	let popUpSound: HTMLAudioElement | null = null
-	let clickSound: HTMLAudioElement | null = null
-	let timesUpSound: HTMLAudioElement | null = null
-
-	if (browser) {
-		hoverSound = new Audio('/audio/shimmer.ogg')
-		hoverSound.preload = 'auto'
-		hoverSound.load()
-
-		correctSound = new Audio('/audio/correct-answer.ogg')
-		correctSound.preload = 'auto'
-		correctSound.load()
-
-		wrongSound = new Audio('/audio/wrong-answer.ogg')
-		wrongSound.preload = 'auto'
-		wrongSound.load()
-
-		backSound = new Audio('/audio/go-back-sound.ogg')
-		backSound.preload = 'auto'
-		backSound.load()
-
-		popUpSound = new Audio('/audio/confirm-cancel-button.ogg')
-		popUpSound.preload = 'auto'
-		popUpSound.load()
-
-		clickSound = new Audio('/audio/button-click.ogg')
-		clickSound.preload = 'auto'
-		clickSound.load()
-
-		timesUpSound = new Audio('/audio/time-is-up.ogg')
-		timesUpSound.preload = 'auto'
-		timesUpSound.load()
-	}
-
-	function playHover() {
-		if (hoverSound) {
-			hoverSound.currentTime = 0
-			hoverSound.play()
-		}
-	}
-
-	function playCorrect() {
-		if (correctSound) {
-			correctSound.currentTime = 0
-			correctSound.play()
-		}
-	}
-
-	function playCountdownTick() {
-		if (correctSound) {
-			correctSound.currentTime = 0
-			correctSound.play()
-		}
-	}
-
-	function playWrong() {
-		if (wrongSound) {
-			wrongSound.currentTime = 0
-			wrongSound.play()
-		}
-	}
-
-	function playBack() {
-		if (backSound) {
-			backSound.currentTime = 0
-			backSound.play()
-		}
-	}
-
-	function playPopUp() {
-		if (popUpSound) {
-			popUpSound.currentTime = 0
-			popUpSound.play()
-		}
-	}
-
-	function playClick() {
-		if (clickSound) {
-			clickSound.currentTime = 0
-			clickSound.play()
-		}
-	}
-
-	function playAlarm() {
-		if (timesUpSound) {
-			timesUpSound.currentTime = 0
-			timesUpSound.play()
-		}
-	}
-
-	onMount(() => {
-		const sounds = [
-			hoverSound,
-			correctSound,
-			wrongSound,
-			backSound,
-			popUpSound,
-			clickSound,
-			timesUpSound,
-		]
-
-		sounds.forEach((sound) => {
-			if (sound) sound.volume = 0.5
-		})
-	})
+	import {
+		playHover,
+		playClick,
+		playCorrect,
+		playWrong,
+		playBack,
+		playPopUp,
+		playTimesUp,
+		playCountdownTick,
+		setAllSoundVolumes,
+	} from '$lib/client/audio/audioManager.js'
 
 	type Question = {
 		question: string
@@ -170,6 +69,7 @@
 	}
 
 	onMount(async () => {
+		setAllSoundVolumes(0.5)
 		try {
 			const res = await fetch('/questions.json')
 			const data: Question[] = await res.json()
@@ -207,7 +107,7 @@
 			if (timeLeft > 0) {
 				timeLeft--
 			} else {
-				playAlarm()
+				playTimesUp()
 				gameOver = true
 				clearInterval(timer)
 			}

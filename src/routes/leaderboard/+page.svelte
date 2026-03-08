@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
-	import { browser } from '$app/environment'
 	import type { PageData } from './$types'
-
 	import { resolve } from '$app/paths'
+	import { playBack, playPopUp, setAllSoundVolumes } from '$lib/client/audio/audioManager'
+
 	const { data } = $props<{ data: PageData }>()
 	const isCurrentUser = (row: { id?: string | number; name?: string | null }) =>
 		(data.currentUserId && String(row.id) === String(data.currentUserId)) ||
@@ -12,39 +12,8 @@
 
 	let showCreditsModal = $state(false)
 
-	let backSound: HTMLAudioElement | null = null
-	let popUpSound: HTMLAudioElement | null = null
-
-	if (browser) {
-		backSound = new Audio('/audio/shimmer.ogg')
-		backSound.preload = 'auto'
-		backSound.load()
-
-		popUpSound = new Audio('/audio/confirm-cancel-button.ogg')
-		popUpSound.preload = 'auto'
-		popUpSound.load()
-	}
-
-	function playBack() {
-		if (backSound) {
-			backSound.currentTime = 0
-			backSound.play()
-		}
-	}
-
-	function playPopUp() {
-		if (popUpSound) {
-			popUpSound.currentTime = 0
-			popUpSound.play()
-		}
-	}
-
 	onMount(() => {
-		const sounds = [backSound, popUpSound]
-
-		sounds.forEach((sound) => {
-			if (sound) sound.volume = 0.5
-		})
+		setAllSoundVolumes(0.5)
 	})
 </script>
 
@@ -143,7 +112,7 @@ hover:scale-105 hover:shadow-2xl
 					<div
 						class="flex items-center justify-between rounded-2xl border border-slate-700 bg-slate-900/60 p-5 backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500
 {isCurrentUser(row)
-							? 'border-amber-200 !bg-amber-400/35 shadow-[0_0_20px_rgba(251,191,36,0.35)] ring-2 ring-amber-200'
+							? 'border-amber-200 bg-amber-400/35! shadow-[0_0_20px_rgba(251,191,36,0.35)] ring-2 ring-amber-200'
 							: ''}"
 					>
 						<div class="flex items-center gap-6">
