@@ -26,14 +26,11 @@ type RateLimiter =
 	| undefined
 
 export function isRateLimited(
-
 	key: string,
 	count: number,
 	ip_address: string | undefined,
 	request_time: number | undefined,
-
 ): RateLimiter {
-
 	const now = Date.now()
 
 	if (rateLimitStore.size > 10_000) {
@@ -45,29 +42,25 @@ export function isRateLimited(
 	let over_Limit = false
 	const isExist = rateLimitStore.get(key)
 
-    // This condition can only be triggered if the user somehow change their ip_address 
-    // or if the server suddenly create a new instance
+	// This condition can only be triggered if the user somehow change their ip_address
+	// or if the server suddenly create a new instance
 	if (!isExist && request_time && count < RATE_LIMIT_MAX_REQUESTS) {
-
-        console.log('@RateLimiter.ts => if was triggered')
+		console.log('@RateLimiter.ts => if was triggered')
 		if (key === ip_address && request_time <= now) {
 			rateLimitStore.set(key, { count: count + 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
 			return { over_Limit, isExist }
 		}
-    // This condition triggered when there's new user or the request is below the set limit
+		// This condition triggered when there's new user or the request is below the set limit
 	} else if (!isExist || isExist.resetAt <= now) {
-
-        console.log('@RateLimiter.ts => else if was triggered')
+		console.log('@RateLimiter.ts => else if was triggered')
 		rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
 		return { over_Limit, isExist }
-    // if user request too fast then they will trigger the else statement
+		// if user request too fast then they will trigger the else statement
 	} else {
-
 		console.log('@RateLimiter.ts => Request is too quick')
 		isExist.count += 1
 		rateLimitStore.set(key, isExist)
 		over_Limit = isExist.count > RATE_LIMIT_MAX_REQUESTS
 		return { over_Limit, isExist }
-
 	}
 }

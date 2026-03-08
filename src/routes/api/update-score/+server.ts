@@ -14,7 +14,6 @@ import {
 	MIN_SCORE,
 	SCORE_STEP,
 } from '$lib/shared/validation'
-import { getClientKey } from '$lib/server/RateLimiter'
 
 // This endpoint will receive the name and score from src/lib/components/updateScore and save it to the database
 export const POST: RequestHandler = async ({ request, cookies, locals, platform }) => {
