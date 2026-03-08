@@ -6,13 +6,13 @@
 	import { playBack, playPopUp, setAllSoundVolumes } from '$lib/client/audio/audioManager'
 
 	const { data } = $props<{ data: PageData }>()
-	const isCurrentUser = (row: { id?: string | number; name?: string | null }) =>
+	const isCurrentUser = (row: { id?: string | number; name?: string | null }): boolean =>
 		(data.currentUserId && String(row.id) === String(data.currentUserId)) ||
 		(data.currentUserName && row.name === data.currentUserName)
 
 	let showCreditsModal = $state(false)
 
-	onMount(() => {
+	onMount((): void => {
 		setAllSoundVolumes(0.5)
 	})
 </script>
@@ -32,7 +32,7 @@
 		>
 			<div class="flex items-center justify-between px-12 py-6">
 				<button
-					onclick={() => {
+					onclick={(): void => {
 						goto(resolve('/'))
 						playBack()
 					}}
@@ -45,7 +45,7 @@
 
 				<!-- PUSH THE TITLE TO MID -->
 				<button
-					onclick={() => {
+					onclick={(): void => {
 						showCreditsModal = true
 						playPopUp()
 					}}
@@ -138,10 +138,10 @@ hover:scale-105 hover:shadow-2xl
 			role="button"
 			tabindex="0"
 			aria-label="Close credits modal"
-			onclick={(e) => {
+			onclick={(e): void => {
 				if (e.target === e.currentTarget) showCreditsModal = false
 			}}
-			onkeydown={(e) => {
+			onkeydown={(e): void => {
 				if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
 					showCreditsModal = false
 				}
@@ -171,7 +171,7 @@ hover:scale-105 hover:shadow-2xl
 
 				<button
 					class="mt-6 w-full rounded-xl bg-indigo-600 py-2 font-semibold transition hover:bg-indigo-500"
-					onclick={() => {
+					onclick={(): void => {
 						showCreditsModal = false
 						playPopUp()
 					}}

@@ -68,7 +68,7 @@
 		})
 	}
 
-	onMount(async () => {
+	onMount(async (): Promise<void> => {
 		setAllSoundVolumes(0.5)
 		try {
 			const res = await fetch('/questions.json')
@@ -100,10 +100,10 @@
 	let timeLeft = 60
 	let timer: ReturnType<typeof setInterval>
 
-	function startTimer() {
+	function startTimer(): void {
 		void startGameBgm()
 
-		timer = setInterval(() => {
+		timer = setInterval((): void => {
 			if (timeLeft > 0) {
 				timeLeft--
 			} else {
@@ -114,7 +114,7 @@
 		}, 1000)
 	}
 
-	function startPreGameCountdown() {
+	function startPreGameCountdown(): void {
 		const steps = ['3', '2', '1', 'GO!']
 		let stepIndex = 0
 
@@ -122,7 +122,7 @@
 		preGameCountdownLabel = steps[stepIndex]
 		playCountdownTick()
 
-		const advance = () => {
+		const advance = (): void => {
 			stepIndex += 1
 
 			if (stepIndex < steps.length) {
@@ -140,12 +140,12 @@
 		preGameCountdownTimeout = setTimeout(advance, 900)
 	}
 
-	onDestroy(() => {
+	onDestroy((): void => {
 		clearInterval(timer)
 		if (preGameCountdownTimeout) clearTimeout(preGameCountdownTimeout)
 	})
 
-	function selectAnswer(index: number) {
+	function selectAnswer(index: number): void {
 		if (showResult || gameOver || questionLocked) return
 		const currentQuestion = questions[currentIndex]
 		if (!currentQuestion) return
@@ -171,12 +171,12 @@
 			playWrong()
 		}
 
-		setTimeout(() => {
+		setTimeout((): void => {
 			nextQuestion()
 		}, 1000)
 	}
 
-	function nextQuestion() {
+	function nextQuestion(): void {
 		if (currentIndex < questions.length - 1) {
 			currentIndex++
 		} else {
@@ -196,7 +196,7 @@
 		questionLocked = false
 	}
 
-	function restartGame() {
+	function restartGame(): void {
 		void restartGameBgm()
 
 		currentIndex = 0
@@ -211,7 +211,7 @@
 		startPreGameCountdown()
 	}
 
-	async function saveScore() {
+	async function saveScore(): Promise<void> {
 		if (!playerName.trim() || isSaving) return
 
 		isSaving = true
@@ -239,7 +239,7 @@
 					? 'チャレンジャー'
 					: '初心者'
 
-	function goHome() {
+	function goHome(): void {
 		goto(resolve('/'))
 	}
 </script>
@@ -255,7 +255,7 @@
 	<!-- Top Bar -->
 	<div class="relative z-10 flex items-center px-12 py-10 text-sm">
 		<button
-			onclick={() => {
+			onclick={(): void => {
 				playBack()
 				goHome()
 			}}
@@ -326,7 +326,7 @@
 			<div class="w-full max-w-3xl space-y-6">
 				{#each questions[currentIndex].choices as choice, index (index)}
 					<button
-						onclick={() => selectAnswer(index)}
+						onclick={(): void => selectAnswer(index)}
 						class="group relative w-full cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
 			 hover:scale-[1.02]
 			{selectedIndex === undefined
@@ -410,7 +410,7 @@
 				<div class="mt-10 flex gap-6">
 					<button
 						onmouseenter={playHover}
-						onclick={() => {
+						onclick={(): void => {
 							playClick()
 							if (playerName === undefined || playerName === '') {
 								showSaveModal = true
@@ -432,7 +432,7 @@
 					</button>
 
 					<button
-						onclick={() => {
+						onclick={(): void => {
 							playClick()
 							restartGame()
 						}}
@@ -450,7 +450,7 @@
 				</div>
 
 				<button
-					onclick={() => {
+					onclick={(): void => {
 						playBack()
 						goHome()
 					}}
@@ -490,7 +490,7 @@
 
 				<div class="mt-6 flex justify-center gap-4">
 					<button
-						onclick={() => {
+						onclick={(): void => {
 							playPopUp()
 							saveScore()
 						}}
@@ -504,7 +504,7 @@
 					</button>
 
 					<button
-						onclick={() => {
+						onclick={(): void => {
 							playPopUp()
 							showSaveModal = false
 						}}

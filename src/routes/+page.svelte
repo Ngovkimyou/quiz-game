@@ -7,7 +7,7 @@
 
 	let audio: HTMLAudioElement | undefined
 
-	onMount(() => {
+	onMount((): void => {
 		stopGameBgm()
 
 		audio = getHomePageBgm()
@@ -15,22 +15,22 @@
 
 	let isPlaying = false
 
-	onDestroy(() => {
+	onDestroy((): void => {
 		if (audio) {
 			audio.pause()
 			audio.currentTime = 0
 		}
 	})
 
-	function startGame() {
+	function startGame(): void {
 		goto(resolve('/game'))
 	}
 
-	function goLeaderboard() {
+	function goLeaderboard(): void {
 		goto(resolve('/leaderboard'))
 	}
 
-	function toggleMusic() {
+	function toggleMusic(): void {
 		if (!isPlaying) {
 			audio?.play()
 			isPlaying = true
@@ -67,7 +67,7 @@
 		<div class="mt-20 flex flex-col gap-6 md:flex-col">
 			<button
 				onmouseenter={playHover}
-				onclick={() => {
+				onclick={(): void => {
 					playClick()
 					startGame()
 				}}
@@ -87,7 +87,7 @@
 
 			<button
 				onmouseenter={playHover}
-				onclick={() => {
+				onclick={(): void => {
 					goLeaderboard()
 					playClick()
 				}}
@@ -107,7 +107,7 @@
 		</div>
 
 		<button
-			onclick={() => {
+			onclick={(): void => {
 				toggleMusic()
 				playClick()
 			}}
