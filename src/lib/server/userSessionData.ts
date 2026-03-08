@@ -1,13 +1,6 @@
 import type { RequestEvent } from '@sveltejs/kit'
 
-type UserSession = {
-	id: string | number | undefined
-	name: string | undefined
-	score: number
-	registered_date: Date
-}
-
-export function getUserSessionData(event: RequestEvent): UserSession {
+export function getUserSessionData(event: RequestEvent): App.Locals {
 	return {
 		// These datas will be sent to the +page.svelte page in the same folder
 		// Call it by using $props
@@ -15,5 +8,6 @@ export function getUserSessionData(event: RequestEvent): UserSession {
 		name: event.locals.name,
 		score: event.locals.score,
 		registered_date: event.locals.registered_date,
+		ip_address: event.locals.ip_address,
 	}
 }
