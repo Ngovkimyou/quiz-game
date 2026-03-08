@@ -6,7 +6,7 @@ const NAME_MIN_LENGTH = 2
 const NAME_MAX_LENGTH = 24
 const NAME_PATTERN = /^[\p{L}\p{N}\p{M} _.-]+$/u
 
-export async function UpdateScore(
+export async function updateScore(
 	name: string,
 	score: number | undefined = undefined,
 ): Promise<unknown> {
@@ -26,7 +26,8 @@ export async function UpdateScore(
 		}
 		// Convert score to number just to be safe
 		score = Number(score)
-
+		// Check if score is finite or lower than min or bigger than max 
+		// or score is decimal
 		if (
 			!Number.isFinite(score) ||
 			score < MIN_SCORE ||
