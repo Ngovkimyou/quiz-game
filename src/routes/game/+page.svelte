@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation'
 	import { onMount, onDestroy } from 'svelte'
 	import { SvelteSet } from 'svelte/reactivity'
-	import { UpdateScore } from '$lib/components/updateScore'
+	import { UpdateScore } from '$lib/client/api/updateScore.js'
 	import { restartGameBgm, startGameBgm } from '$lib/components/gameBgm'
 	import { resolve } from '$app/paths'
 	import {
