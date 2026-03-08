@@ -50,10 +50,10 @@ function isRateLimited(key: string) {
 }
 // 	Normalize the name and check if it's valid, if not it will return null
 function normalizeName(name: unknown) {
-	if (typeof name !== 'string') return null
+	if (typeof name !== 'string') return undefined
 	const trimmed = name.trim()
-	if (trimmed.length < NAME_MIN_LENGTH || trimmed.length > NAME_MAX_LENGTH) return null
-	if (!NAME_PATTERN.test(trimmed)) return null
+	if (trimmed.length < NAME_MIN_LENGTH || trimmed.length > NAME_MAX_LENGTH) return undefined
+	if (!NAME_PATTERN.test(trimmed)) return undefined
 	return trimmed
 }
 

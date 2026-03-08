@@ -91,23 +91,23 @@ export async function parseAndVerifySessionValue(
 	token: string | undefined,
 	platformEnv?: App.Platform['env'],
 ) {
-	if (!token) return null
+	if (!token) return undefined
 
 	const [payloadPart, signaturePart] = token.split('.')
-	if (!payloadPart || !signaturePart) return null
+	if (!payloadPart || !signaturePart) return undefined
 
 	const expectedSignature = await signText(getSessionSecret(platformEnv), payloadPart)
-	if (!constantTimeEqual(signaturePart, expectedSignature)) return null
+	if (!constantTimeEqual(signaturePart, expectedSignature)) return undefined
 
 	try {
 		const payloadJson = new TextDecoder().decode(fromBase64Url(payloadPart))
 		const parsed = JSON.parse(payloadJson) as SessionPayload
-		if (!parsed?.id || typeof parsed.id !== 'string') return null
-		if (!parsed?.exp || typeof parsed.exp !== 'number') return null
-		if (parsed.exp < Math.floor(Date.now() / 1000)) return null
+		if (!parsed?.id || typeof parsed.id !== 'string') return undefined
+		if (!parsed?.exp || typeof parsed.exp !== 'number') return undefined
+		if (parsed.exp < Math.floor(Date.now() / 1000)) return undefined
 		return parsed
 	} catch {
-		return null
+		return undefined
 	}
 }
 

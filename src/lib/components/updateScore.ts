@@ -6,9 +6,9 @@ const NAME_MIN_LENGTH = 2
 const NAME_MAX_LENGTH = 24
 const NAME_PATTERN = /^[\p{L}\p{N}\p{M} _.-]+$/u
 
-export async function UpdateScore(name: string, score: number | null = null) {
+export async function UpdateScore(name: string, score: number | undefined = undefined) {
 	// This function can't run if an id and a score aren't given
-	if (!name && score === null) {
+	if (!name || score === undefined) {
 		throw new Error('You need to give name and score')
 	} else {
 		// Convert name to string just to be safe cause people might name themselve as number
@@ -44,19 +44,21 @@ export async function UpdateScore(name: string, score: number | null = null) {
 			body: JSON.stringify({ name, score }),
 		})
 
-		let payload: unknown = null
+		let payload: unknown = undefined
 		try {
 			payload = await result.json()
 		} catch {
-			payload = null
+			payload = undefined
 		}
 
 		console.log('Data Received @updateScore:', { status: result.status, payload })
 
 		if (!result.ok) {
+			const payloadObject: Record<string, unknown> | undefined =
+				payload && typeof payload === 'object' ? (payload as Record<string, unknown>) : undefined
 			const message =
-				typeof payload === 'object' && payload !== null && 'error' in payload
-					? String((payload as { error: unknown }).error)
+				payloadObject && 'error' in payloadObject
+					? String((payloadObject as { error: unknown }).error)
 					: 'Failed to save score'
 			throw new Error(message)
 		}
