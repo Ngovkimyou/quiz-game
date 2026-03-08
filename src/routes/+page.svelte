@@ -5,7 +5,7 @@
 	import { stopGameBgm } from '$lib/components/gameBgm'
 	import { playHover, playClick, getHomePageBgm } from '$lib/client/audio/audioManager'
 
-	let audio: HTMLAudioElement | null
+	let audio: HTMLAudioElement | undefined
 
 	onMount(() => {
 		stopGameBgm()

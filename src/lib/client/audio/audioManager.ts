@@ -16,14 +16,14 @@ const DEFAULT_SOUND_VOLUME = 0.5
 const MUSIC_VOLUME = 0.2
 
 // Audio instances (lazy-loaded)
-let hoverSound: HTMLAudioElement | null = null
-let clickSound: HTMLAudioElement | null = null
-let correctSound: HTMLAudioElement | null = null
-let wrongSound: HTMLAudioElement | null = null
-let backSound: HTMLAudioElement | null = null
-let popUpSound: HTMLAudioElement | null = null
-let timesUpSound: HTMLAudioElement | null = null
-let homePageAudio: HTMLAudioElement | null = null
+let hoverSound: HTMLAudioElement | undefined = undefined
+let clickSound: HTMLAudioElement | undefined = undefined
+let correctSound: HTMLAudioElement | undefined = undefined
+let wrongSound: HTMLAudioElement | undefined = undefined
+let backSound: HTMLAudioElement | undefined = undefined
+let popUpSound: HTMLAudioElement | undefined = undefined
+let timesUpSound: HTMLAudioElement | undefined = undefined
+let homePageAudio: HTMLAudioElement | undefined = undefined
 
 // Initialize audio instance with common settings
 function createAudioInstance(
@@ -38,64 +38,64 @@ function createAudioInstance(
 }
 
 // Lazy initialization helpers
-function getHoverSound(): HTMLAudioElement | null {
-	if (!browser) return null
+function getHoverSound(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!hoverSound) {
 		hoverSound = createAudioInstance(AUDIO_PATHS.SHIMMER)
 	}
 	return hoverSound
 }
 
-function getClickSound(): HTMLAudioElement | null {
-	if (!browser) return null
+function getClickSound(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!clickSound) {
 		clickSound = createAudioInstance(AUDIO_PATHS.BUTTON_CLICK)
 	}
 	return clickSound
 }
 
-function getCorrectSound(): HTMLAudioElement | null {
-	if (!browser) return null
+function getCorrectSound(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!correctSound) {
 		correctSound = createAudioInstance(AUDIO_PATHS.CORRECT_ANSWER)
 	}
 	return correctSound
 }
 
-function getWrongSound(): HTMLAudioElement | null {
-	if (!browser) return null
+function getWrongSound(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!wrongSound) {
 		wrongSound = createAudioInstance(AUDIO_PATHS.WRONG_ANSWER)
 	}
 	return wrongSound
 }
 
-function getBackSound(): HTMLAudioElement | null {
-	if (!browser) return null
+function getBackSound(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!backSound) {
 		backSound = createAudioInstance(AUDIO_PATHS.GO_BACK_SOUND)
 	}
 	return backSound
 }
 
-function getPopUpSound(): HTMLAudioElement | null {
-	if (!browser) return null
+function getPopUpSound(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!popUpSound) {
 		popUpSound = createAudioInstance(AUDIO_PATHS.CONFIRM_CANCEL_BUTTON)
 	}
 	return popUpSound
 }
 
-function getTimesUpSound(): HTMLAudioElement | null {
-	if (!browser) return null
+function getTimesUpSound(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!timesUpSound) {
 		timesUpSound = createAudioInstance(AUDIO_PATHS.TIME_IS_UP)
 	}
 	return timesUpSound
 }
 
-function getHomePageAudio(): HTMLAudioElement | null {
-	if (!browser) return null
+function getHomePageAudio(): HTMLAudioElement | undefined {
+	if (!browser) return undefined
 	if (!homePageAudio) {
 		homePageAudio = createAudioInstance(AUDIO_PATHS.AFTERGLOW, MUSIC_VOLUME)
 		homePageAudio.loop = true
@@ -160,7 +160,7 @@ export function playTimesUp(): void {
 	}
 }
 
-export function getHomePageBgm(): HTMLAudioElement | null {
+export function getHomePageBgm(): HTMLAudioElement | undefined {
 	return getHomePageAudio()
 }
 

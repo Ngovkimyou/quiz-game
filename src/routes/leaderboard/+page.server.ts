@@ -7,8 +7,8 @@ export const load = async ({ platform, locals }) => {
 		return {
 			columns,
 			rows,
-			currentUserId: locals.id?.toString() ?? null,
-			currentUserName: locals.name ?? null,
+			currentUserId: locals.id?.toString() ?? undefined,
+			currentUserName: locals.name ?? undefined,
 			// These datas are passed to the +page.svelte file in the same folder
 		}
 	} catch (error) {
@@ -16,8 +16,8 @@ export const load = async ({ platform, locals }) => {
 		return {
 			columns: [],
 			rows: [],
-			currentUserId: locals.id?.toString() ?? null,
-			currentUserName: locals.name ?? null,
+			currentUserId: locals.id?.toString() ?? undefined,
+			currentUserName: locals.name ?? undefined,
 		}
 	}
 }

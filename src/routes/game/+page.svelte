@@ -33,7 +33,7 @@
 	let loading = true
 	let showPreGameCountdown = false
 	let preGameCountdownLabel = '3'
-	let preGameCountdownTimeout: ReturnType<typeof setTimeout> | null = null
+	let preGameCountdownTimeout: ReturnType<typeof setTimeout> | undefined = undefined
 	let questionLocked = false
 
 	// SHUFFLE QUESTIONS
@@ -92,7 +92,7 @@
 	let currentIndex = 0
 	let score = 0
 	let wrongAnswers: WrongAnswer[] = []
-	let selectedIndex: number | null = null
+	let selectedIndex: number | undefined = undefined
 	let showResult = false
 	let gameOver = false
 
@@ -133,7 +133,7 @@
 			}
 
 			showPreGameCountdown = false
-			preGameCountdownTimeout = null
+			preGameCountdownTimeout = undefined
 			startTimer()
 		}
 
@@ -191,7 +191,7 @@
 			currentIndex = 0
 		}
 
-		selectedIndex = null
+		selectedIndex = undefined
 		showResult = false
 		questionLocked = false
 	}
@@ -202,7 +202,7 @@
 		currentIndex = 0
 		score = 0
 		wrongAnswers = []
-		selectedIndex = null
+		selectedIndex = undefined
 		showResult = false
 		gameOver = false
 		timeLeft = 60
@@ -329,7 +329,7 @@
 						on:click={() => selectAnswer(index)}
 						class="group relative w-full cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
 			 hover:scale-[1.02]
-			{selectedIndex === null
+			{selectedIndex === undefined
 							? 'border-slate-700 hover:border-indigo-500'
 							: index === questions[currentIndex].answerIndex
 								? 'border-green-500 bg-green-600/20 text-green-300 hover:border-green-500'
@@ -340,7 +340,7 @@
 						<div class="flex items-center gap-4">
 							<div
 								class="flex h-10 w-10 items-center justify-center rounded-full border
-					{selectedIndex === null
+					{selectedIndex === undefined
 									? 'border-slate-500 text-slate-300'
 									: index === questions[currentIndex].answerIndex
 										? 'border-green-500 text-green-300'
@@ -412,7 +412,7 @@
 						on:mouseenter={playHover}
 						on:click={() => {
 							playClick()
-							if (playerName == null || playerName == '') {
+							if (playerName === undefined || playerName === '') {
 								showSaveModal = true
 							} else {
 								showSaveModal = false

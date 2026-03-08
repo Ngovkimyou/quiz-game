@@ -3,10 +3,10 @@ import { browser } from '$app/environment'
 const GAME_BGM_SRC = '/audio/quiz-music.ogg'
 const GAME_BGM_VOLUME = 0.3
 
-let gameBgm: HTMLAudioElement | null = null
+let gameBgm: HTMLAudioElement | undefined = undefined
 
 function getGameBgm() {
-	if (!browser) return null
+	if (!browser) return undefined
 	if (!gameBgm) {
 		gameBgm = new Audio(GAME_BGM_SRC)
 		gameBgm.preload = 'auto'

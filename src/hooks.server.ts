@@ -7,7 +7,7 @@ import { getSessionCookieName, parseAndVerifySessionValue } from '$lib/server/se
 export const handle: Handle = async ({ event, resolve }) => {
 	const sessionCookieName = getSessionCookieName()
 	const sessionToken = event.cookies.get(sessionCookieName)
-	let session: Awaited<ReturnType<typeof parseAndVerifySessionValue>> = null
+	let session: Awaited<ReturnType<typeof parseAndVerifySessionValue>> = undefined
 
 	try {
 		session = await parseAndVerifySessionValue(sessionToken, event.platform?.env)
