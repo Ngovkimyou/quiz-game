@@ -1,6 +1,7 @@
 import { getUserRanking } from '$lib/server/getTursoClient'
+import type { PageServerLoad } from './$types'
 
-export const load = async ({ platform, locals }) => {
+export const load: PageServerLoad = async ({ platform, locals }) => {
 	try {
 		const { columns, rows } = await getUserRanking(platform?.env)
 		console.log('@leaderboard => Retrieved users:', columns, rows)

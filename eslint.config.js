@@ -1,16 +1,19 @@
 import prettier from 'eslint-config-prettier'
 import path from 'node:path'
-import { includeIgnoreFile } from '@eslint/compat'
 import js from '@eslint/js'
-import svelte from 'eslint-plugin-svelte'
-import { defineConfig } from 'eslint/config'
 import globals from 'globals'
-import ts from 'typescript-eslint'
+import svelte from 'eslint-plugin-svelte'
 import svelteConfig from './svelte.config.js'
+import { defineConfig } from 'eslint/config'
+import { includeIgnoreFile } from '@eslint/compat'
 import noCommentedCode from 'eslint-plugin-no-commented-code'
 import unicorn from 'eslint-plugin-unicorn'
+import ts from 'typescript-eslint'
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore')
+const explicitReturnTypeRules = {
+	'@typescript-eslint/explicit-function-return-type': 'error',
+}
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
@@ -34,6 +37,10 @@ export default defineConfig(
 		},
 	},
 	{
+		files: ['**/*.ts'],
+		rules: explicitReturnTypeRules,
+	},
+	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
 		languageOptions: {
 			parserOptions: {
@@ -43,5 +50,6 @@ export default defineConfig(
 				svelteConfig,
 			},
 		},
+		rules: explicitReturnTypeRules,
 	},
 )

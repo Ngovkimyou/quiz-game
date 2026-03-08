@@ -6,7 +6,10 @@ const NAME_MIN_LENGTH = 2
 const NAME_MAX_LENGTH = 24
 const NAME_PATTERN = /^[\p{L}\p{N}\p{M} _.-]+$/u
 
-export async function UpdateScore(name: string, score: number | undefined = undefined) {
+export async function UpdateScore(
+	name: string,
+	score: number | undefined = undefined,
+): Promise<unknown> {
 	// This function can't run if an id and a score aren't given
 	if (!name || score === undefined) {
 		throw new Error('You need to give name and score')

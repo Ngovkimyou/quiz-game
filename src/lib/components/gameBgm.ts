@@ -5,7 +5,7 @@ const GAME_BGM_VOLUME = 0.3
 
 let gameBgm: HTMLAudioElement | undefined = undefined
 
-function getGameBgm() {
+function getGameBgm(): HTMLAudioElement | undefined {
 	if (!browser) return undefined
 	if (!gameBgm) {
 		gameBgm = new Audio(GAME_BGM_SRC)
@@ -20,7 +20,7 @@ function getGameBgm() {
 	return gameBgm
 }
 
-export async function startGameBgm() {
+export async function startGameBgm(): Promise<void> {
 	const audio = getGameBgm()
 	if (!audio || !audio.paused) return
 
@@ -31,7 +31,7 @@ export async function startGameBgm() {
 	}
 }
 
-export async function restartGameBgm() {
+export async function restartGameBgm(): Promise<void> {
 	const audio = getGameBgm()
 	if (!audio) return
 
@@ -40,7 +40,7 @@ export async function restartGameBgm() {
 	await startGameBgm()
 }
 
-export function stopGameBgm() {
+export function stopGameBgm(): void {
 	const audio = getGameBgm()
 	if (!audio) return
 

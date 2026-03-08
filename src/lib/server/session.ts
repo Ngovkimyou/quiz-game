@@ -8,7 +8,7 @@ type SessionPayload = {
 	exp: number
 }
 
-function getSessionSecret(platformEnv?: App.Platform['env']) {
+function getSessionSecret(platformEnv?: App.Platform['env']): string {
 	const fromPlatform = (platformEnv as Record<string, unknown> | undefined)?.QUIZ_SESSION_SECRET
 	const fromPlatformTurso = (platformEnv as Record<string, unknown> | undefined)?.TURSO_AUTH_TOKEN
 	const fromNodeEnv = env.QUIZ_SESSION_SECRET
@@ -27,7 +27,7 @@ function getSessionSecret(platformEnv?: App.Platform['env']) {
 	return secret
 }
 
-function toBase64Url(bytes: Uint8Array) {
+function toBase64Url(bytes: Uint8Array): string {
 	let base64 = ''
 	for (let i = 0; i < bytes.length; i++) {
 		base64 += String.fromCharCode(bytes[i])
@@ -36,7 +36,7 @@ function toBase64Url(bytes: Uint8Array) {
 	return btoa(base64).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
 }
 
-function fromBase64Url(input: string) {
+function fromBase64Url(input: string): Uint8Array {
 	const normalized = input.replace(/-/g, '+').replace(/_/g, '/')
 	const padded = normalized + '='.repeat((4 - (normalized.length % 4)) % 4)
 	const binary = atob(padded)
@@ -49,7 +49,7 @@ function fromBase64Url(input: string) {
 	return bytes
 }
 
-async function signText(secret: string, value: string) {
+async function signText(secret: string, value: string): Promise<string> {
 	const key = await crypto.subtle.importKey(
 		'raw',
 		new TextEncoder().encode(secret),
@@ -61,7 +61,7 @@ async function signText(secret: string, value: string) {
 	return toBase64Url(new Uint8Array(signature))
 }
 
-function constantTimeEqual(a: string, b: string) {
+function constantTimeEqual(a: string, b: string): boolean {
 	if (a.length !== b.length) return false
 
 	let mismatch = 0
@@ -76,7 +76,7 @@ export async function createSignedSessionValue(
 	id: string,
 	platformEnv?: App.Platform['env'],
 	ttlSeconds = SESSION_TTL_SECONDS,
-) {
+): Promise<string> {
 	const payload: SessionPayload = {
 		id: id.toString(),
 		exp: Math.floor(Date.now() / 1000) + ttlSeconds,
@@ -90,7 +90,7 @@ export async function createSignedSessionValue(
 export async function parseAndVerifySessionValue(
 	token: string | undefined,
 	platformEnv?: App.Platform['env'],
-) {
+): Promise<SessionPayload | undefined> {
 	if (!token) return undefined
 
 	const [payloadPart, signaturePart] = token.split('.')
@@ -111,10 +111,10 @@ export async function parseAndVerifySessionValue(
 	}
 }
 
-export function getSessionCookieName() {
+export function getSessionCookieName(): string {
 	return SESSION_COOKIE_NAME
 }
 
-export function getSessionTtlSeconds() {
+export function getSessionTtlSeconds(): number {
 	return SESSION_TTL_SECONDS
 }

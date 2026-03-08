@@ -18,7 +18,7 @@ const RATE_LIMIT_MAX_REQUESTS = 15
 
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
 
-function getClientKey(request: Request, userId?: string) {
+function getClientKey(request: Request, userId?: string): string {
 	const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
 	const realIp = request.headers.get('x-real-ip')?.trim()
 	const cfIp = request.headers.get('cf-connecting-ip')?.trim()
@@ -27,7 +27,7 @@ function getClientKey(request: Request, userId?: string) {
 }
 
 // Simple in-memory rate limiter based on user ID and IP address.
-function isRateLimited(key: string) {
+function isRateLimited(key: string): boolean {
 	const now = Date.now()
 
 	if (rateLimitStore.size > 10_000) {
@@ -49,7 +49,7 @@ function isRateLimited(key: string) {
 	return existing.count > RATE_LIMIT_MAX_REQUESTS
 }
 // 	Normalize the name and check if it's valid, if not it will return null
-function normalizeName(name: unknown) {
+function normalizeName(name: unknown): string | undefined {
 	if (typeof name !== 'string') return undefined
 	const trimmed = name.trim()
 	if (trimmed.length < NAME_MIN_LENGTH || trimmed.length > NAME_MAX_LENGTH) return undefined
@@ -57,7 +57,7 @@ function normalizeName(name: unknown) {
 	return trimmed
 }
 
-function isValidScore(score: unknown) {
+function isValidScore(score: unknown): boolean {
 	return (
 		typeof score === 'number' &&
 		Number.isFinite(score) &&
@@ -145,7 +145,7 @@ async function updateUser(
 	id: string,
 	name: string,
 	score: number,
-) {
+): Promise<void> {
 	if (!id || !isValidScore(score)) {
 		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`)
 	}
