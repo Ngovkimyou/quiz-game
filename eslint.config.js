@@ -1,14 +1,14 @@
 import prettier from 'eslint-config-prettier'
 import path from 'node:path'
-import { includeIgnoreFile } from '@eslint/compat'
 import js from '@eslint/js'
-import svelte from 'eslint-plugin-svelte'
-import { defineConfig } from 'eslint/config'
 import globals from 'globals'
-import ts from 'typescript-eslint'
+import svelte from 'eslint-plugin-svelte'
 import svelteConfig from './svelte.config.js'
+import { defineConfig } from 'eslint/config'
+import { includeIgnoreFile } from '@eslint/compat'
 import noCommentedCode from 'eslint-plugin-no-commented-code'
 import unicorn from 'eslint-plugin-unicorn'
+import ts from 'typescript-eslint'
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore')
 
@@ -31,6 +31,12 @@ export default defineConfig(
 			'no-undef': 'off',
 			'no-commented-code/no-commented-code': 'warn', // or 'error'
 			'unicorn/no-null': 'error',
+		},
+	},
+	{
+		files: ['**/*.ts'],
+		rules: {
+			'@typescript-eslint/explicit-function-return-type': 'error',
 		},
 	},
 	{
