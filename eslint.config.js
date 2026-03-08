@@ -11,6 +11,9 @@ import unicorn from 'eslint-plugin-unicorn'
 import ts from 'typescript-eslint'
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore')
+const explicitReturnTypeRules = {
+	'@typescript-eslint/explicit-function-return-type': 'error',
+}
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
@@ -35,9 +38,7 @@ export default defineConfig(
 	},
 	{
 		files: ['**/*.ts'],
-		rules: {
-			'@typescript-eslint/explicit-function-return-type': 'error',
-		},
+		rules: explicitReturnTypeRules,
 	},
 	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
@@ -49,5 +50,6 @@ export default defineConfig(
 				svelteConfig,
 			},
 		},
+		rules: explicitReturnTypeRules,
 	},
 )
