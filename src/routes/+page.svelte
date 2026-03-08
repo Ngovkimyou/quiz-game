@@ -66,8 +66,8 @@
 
 		<div class="mt-20 flex flex-col gap-6 md:flex-col">
 			<button
-				on:mouseenter={playHover}
-				on:click={() => {
+				onmouseenter={playHover}
+				onclick={() => {
 					playClick()
 					startGame()
 				}}
@@ -86,8 +86,8 @@
 			</button>
 
 			<button
-				on:mouseenter={playHover}
-				on:click={() => {
+				onmouseenter={playHover}
+				onclick={() => {
 					goLeaderboard()
 					playClick()
 				}}
@@ -107,7 +107,7 @@
 		</div>
 
 		<button
-			on:click={() => {
+			onclick={() => {
 				toggleMusic()
 				playClick()
 			}}

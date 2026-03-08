@@ -255,7 +255,7 @@
 	<!-- Top Bar -->
 	<div class="relative z-10 flex items-center px-12 py-10 text-sm">
 		<button
-			on:click={() => {
+			onclick={() => {
 				playBack()
 				goHome()
 			}}
@@ -326,7 +326,7 @@
 			<div class="w-full max-w-3xl space-y-6">
 				{#each questions[currentIndex].choices as choice, index (index)}
 					<button
-						on:click={() => selectAnswer(index)}
+						onclick={() => selectAnswer(index)}
 						class="group relative w-full cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
 			 hover:scale-[1.02]
 			{selectedIndex === null
@@ -409,8 +409,8 @@
 
 				<div class="mt-10 flex gap-6">
 					<button
-						on:mouseenter={playHover}
-						on:click={() => {
+						onmouseenter={playHover}
+						onclick={() => {
 							playClick()
 							if (playerName == null || playerName == '') {
 								showSaveModal = true
@@ -432,7 +432,7 @@
 					</button>
 
 					<button
-						on:click={() => {
+						onclick={() => {
 							playClick()
 							restartGame()
 						}}
@@ -450,7 +450,7 @@
 				</div>
 
 				<button
-					on:click={() => {
+					onclick={() => {
 						playBack()
 						goHome()
 					}}
@@ -490,7 +490,7 @@
 
 				<div class="mt-6 flex justify-center gap-4">
 					<button
-						on:click={() => {
+						onclick={() => {
 							playPopUp()
 							saveScore()
 						}}
@@ -504,7 +504,7 @@
 					</button>
 
 					<button
-						on:click={() => {
+						onclick={() => {
 							playPopUp()
 							showSaveModal = false
 						}}
