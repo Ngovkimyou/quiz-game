@@ -1,9 +1,11 @@
 import type { PageServerLoad } from './$types'
+import { getUserSessionData } from '$lib/server/userSessionData'
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async (event) => {
+	const session = getUserSessionData(event)
 	return {
-		name: locals.name,
-		score: locals.score,
-		registered_date: locals.registered_date,
+		session,
+		// These datas will be sent to the +page.svelte page in the same folder
+		// Call it by using $props
 	}
 }

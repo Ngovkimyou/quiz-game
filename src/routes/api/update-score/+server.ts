@@ -6,66 +6,15 @@ import {
 } from '$lib/server/session'
 // This import will take care of all the types problem
 import type { RequestHandler } from './$types'
-
-const MIN_SCORE = 0
-const MAX_SCORE = 40000
-const SCORE_STEP = 100
-const NAME_MIN_LENGTH = 2
-const NAME_MAX_LENGTH = 24
-const NAME_PATTERN = /^[\p{L}\p{N}\p{M} _.-]+$/u
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX_REQUESTS = 15
-
-const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
-
-function getClientKey(request: Request, userId?: string): string {
-	const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-	const realIp = request.headers.get('x-real-ip')?.trim()
-	const cfIp = request.headers.get('cf-connecting-ip')?.trim()
-	const ip = forwardedFor || realIp || cfIp || 'unknown'
-	return `${userId ?? 'anonymous'}:${ip}`
-}
-
-// Simple in-memory rate limiter based on user ID and IP address.
-function isRateLimited(key: string): boolean {
-	const now = Date.now()
-
-	if (rateLimitStore.size > 10_000) {
-		for (const [entryKey, entry] of rateLimitStore) {
-			if (entry.resetAt <= now) rateLimitStore.delete(entryKey)
-		}
-	}
-
-	const existing = rateLimitStore.get(key)
-
-	if (!existing || existing.resetAt <= now) {
-		rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-		return false
-	}
-
-	existing.count += 1
-	rateLimitStore.set(key, existing)
-
-	return existing.count > RATE_LIMIT_MAX_REQUESTS
-}
-// 	Normalize the name and check if it's valid, if not it will return null
-function normalizeName(name: unknown): string | undefined {
-	if (typeof name !== 'string') return undefined
-	const trimmed = name.trim()
-	if (trimmed.length < NAME_MIN_LENGTH || trimmed.length > NAME_MAX_LENGTH) return undefined
-	if (!NAME_PATTERN.test(trimmed)) return undefined
-	return trimmed
-}
-
-function isValidScore(score: unknown): boolean {
-	return (
-		typeof score === 'number' &&
-		Number.isFinite(score) &&
-		score >= MIN_SCORE &&
-		score <= MAX_SCORE &&
-		score % SCORE_STEP === 0
-	)
-}
+import {
+	isValidScore,
+	normalizeName,
+	NAME_MAX_LENGTH,
+	NAME_MIN_LENGTH,
+	MAX_SCORE,
+	MIN_SCORE,
+	SCORE_STEP,
+} from '$lib'
 
 // This endpoint will receive the name and score from src/lib/components/updateScore and save it to the database
 export const POST: RequestHandler = async ({ request, cookies, locals, platform }) => {
@@ -82,57 +31,66 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 
 	try {
 		const isHttps = new URL(request.url).protocol === 'https:'
-		const id_cookies = locals.id?.toString()
-		const name_cookies = locals.name
+		const sessionUserId = locals.id?.toString()
+		const sessionUserName = locals.name
 		const { name, score } = await request.json()
 
-		const limiterKey = getClientKey(request, id_cookies)
-		if (isRateLimited(limiterKey)) {
-			return new Response(JSON.stringify({ error: 'Too many requests, please try again later' }), {
-				status: 429,
-			})
-		}
-
-		const safeName = normalizeName(name)
-
-		if (!safeName || !isValidScore(score)) {
-			console.error('@update-score => Invalid data:', { name, score })
+		if (name !== sessionUserName) {
 			return new Response(
-				JSON.stringify({
-					error: `Name must be ${NAME_MIN_LENGTH}-${NAME_MAX_LENGTH} valid characters and score must be ${MIN_SCORE}-${MAX_SCORE} in steps of ${SCORE_STEP}`,
-				}),
+				JSON.stringify({ success: false, error: 'mismatch name in the cookies and the request' }),
 				{ status: 400 },
 			)
 		}
 
-		if (id_cookies && name_cookies) {
-			await updateUser(db, id_cookies, name_cookies, score)
+		if (sessionUserId && sessionUserName) {
+			await updateUser(db, sessionUserId, sessionUserName, score)
 			return new Response(JSON.stringify({ success: true, mode: 'update' }), { status: 200 })
-		}
+		} else {
+			// 	Normalize the name and check if it's valid, if not it will return undefined
+			const safeName = normalizeName(name)
 
-		const result = await db.execute({
-			sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING id',
-			args: [safeName, score],
-		})
+			if (!safeName || !isValidScore(score)) {
+				console.error('@update-score => Invalid data:', { name, score })
+				return new Response(
+					JSON.stringify({
+						error: `Name must be ${NAME_MIN_LENGTH}-${NAME_MAX_LENGTH} valid characters and score must be ${MIN_SCORE}-${MAX_SCORE} in steps of ${SCORE_STEP}`,
+					}),
+					{ status: 400 },
+				)
+			}
 
-		const id = result.rows[0]?.id?.toString()
-
-		if (id) {
-			const token = await createSignedSessionValue(id, platform?.env, getSessionTtlSeconds())
-			cookies.set(getSessionCookieName(), token, {
-				path: '/',
-				httpOnly: true,
-				sameSite: 'strict',
-				secure: isHttps,
-				maxAge: getSessionTtlSeconds(),
+			const result = await db.execute({
+				sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING id',
+				args: [safeName, score],
 			})
-		}
-		// Remove legacy cookies from older versions.
-		cookies.delete('id', { path: '/' })
-		cookies.delete('name', { path: '/' })
 
-		console.log('@update-score => INSERT SUCCESSFULLY INTO DATABASE')
-		return new Response(JSON.stringify({ success: true, mode: 'insert', id }), { status: 200 })
+			const id = result.rows[0]?.id?.toString()
+			const request_time = Date.now()
+			const client_ip_address = locals.ip_address
+
+			if (id) {
+				const token = await createSignedSessionValue(
+					id,
+					platform?.env,
+					getSessionTtlSeconds(),
+					client_ip_address,
+					request_time,
+				)
+				cookies.set(getSessionCookieName(), token, {
+					path: '/',
+					httpOnly: true,
+					sameSite: 'strict',
+					secure: isHttps,
+					maxAge: getSessionTtlSeconds(),
+				})
+			}
+			// Remove legacy cookies from older versions.
+			cookies.delete('id', { path: '/' })
+			cookies.delete('name', { path: '/' })
+
+			console.log('@update-score => INSERT SUCCESSFULLY INTO DATABASE')
+			return new Response(JSON.stringify({ success: true, mode: 'insert', id }), { status: 200 })
+		}
 	} catch (error) {
 		console.error('@update-score => Unexpected server error:', error)
 		const message = error instanceof Error ? error.message : 'Unknown server error'
@@ -146,7 +104,9 @@ async function updateUser(
 	name: string,
 	score: number,
 ): Promise<void> {
-	if (!id || !isValidScore(score)) {
+	if (!id || !name || !isValidScore(score)) {
+		if (!id) throw new Error('User ID is required')
+		if (!name) throw new Error('User name is required')
 		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`)
 	}
 

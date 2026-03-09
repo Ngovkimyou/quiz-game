@@ -2,8 +2,8 @@
 	import { goto } from '$app/navigation'
 	import { onMount, onDestroy } from 'svelte'
 	import { SvelteSet } from 'svelte/reactivity'
-	import { UpdateScore } from '$lib/components/updateScore'
-	import { restartGameBgm, startGameBgm } from '$lib/components/gameBgm'
+	import { updateScore } from '$lib/client/api/updateScore.js'
+	import { restartGameBgm, startGameBgm } from '$lib/client/audio/gameBgm'
 	import { resolve } from '$app/paths'
 	import {
 		playHover,
@@ -86,7 +86,7 @@
 
 	let showSaveModal = false
 	let isSaving = false
-	let playerName = data.name ?? ''
+	let playerName = data.session.name ?? ''
 	console.log('@game/+page.svelte (playerName) => ', playerName)
 
 	let currentIndex = 0
@@ -217,7 +217,7 @@
 		isSaving = true
 
 		try {
-			await UpdateScore(playerName.trim(), score)
+			await updateScore(playerName.trim(), score)
 			showSaveModal = false
 			playerName = ''
 			goto(resolve('/leaderboard'))
