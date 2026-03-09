@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types'
-import { getUserSessionData } from '$lib'
+import { getUserSessionData } from '$lib/server/userSessionData'
 
 export const load: PageServerLoad = async (event) => {
 	const session = getUserSessionData(event)

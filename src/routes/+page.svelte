@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { resolve } from '$app/paths'
-	import { stopGameBgm } from '$lib/components/gameBgm'
+	import { stopGameBgm } from '$lib/client/audio/gameBgm'
 	import { playHover, playClick, getHomePageBgm } from '$lib/client/audio/audioManager'
 
 	let audio: HTMLAudioElement | undefined

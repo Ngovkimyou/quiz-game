@@ -6,6 +6,9 @@ const SESSION_TTL_SECONDS = 60 * 60 * 24 // 1 day
 type SessionPayload = {
 	id: string
 	exp: number
+	ip_address: string | undefined
+	request_time: number | undefined
+	count: number
 }
 
 function getSessionSecret(platformEnv?: App.Platform['env']): string {
@@ -76,17 +79,23 @@ export async function createSignedSessionValue(
 	id: string,
 	platformEnv?: App.Platform['env'],
 	ttlSeconds = SESSION_TTL_SECONDS,
+	ip_address?: string,
+	request_time?: number,
+	count: number = 1,
 ): Promise<string> {
 	const payload: SessionPayload = {
 		id: id.toString(),
 		exp: Math.floor(Date.now() / 1000) + ttlSeconds,
+		ip_address,
+		request_time,
+		count,
 	}
 	const payloadPart = toBase64Url(new TextEncoder().encode(JSON.stringify(payload)))
 	const signaturePart = await signText(getSessionSecret(platformEnv), payloadPart)
 	return `${payloadPart}.${signaturePart}`
 }
 
-// This function is used for parsing and verifying the session value from the cookie. It returns the session payload if the value is valid, otherwise it returns null.
+// This function is used for parsing and verifying the session value from the cookie. It returns the session payload if the value is valid, otherwise it returns undefined.
 export async function parseAndVerifySessionValue(
 	token: string | undefined,
 	platformEnv?: App.Platform['env'],
