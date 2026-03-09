@@ -3,7 +3,7 @@
 	import { onMount, onDestroy } from 'svelte'
 	import { SvelteSet } from 'svelte/reactivity'
 	import { updateScore } from '$lib/client/api/updateScore.js'
-	import { restartGameBgm, startGameBgm } from '$lib/components/gameBgm'
+	import { restartGameBgm, startGameBgm } from '$lib/client/audio/gameBgm'
 	import { resolve } from '$app/paths'
 	import {
 		playHover,
