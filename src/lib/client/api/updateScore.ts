@@ -14,7 +14,7 @@ export async function updateScore(
 	if (!name || score === undefined) {
 		throw new Error('You need to give name and score')
 	} else {
-		// Convert name to string just to be safe cause people might name themselve as number
+		// Convert name to string just to be safe cause people might name themselves as number
 		name = name.toString().trim()
 
 		if (

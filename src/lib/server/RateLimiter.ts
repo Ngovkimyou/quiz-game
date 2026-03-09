@@ -1,12 +1,12 @@
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX_REQUESTS = 15
 
-// This function is decaprecated(Use build-in function in hook instead)
+// This function is deprecated(Use build-in function in hook instead)
 export function getClientKey(request: Request, userId?: string): string {
 	const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
 	const realIp = request.headers.get('x-real-ip')?.trim()
 	const cfIp = request.headers.get('cf-connecting-ip')?.trim()
-	// Added crypto.randomUUID() to generate identification instead of unkown
+	// Added crypto.randomUUID() to generate identification instead of unknown
 	const ip = forwardedFor || realIp || cfIp || 'unknown'
 	return `${userId ?? 'anonymous'}:${ip}`
 }

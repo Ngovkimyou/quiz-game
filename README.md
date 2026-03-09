@@ -4,7 +4,7 @@ Creating a simple quiz game (English-Japanese based) to test user Japanese langu
 
 This project aims for simulating a real-world working environment, be able to collaborate with team members, understanding client requirements, and write documentation.
 
-In this group project, the README.md file is intentionally designed as a guildline to ensure all team members have leverage access to shared resources and can stay aligned and work efficiently. To enable team members to learn and explore comprehensively, this guideline will be divided into `Quick Setup` and `Build From Scratch`
+In this group project, the README.md file is intentionally designed as a guideline to ensure all team members have leverage access to shared resources and can stay aligned and work efficiently. To enable team members to learn and explore comprehensively, this guideline will be divided into `Quick Setup` and `Build From Scratch`
 
 ### ⚠️ Prerequisite
 
@@ -110,7 +110,7 @@ If you have multiples **CSS** files, it's a good practice to organize in `src/st
 
 This is where front-end requests to fetch data from database. Since we are using **Turso** as database, an authentication is needed to be stored safely in `.env` file.
 
-### 🔧 Creat `.env` file
+### 🔧 Create `.env` file
 
 This is where you store your credential token and url from Turso.
 Simply create a file in your project and name `.env` or create via command:
@@ -155,7 +155,7 @@ npm install -D @sveltejs/adapter-node
 
 After that, in **svelte.config.js** change to `import adapter from '@sveltejs/adapter-node`
 
-⚠️**Note:** if you use custom modules / libraries and ever encounter those being undefined or unregconized, make sure you properly install on your project folder, otherwise run `npm install` for default dependacies. Go check **package.json** file for more details.
+⚠️**Note:** if you use custom modules / libraries and ever encounter those being undefined or unrecognized, make sure you properly install on your project folder, otherwise run `npm install` for default dependencies. Go check **package.json** file for more details.
 
 </details>
 
@@ -190,7 +190,7 @@ npm run preview
 
 💭*Optional*
 
-If you prefer to work on development mode that automatically recompiles on change:
+If you prefer to work on development mode that automatically recompile on change:
 
 ```bash
 npm run dev
@@ -198,7 +198,7 @@ npm run dev
 
 <br>
 
-_💡 Useful Tips_ : It is recommend to run `npm run dev` during performing changes, and everytime you have done with changes excecute `npm run build`.
+_💡 Useful Tips_ : It is recommend to run `npm run dev` during performing changes, and every time you have done with changes execute `npm run build`.
 
 <br>
 
