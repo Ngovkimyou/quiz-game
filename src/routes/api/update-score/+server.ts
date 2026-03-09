@@ -6,14 +6,15 @@ import {
 } from '$lib/server/session'
 // This import will take care of all the types problem
 import type { RequestHandler } from './$types'
-import { isValidScore, normalizeName } from '$lib'
 import {
+	isValidScore,
+	normalizeName,
 	NAME_MAX_LENGTH,
 	NAME_MIN_LENGTH,
 	MAX_SCORE,
 	MIN_SCORE,
 	SCORE_STEP,
-} from '$lib/shared/validation'
+} from '$lib'
 
 // This endpoint will receive the name and score from src/lib/components/updateScore and save it to the database
 export const POST: RequestHandler = async ({ request, cookies, locals, platform }) => {
@@ -33,6 +34,13 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 		const sessionUserId = locals.id?.toString()
 		const sessionUserName = locals.name
 		const { name, score } = await request.json()
+
+		if (name !== sessionUserName) {
+			return new Response(
+				JSON.stringify({ success: false, error: 'mismatch name in the cookies and the request' }),
+				{ status: 400 },
+			)
+		}
 
 		if (sessionUserId && sessionUserName) {
 			await updateUser(db, sessionUserId, sessionUserName, score)
@@ -96,7 +104,7 @@ async function updateUser(
 	name: string,
 	score: number,
 ): Promise<void> {
-	if (!id || !isValidScore(score)) {
+	if (!id || !name || !isValidScore(score)) {
 		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`)
 	}
 
