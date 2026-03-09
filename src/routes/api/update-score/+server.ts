@@ -124,6 +124,6 @@ async function updateUser(
 	})
 
 	console.log(
-		`[@update-score(api)] User named: ${name} secussfully update their score to ${nextScore}`,
+		`[@update-score(api)] User named: ${name} successfully update their score to ${nextScore}`,
 	)
 }

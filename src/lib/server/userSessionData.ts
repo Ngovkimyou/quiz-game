@@ -2,7 +2,7 @@ import type { RequestEvent } from '@sveltejs/kit'
 
 export function getUserSessionData(event: RequestEvent): App.Locals {
 	return {
-		// These datas will be sent to the +page.svelte page in the same folder
+		// These data will be sent to the +page.svelte page in the same folder
 		// Call it by using $props
 		id: event.locals.id,
 		name: event.locals.name,

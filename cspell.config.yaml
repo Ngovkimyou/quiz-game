@@ -1,0 +1,21 @@
+version: '0.2'
+language: en
+ignorePaths:
+  - .vscode/**
+  - node_modules/**
+  - .pnpm-store/**
+  - .svelte-kit/**
+  - dist
+  - build/**
+  - dist/**
+  - '**/*.d.ts'
+  - '**/*.map'
+  - '**/*.min.js'
+  - '**/*.svg'
+  - .git/**/*
+  - .gitignore
+  - package-lock.json
+  - package.json
+words:
+  - libsql
+  - Turso

@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ platform, locals }) => {
 			rows,
 			currentUserId: locals.id?.toString() ?? undefined,
 			currentUserName: locals.name ?? undefined,
-			// These datas are passed to the +page.svelte file in the same folder
+			// These data are passed to the +page.svelte file in the same folder
 		}
 	} catch (error) {
 		console.error('@leaderboard => Failed to load ranking:', error)

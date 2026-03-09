@@ -5,7 +5,7 @@ export const load: PageServerLoad = async (event) => {
 	const session = getUserSessionData(event)
 	return {
 		session,
-		// These datas will be sent to the +page.svelte page in the same folder
+		// These data will be sent to the +page.svelte page in the same folder
 		// Call it by using $props
 	}
 }
