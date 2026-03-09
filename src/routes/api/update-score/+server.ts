@@ -104,8 +104,11 @@ async function updateUser(
 	name: string,
 	score: number,
 ): Promise<void> {
+	
 	if (!id || !name || !isValidScore(score)) {
-		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`)
+		if (!id) throw new Error('User ID is required')
+        if (!name) throw new Error('User name is required')
+        throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`)
 	}
 
 	const current = await db.execute({
