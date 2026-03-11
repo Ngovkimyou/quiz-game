@@ -1,22 +1,26 @@
 pre-commit:
   parallel: true
   commands:
+    spellcheck:
+      run: pnpm spellcheck
+
     prettier:
-      glob: '*.{css,html,js,json,jsonc,md,svelte,ts,yaml,yml}'
-      run: npx prettier --write {staged_files}
+      glob: '**/*.{css,html,js,json,jsonc,md,svelte,ts,yaml,yml}'
+      run: pnpm exec prettier --write {staged_files}
       stage_fixed: true
+
     eslint:
-      glob: '*.{js,svelte,ts}'
-      run: npx eslint --fix {staged_files}
+      glob: '**/*.{js,svelte,ts}'
+      run: pnpm exec eslint --fix {staged_files}
       stage_fixed: true
 
 pre-push:
   commands:
     lint:
-      run: npm run lint
-    spellcheck:
-      run: npm run spellcheck
+      run: pnpm lint
+    audit:
+      run: pnpm audit
     test:
-      run: npm run test
+      run: pnpm test
     build:
-      run: npm run build
+      run: pnpm build
