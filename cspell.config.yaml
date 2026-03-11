@@ -14,8 +14,8 @@ ignorePaths:
   - '**/*.svg'
   - .git/**/*
   - .gitignore
-  - package-lock.json
   - package.json
+  - pnpm-lock.yaml
 words:
   - libsql
   - Turso
