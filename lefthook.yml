@@ -3,6 +3,8 @@ pre-commit:
   commands:
     spellcheck:
       run: pnpm spellcheck
+    audit:
+      run: pnpm audit
 
     prettier:
       glob: '**/*.{css,html,js,json,jsonc,md,svelte,ts,yaml,yml}'
@@ -18,8 +20,6 @@ pre-push:
   commands:
     lint:
       run: pnpm lint
-    audit:
-      run: pnpm audit
     test:
       run: pnpm test
     build:
