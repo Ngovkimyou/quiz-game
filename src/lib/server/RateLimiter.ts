@@ -50,6 +50,9 @@ export function isRateLimited(
 			rateLimitStore.set(key, { count: count + 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
 			return { over_Limit, isExist }
 		}
+
+		rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
+		return { over_Limit, isExist }
 		// This condition triggered when there's new user or the request is below the set limit
 	} else if (!isExist || isExist.resetAt <= now) {
 		console.log('@RateLimiter.ts => else if was triggered')
