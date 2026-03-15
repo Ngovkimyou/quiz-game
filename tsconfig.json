@@ -15,6 +15,7 @@
 		"moduleResolution": "bundler",
 
 		// Strictness
-		"noUncheckedIndexedAccess": true
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true
 	}
 }
