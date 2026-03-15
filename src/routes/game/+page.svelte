@@ -41,7 +41,10 @@
 		const result = [...array] // copy
 		for (let i = result.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1))
-			;[result[i], result[j]] = [result[j], result[i]]
+			const currentItem = result[i]
+			const swapItem = result[j]
+			if (currentItem === undefined || swapItem === undefined) continue
+			;[result[i], result[j]] = [swapItem, currentItem]
 		}
 		return result
 	}
@@ -117,16 +120,20 @@
 	function startPreGameCountdown(): void {
 		const steps = ['3', '2', '1', 'GO!']
 		let stepIndex = 0
+		const currentStep = steps[stepIndex]
+		if (currentStep === undefined) return
 
 		showPreGameCountdown = true
-		preGameCountdownLabel = steps[stepIndex]
+		preGameCountdownLabel = currentStep
 		playCountdownTick()
 
 		const advance = (): void => {
 			stepIndex += 1
 
 			if (stepIndex < steps.length) {
-				preGameCountdownLabel = steps[stepIndex]
+				const nextStep = steps[stepIndex]
+				if (nextStep === undefined) return
+				preGameCountdownLabel = nextStep
 				if (preGameCountdownLabel !== 'GO!') playCountdownTick()
 				preGameCountdownTimeout = setTimeout(advance, 900)
 				return
@@ -180,12 +187,14 @@
 		if (currentIndex < questions.length - 1) {
 			currentIndex++
 		} else {
-			const lastQuestion = questions[currentIndex].question
+			const currentQuestion = questions[currentIndex]
+			if (!currentQuestion) return
+			const lastQuestion = currentQuestion.question
 
-			let reshuffled
+			let reshuffled: Question[]
 			do {
 				reshuffled = shuffleQuestions(questions.map(shuffleChoices))
-			} while (reshuffled[0].question === lastQuestion)
+			} while (reshuffled[0]?.question === lastQuestion)
 
 			questions = reshuffled
 			currentIndex = 0
@@ -238,6 +247,8 @@
 				: score >= 1000
 					? 'チャレンジャー'
 					: '初心者'
+
+	$: currentQuestion = questions[currentIndex]
 
 	function goHome(): void {
 		goto(resolve('/'))
@@ -316,22 +327,22 @@
 					{preGameCountdownLabel}
 				</div>
 			</div>
-		{:else if !gameOver}
+		{:else if !gameOver && currentQuestion}
 			<!-- QUESTIONS -->
 			<h2 class="mb-16 max-w-3xl text-3xl font-semibold md:text-4xl">
-				{questions[currentIndex].question}
+				{currentQuestion.question}
 			</h2>
 
 			<!-- CHOICES -->
 			<div class="w-full max-w-3xl space-y-6">
-				{#each questions[currentIndex].choices as choice, index (index)}
+				{#each currentQuestion.choices as choice, index (index)}
 					<button
 						onclick={(): void => selectAnswer(index)}
 						class="group relative w-full cursor-pointer rounded-2xl border bg-slate-900/60 p-6 text-left backdrop-blur-xl transition-all duration-300
 			 hover:scale-[1.02]
 			{selectedIndex === undefined
 							? 'border-slate-700 hover:border-indigo-500'
-							: index === questions[currentIndex].answerIndex
+							: index === currentQuestion.answerIndex
 								? 'border-green-500 bg-green-600/20 text-green-300 hover:border-green-500'
 								: selectedIndex === index
 									? 'border-red-500 bg-red-600/20 text-red-300'
@@ -342,7 +353,7 @@
 								class="flex h-10 w-10 items-center justify-center rounded-full border
 					{selectedIndex === undefined
 									? 'border-slate-500 text-slate-300'
-									: index === questions[currentIndex].answerIndex
+									: index === currentQuestion.answerIndex
 										? 'border-green-500 text-green-300'
 										: selectedIndex === index
 											? 'border-red-500 text-red-300'
@@ -359,7 +370,7 @@
 			{#if showResult}
 				<div class="mt-8 text-center">
 					<p class="text-lg font-semibold">
-						{selectedIndex === questions[currentIndex].answerIndex ? '✅ Correct!' : '❌ Wrong!'}
+						{selectedIndex === currentQuestion.answerIndex ? '✅ Correct!' : '❌ Wrong!'}
 					</p>
 				</div>
 			{/if}
