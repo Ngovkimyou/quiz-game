@@ -33,7 +33,11 @@ function getSessionSecret(platformEnv?: App.Platform['env']): string {
 function toBase64Url(bytes: Uint8Array): string {
 	let base64 = ''
 	for (let i = 0; i < bytes.length; i++) {
-		base64 += String.fromCharCode(bytes[i])
+		const byte = bytes[i]
+		if (byte === undefined) {
+			throw new Error('Failed to encode session bytes')
+		}
+		base64 += String.fromCharCode(byte)
 	}
 
 	return btoa(base64).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')

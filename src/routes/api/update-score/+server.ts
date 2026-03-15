@@ -35,7 +35,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 		const sessionUserName = locals.name
 		const { name, score } = await request.json()
 
-		if (name !== sessionUserName) {
+		if (sessionUserName && name !== sessionUserName) {
 			return new Response(
 				JSON.stringify({ success: false, error: 'mismatch name in the cookies and the request' }),
 				{ status: 400 },
