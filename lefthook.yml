@@ -20,6 +20,8 @@ pre-commit:
 
 pre-push:
   commands:
+    check:
+      run: pnpm check
     test:
       run: pnpm test
     build:
