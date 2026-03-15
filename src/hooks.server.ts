@@ -13,7 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const sessionCookieName = getSessionCookieName()
 	const sessionToken = event.cookies.get(sessionCookieName)
 	console.log('ip_address function in hook: ', event.getClientAddress())
-	let session: Awaited<ReturnType<typeof parseAndVerifySessionValue>> = undefined
+	let session: Awaited<ReturnType<typeof parseAndVerifySessionValue>>
 
 	try {
 		session = await parseAndVerifySessionValue(sessionToken, event.platform?.env)
