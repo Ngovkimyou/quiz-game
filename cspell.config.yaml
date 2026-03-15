@@ -19,3 +19,4 @@ ignorePaths:
 words:
   - libsql
   - Turso
+  - lefthook

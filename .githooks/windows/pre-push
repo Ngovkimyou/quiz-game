@@ -1,0 +1,14 @@
+#!__NODE_PATH__
+
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+
+const repoRoot = process.cwd();
+const lefthookCommand = path.join(repoRoot, 'node_modules', '.bin', 'lefthook.CMD');
+const result = spawnSync(lefthookCommand, ['run', 'pre-push', ...process.argv.slice(2)], {
+	cwd: repoRoot,
+	stdio: 'inherit',
+	shell: true
+});
+
+process.exit(result.status ?? 1);

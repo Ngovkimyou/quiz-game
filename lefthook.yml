@@ -1,6 +1,8 @@
 pre-commit:
   parallel: true
   commands:
+    lint:
+      run: pnpm lint
     spellcheck:
       run: pnpm spellcheck
     audit:
@@ -18,8 +20,6 @@ pre-commit:
 
 pre-push:
   commands:
-    lint:
-      run: pnpm lint
     test:
       run: pnpm test
     build:
