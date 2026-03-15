@@ -5,7 +5,7 @@ import globals from 'globals'
 import svelte from 'eslint-plugin-svelte'
 import svelteConfig from './svelte.config.js'
 import { defineConfig } from 'eslint/config'
-import { includeIgnoreFile } from '@eslint/compat'
+import { fixupPluginRules, includeIgnoreFile } from '@eslint/compat'
 import noCommentedCode from 'eslint-plugin-no-commented-code'
 import unicorn from 'eslint-plugin-unicorn'
 import ts from 'typescript-eslint'
@@ -25,7 +25,7 @@ export default defineConfig(
 	{
 		languageOptions: { globals: { ...globals.browser, ...globals.node } },
 		plugins: {
-			'no-commented-code': noCommentedCode,
+			'no-commented-code': fixupPluginRules(noCommentedCode),
 			unicorn: unicorn,
 		},
 		rules: {

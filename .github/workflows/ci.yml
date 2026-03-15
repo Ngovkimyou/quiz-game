@@ -26,4 +26,4 @@ jobs:
       - run: pnpm lint
       - run: pnpm spellcheck
       - run: pnpm test
-      - run: pnpm audit
+      - run: pnpm audit --prod

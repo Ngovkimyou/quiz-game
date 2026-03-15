@@ -48,7 +48,7 @@ export async function updateScore(
 			body: JSON.stringify({ name, score }),
 		})
 
-		let payload: unknown = undefined
+		let payload: unknown
 		try {
 			payload = await result.json()
 		} catch {
