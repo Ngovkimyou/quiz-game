@@ -64,7 +64,7 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 				args: [safeName, score],
 			})
 
-			const id = result.rows[0]?.id?.toString()
+			const id = result.rows[0]?.['id']?.toString()
 			const request_time = Date.now()
 			const client_ip_address = locals.ip_address
 
@@ -114,7 +114,7 @@ async function updateUser(
 		sql: 'SELECT score FROM `quiz-ranking` WHERE id = ?',
 		args: [id],
 	})
-	const currentScore = Number(current.rows[0]?.score ?? 0)
+	const currentScore = Number(current.rows[0]?.['score'] ?? 0)
 	// Never allow lowering a user's best score.
 	const nextScore = Math.max(currentScore, score)
 

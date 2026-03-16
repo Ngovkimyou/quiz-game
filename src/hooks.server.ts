@@ -65,11 +65,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 					})
 					const user = rows[0]
 
-					if (user?.name) {
+					if (user?.['name']) {
 						event.locals.id = id
-						event.locals.name = user.name?.toString()
-						event.locals.score = user.score
-						event.locals.registered_date = user.registered_date
+						event.locals.name = user['name']?.toString()
+						event.locals.score = user['score']
+						event.locals.registered_date = user['registered_date']
 						event.locals.ip_address = client_ip
 					} else {
 						event.cookies.delete(sessionCookieName, { path: '/' })
