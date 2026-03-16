@@ -12,10 +12,12 @@ type SessionPayload = {
 }
 
 function getSessionSecret(platformEnv?: App.Platform['env']): string {
-	const fromPlatform = (platformEnv as Record<string, unknown> | undefined)?.QUIZ_SESSION_SECRET
-	const fromPlatformTurso = (platformEnv as Record<string, unknown> | undefined)?.TURSO_AUTH_TOKEN
-	const fromNodeEnv = env.QUIZ_SESSION_SECRET
-	const fromNodeTurso = env.TURSO_AUTH_TOKEN
+	const fromPlatform = (platformEnv as Record<string, unknown> | undefined)?.['QUIZ_SESSION_SECRET']
+	const fromPlatformTurso = (platformEnv as Record<string, unknown> | undefined)?.[
+		'TURSO_AUTH_TOKEN'
+	]
+	const fromNodeEnv = env['QUIZ_SESSION_SECRET']
+	const fromNodeTurso = env['TURSO_AUTH_TOKEN']
 	const secret = (
 		(typeof fromPlatform === 'string' && fromPlatform) ||
 		(typeof fromPlatformTurso === 'string' && fromPlatformTurso) ||
