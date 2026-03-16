@@ -26,9 +26,9 @@
 		"isolatedModules": true,
 		"noImplicitOverride": true,
 		"exactOptionalPropertyTypes": true,
-		
+
 		"verbatimModuleSyntax": true,
 		"noEmitOnError": true,
-		"useDefineForClassFields": true,
+		"useDefineForClassFields": true
 	}
 }
