@@ -18,6 +18,17 @@
 		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noImplicitReturns": true
+		"noImplicitReturns": true,
+
+		"allowUnusedLabels": false,
+		"allowUnreachableCode": false,
+		"noFallthroughCasesInSwitch": true,
+		"isolatedModules": true,
+		"noImplicitOverride": true,
+		"exactOptionalPropertyTypes": true,
+		
+		"verbatimModuleSyntax": true,
+		"noEmitOnError": true,
+		"useDefineForClassFields": true,
 	}
 }
