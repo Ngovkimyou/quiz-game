@@ -17,11 +17,12 @@ pre-commit:
       stage_fixed: true
 
 pre-push:
+  parallel: true
   commands:
     lint:
       run: pnpm lint
     check:
-      run: pnpm check
+      run: pnpm check:ci
     test:
       run: pnpm test
     build:
