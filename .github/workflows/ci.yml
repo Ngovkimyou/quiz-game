@@ -27,7 +27,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: npx playwright install --with-deps
       - run: pnpm check:ci
-      - run: pnpm lint
+      - run: pnpm lint:eslint
       - run: pnpm spellcheck
       - run: pnpm test
       - run: pnpm audit --prod
