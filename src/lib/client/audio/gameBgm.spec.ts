@@ -18,7 +18,7 @@ type MockAudioInstance = {
 
 let audioInstances: MockAudioInstance[] = []
 
-function installAudioMock(playImpl?: (instance: MockAudio) => Promise<void>): void {
+function installAudioMock(playImpl?: (instance: MockAudioInstance) => Promise<void>): void {
 	class MockAudio {
 		src: string
 		preload = ''
@@ -31,7 +31,7 @@ function installAudioMock(playImpl?: (instance: MockAudio) => Promise<void>): vo
 		pause = vi.fn(() => {
 			this.paused = true
 		})
-		play = vi.fn(async () => {
+		play = vi.fn(async (): Promise<void> => {
 			if (playImpl) {
 				return playImpl(this)
 			}
@@ -123,7 +123,7 @@ describe('gameBgm', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
 
 		await module.startGameBgm()
-		audioInstances[0]?.listeners.error?.()
+		audioInstances[0]?.listeners['error']?.()
 
 		expect(warnSpy).toHaveBeenCalledWith('Failed to load game BGM:', '/audio/quiz-music.ogg')
 		warnSpy.mockRestore()
