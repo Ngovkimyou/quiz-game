@@ -19,6 +19,7 @@ ignorePaths:
   - coverage/**/*
   - .github/workflows/ci.yml
 words:
+  - Dorayaki
   - lefthook
   - libsql
   - Qube
