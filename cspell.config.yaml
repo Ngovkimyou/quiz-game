@@ -16,6 +16,8 @@ ignorePaths:
   - .gitignore
   - package.json
   - pnpm-lock.yaml
+  - coverage/**/*
+  - .github/workflows/ci.yml
 words:
   - lefthook
   - libsql
