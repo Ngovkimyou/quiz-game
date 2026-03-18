@@ -4,7 +4,7 @@
 	import favicon from '$lib/assets/favicon.svg'
 	import { AUDIO_PATHS } from '$lib/client/audio/audioManager'
 
-	let { children } = $props()
+	const { children } = $props()
 	onMount(() => {})
 </script>
 
