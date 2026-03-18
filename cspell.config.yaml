@@ -17,6 +17,9 @@ ignorePaths:
   - package.json
   - pnpm-lock.yaml
 words:
-  - libsql
-  - Turso
   - lefthook
+  - libsql
+  - Qube
+  - sonarqube
+  - Turso
+  - Vite
