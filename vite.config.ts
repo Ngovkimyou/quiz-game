@@ -9,6 +9,12 @@ export default defineConfig({
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'lcov'],
+			thresholds: {
+				statements: 85,
+				branches: 70,
+				functions: 95,
+				lines: 85,
+			},
 		},
 		expect: { requireAssertions: true },
 		projects: [

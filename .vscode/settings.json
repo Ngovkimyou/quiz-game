@@ -2,5 +2,9 @@
 	"editor.formatOnSave": true,
 	"files.associations": {
 		"*.css": "css"
+	},
+	"sonarlint.connectedMode.project": {
+		"connectionId": "dorayaki15",
+		"projectKey": "dorayaki15"
 	}
 }
