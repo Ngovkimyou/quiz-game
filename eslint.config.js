@@ -35,6 +35,9 @@ export default defineConfig(
 			'prefer-const': 'error',
 			'no-commented-code/no-commented-code': 'warn', // or 'error'
 			'unicorn/no-null': 'error',
+			'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+			'max-depth': ['error', 3],
+			'no-debugger': 'error',
 		},
 	},
 	{

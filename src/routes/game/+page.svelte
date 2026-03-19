@@ -90,7 +90,6 @@
 	let showSaveModal = false
 	let isSaving = false
 	let playerName = data.session.name ?? ''
-	console.log('@game/+page.svelte (playerName) => ', playerName)
 
 	let currentIndex = 0
 	let score = 0

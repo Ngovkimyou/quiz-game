@@ -88,7 +88,6 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 			cookies.delete('id', { path: '/' })
 			cookies.delete('name', { path: '/' })
 
-			console.log('@update-score => INSERT SUCCESSFULLY INTO DATABASE')
 			return new Response(JSON.stringify({ success: true, mode: 'insert', id }), { status: 200 })
 		}
 	} catch (error) {
@@ -122,8 +121,4 @@ async function updateUser(
 		sql: 'UPDATE `quiz-ranking` SET score = ? WHERE id = ?',
 		args: [nextScore, id],
 	})
-
-	console.log(
-		`[@update-score(api)] User named: ${name} successfully update their score to ${nextScore}`,
-	)
 }

@@ -45,7 +45,6 @@ export function isRateLimited(
 	// This condition can only be triggered if the user somehow change their ip_address
 	// or if the server suddenly create a new instance
 	if (!isExist && request_time && count < RATE_LIMIT_MAX_REQUESTS) {
-		console.log('@RateLimiter.ts => if was triggered')
 		if (key === ip_address && request_time <= now) {
 			rateLimitStore.set(key, { count: count + 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
 			return { over_Limit, isExist }
@@ -55,12 +54,10 @@ export function isRateLimited(
 		return { over_Limit, isExist }
 		// This condition triggered when there's new user or the request is below the set limit
 	} else if (!isExist || isExist.resetAt <= now) {
-		console.log('@RateLimiter.ts => else if was triggered')
 		rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
 		return { over_Limit, isExist }
 		// if user request too fast then they will trigger the else statement
 	} else {
-		console.log('@RateLimiter.ts => Request is too quick')
 		isExist.count += 1
 		rateLimitStore.set(key, isExist)
 		over_Limit = isExist.count > RATE_LIMIT_MAX_REQUESTS

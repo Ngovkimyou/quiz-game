@@ -4,7 +4,6 @@ import type { PageServerLoad } from './$types'
 export const load: PageServerLoad = async ({ platform, locals }) => {
 	try {
 		const { columns, rows } = await getUserRanking(platform?.env)
-		console.log('@leaderboard => Retrieved users:', columns, rows)
 		return {
 			columns,
 			rows,
