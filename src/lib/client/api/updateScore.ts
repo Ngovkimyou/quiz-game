@@ -55,8 +55,6 @@ export async function updateScore(
 			payload = undefined
 		}
 
-		console.log('Data Received @updateScore:', { status: result.status, payload })
-
 		if (!result.ok) {
 			const payloadObject: Record<string, unknown> | undefined =
 				payload && typeof payload === 'object' ? (payload as Record<string, unknown>) : undefined
