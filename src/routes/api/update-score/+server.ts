@@ -50,15 +50,16 @@ async function insertUser(
 	isHttps: boolean,
 ): Promise<Response> {
 	const safeName = normalizeName(body.name)
+	const numericScore = typeof body.score === 'number' ? body.score : Number.NaN
 
-	if (!safeName || !isValidScore(body.score)) {
+	if (!safeName || !isValidScore(numericScore)) {
 		console.error('@update-score => Invalid data:', body)
 		return getInvalidPayloadResponse()
 	}
 
 	const result = await db.execute({
 		sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING id',
-		args: [safeName, body.score],
+		args: [safeName, numericScore],
 	})
 
 	const id = result.rows[0]?.['id']?.toString()
