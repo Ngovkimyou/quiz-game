@@ -71,8 +71,10 @@ describe('/+page.svelte', () => {
 
 		await page.getByRole('button', { name: 'START GAME' }).click()
 
-		expect(mocks.resolve).toHaveBeenCalledWith('/game')
-		expect(mocks.goto).toHaveBeenCalledWith('/game')
+		await vi.waitFor(() => {
+			expect(mocks.resolve).toHaveBeenCalledWith('/game')
+			expect(mocks.goto).toHaveBeenCalledWith('/game')
+		})
 		expect(mocks.playClick).toHaveBeenCalledTimes(1)
 	})
 

@@ -16,6 +16,80 @@ import {
 	SCORE_STEP,
 } from '$lib'
 
+type UpdateScoreRequestBody = {
+	name: unknown
+	score: unknown
+}
+
+function jsonResponse(body: Record<string, unknown>, status: number): Response {
+	return new Response(JSON.stringify(body), { status })
+}
+
+function getInvalidPayloadResponse(): Response {
+	return jsonResponse(
+		{
+			error: `Name must be ${NAME_MIN_LENGTH}-${NAME_MAX_LENGTH} valid characters and score must be ${MIN_SCORE}-${MAX_SCORE} in steps of ${SCORE_STEP}`,
+		},
+		400,
+	)
+}
+
+function getMismatchNameResponse(): Response {
+	return jsonResponse(
+		{ success: false, error: 'mismatch name in the cookies and the request' },
+		400,
+	)
+}
+
+async function insertUser(
+	db: ReturnType<typeof getTursoClient>,
+	body: UpdateScoreRequestBody,
+	cookies: Parameters<RequestHandler>[0]['cookies'],
+	locals: Parameters<RequestHandler>[0]['locals'],
+	platform: Parameters<RequestHandler>[0]['platform'],
+	isHttps: boolean,
+): Promise<Response> {
+	const safeName = normalizeName(body.name)
+	const numericScore = typeof body.score === 'number' ? body.score : Number.NaN
+
+	if (!safeName || !isValidScore(numericScore)) {
+		console.error('@update-score => Invalid data:', body)
+		return getInvalidPayloadResponse()
+	}
+
+	const result = await db.execute({
+		sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING id',
+		args: [safeName, numericScore],
+	})
+
+	const id = result.rows[0]?.['id']?.toString()
+	const request_time = Date.now()
+	const client_ip_address = locals.ip_address
+
+	if (id) {
+		const token = await createSignedSessionValue(
+			id,
+			platform?.env,
+			getSessionTtlSeconds(),
+			client_ip_address,
+			request_time,
+		)
+		cookies.set(getSessionCookieName(), token, {
+			path: '/',
+			httpOnly: true,
+			sameSite: 'strict',
+			secure: isHttps,
+			maxAge: getSessionTtlSeconds(),
+		})
+	}
+
+	// Remove legacy cookies from older versions.
+	cookies.delete('id', { path: '/' })
+	cookies.delete('name', { path: '/' })
+
+	return jsonResponse({ success: true, mode: 'insert', id }, 200)
+}
+
 // This endpoint will receive the name and score from src/lib/components/updateScore and save it to the database
 export const POST: RequestHandler = async ({ request, cookies, locals, platform }) => {
 	let db: ReturnType<typeof getTursoClient>
@@ -33,79 +107,31 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 		const isHttps = new URL(request.url).protocol === 'https:'
 		const sessionUserId = locals.id?.toString()
 		const sessionUserName = locals.name
-		const { name, score } = await request.json()
+		const body = (await request.json()) as UpdateScoreRequestBody
 
-		if (sessionUserName && name !== sessionUserName) {
-			return new Response(
-				JSON.stringify({ success: false, error: 'mismatch name in the cookies and the request' }),
-				{ status: 400 },
-			)
+		if (sessionUserName && body.name !== sessionUserName) {
+			return getMismatchNameResponse()
 		}
 
 		if (sessionUserId && sessionUserName) {
-			await updateUser(db, sessionUserId, sessionUserName, score)
-			return new Response(JSON.stringify({ success: true, mode: 'update' }), { status: 200 })
-		} else {
-			// 	Normalize the name and check if it's valid, if not it will return undefined
-			const safeName = normalizeName(name)
-
-			if (!safeName || !isValidScore(score)) {
-				console.error('@update-score => Invalid data:', { name, score })
-				return new Response(
-					JSON.stringify({
-						error: `Name must be ${NAME_MIN_LENGTH}-${NAME_MAX_LENGTH} valid characters and score must be ${MIN_SCORE}-${MAX_SCORE} in steps of ${SCORE_STEP}`,
-					}),
-					{ status: 400 },
-				)
-			}
-
-			const result = await db.execute({
-				sql: 'INSERT INTO `quiz-ranking` (name, score) VALUES (?, ?) RETURNING id',
-				args: [safeName, score],
-			})
-
-			const id = result.rows[0]?.['id']?.toString()
-			const request_time = Date.now()
-			const client_ip_address = locals.ip_address
-
-			if (id) {
-				const token = await createSignedSessionValue(
-					id,
-					platform?.env,
-					getSessionTtlSeconds(),
-					client_ip_address,
-					request_time,
-				)
-				cookies.set(getSessionCookieName(), token, {
-					path: '/',
-					httpOnly: true,
-					sameSite: 'strict',
-					secure: isHttps,
-					maxAge: getSessionTtlSeconds(),
-				})
-			}
-			// Remove legacy cookies from older versions.
-			cookies.delete('id', { path: '/' })
-			cookies.delete('name', { path: '/' })
-
-			return new Response(JSON.stringify({ success: true, mode: 'insert', id }), { status: 200 })
+			await updateUser(db, sessionUserId, body.score as number)
+			return jsonResponse({ success: true, mode: 'update' }, 200)
 		}
+
+		return await insertUser(db, body, cookies, locals, platform, isHttps)
 	} catch (error) {
 		console.error('@update-score => Unexpected server error:', error)
 		const message = error instanceof Error ? error.message : 'Unknown server error'
-		return new Response(JSON.stringify({ error: message }), { status: 500 })
+		return jsonResponse({ error: message }, 500)
 	}
 }
 
 async function updateUser(
 	db: ReturnType<typeof getTursoClient>,
 	id: string,
-	name: string,
 	score: number,
 ): Promise<void> {
-	if (!id || !name || !isValidScore(score)) {
-		if (!id) throw new Error('User ID is required')
-		if (!name) throw new Error('User name is required')
+	if (!isValidScore(score)) {
 		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`)
 	}
 
