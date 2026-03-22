@@ -38,6 +38,7 @@ export default defineConfig(
 			'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
 			'max-depth': ['error', 3],
 			'no-debugger': 'error',
+			'complexity': ['error', 15]
 		},
 	},
 	{
