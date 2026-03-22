@@ -35,7 +35,7 @@ function createEvent(
 	return {
 		request,
 		cookies: options?.cookies ?? { set: vi.fn(), delete: vi.fn() },
-		locals: ((options?.locals ?? {}) as unknown) as App.Locals,
+		locals: (options?.locals ?? {}) as unknown as App.Locals,
 		platform: options?.platform as App.Platform | undefined,
 		fetch,
 		getClientAddress: () => '203.0.113.5',
