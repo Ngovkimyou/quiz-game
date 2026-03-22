@@ -114,11 +114,11 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 		}
 
 		if (sessionUserId && sessionUserName) {
-			await updateUser(db, sessionUserId, sessionUserName, body.score as number)
+			await updateUser(db, sessionUserId, body.score as number)
 			return jsonResponse({ success: true, mode: 'update' }, 200)
 		}
 
-		return insertUser(db, body, cookies, locals, platform, isHttps)
+		return await insertUser(db, body, cookies, locals, platform, isHttps)
 	} catch (error) {
 		console.error('@update-score => Unexpected server error:', error)
 		const message = error instanceof Error ? error.message : 'Unknown server error'
@@ -129,12 +129,9 @@ export const POST: RequestHandler = async ({ request, cookies, locals, platform 
 async function updateUser(
 	db: ReturnType<typeof getTursoClient>,
 	id: string,
-	name: string,
 	score: number,
 ): Promise<void> {
-	if (!id || !name || !isValidScore(score)) {
-		if (!id) throw new Error('User ID is required')
-		if (!name) throw new Error('User name is required')
+	if (!isValidScore(score)) {
 		throw new Error(`Score must be between ${MIN_SCORE} and ${MAX_SCORE} in steps of ${SCORE_STEP}`)
 	}
 
